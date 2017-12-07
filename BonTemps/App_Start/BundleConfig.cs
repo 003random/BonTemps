@@ -18,8 +18,8 @@ namespace BonTemps
                 "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/defaultscripts").Include(
-                "~/asset/js/jquery.min.js",
                 "~/asset/js/jquery.ui.min.js",
+                "~/asset/js/plugins/jquery.validate.min.js",
                 "~/asset/js/bootstrap.min.js",
                 "~/asset/js/plugins/moment.min.js",
                 "~/asset/js/plugins/jquery.knob.js",
@@ -29,8 +29,11 @@ namespace BonTemps
                 "~/asset/js/plugins/jquery.mask.min.js",
                 "~/asset/js/plugins/select2.full.min.js",
                 "~/asset/js/plugins/nouislider.min.js",
-                "~/asset/js/plugins/jquery.validate.min.js",
                 "~/asset/js/main.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+                "~/asset/js/jquery.min.js"
+               ));
 
             bundles.Add(new StyleBundle("~/Content/defaultcss").Include(
                 "~/asset/css/bootstrap.min.css",
