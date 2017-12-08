@@ -49,7 +49,7 @@ namespace BonTemps.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false),
-                        MenuType = c.Int(nullable: false),
+                        Description = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             

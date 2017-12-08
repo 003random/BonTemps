@@ -15,6 +15,6 @@ namespace BonTemps.Models
         [Required(ErrorMessage = "* required")]
         public string Name { get; set; }
 
-        public int MenuType { get; set; }
+        public string Description { get; set; }
     }
 }

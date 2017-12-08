@@ -13,7 +13,7 @@ namespace BonTemps.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201712072055409_Initialize"; }
+            get { return "201712081256347_Initialize"; }
         }
         
         string IMigrationMetadata.Source
