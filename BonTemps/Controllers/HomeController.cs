@@ -12,6 +12,7 @@ namespace BonTemps.Controllers
         public ActionResult Index()
         {
             //hey sjors
+            //Halo daar
             return View();
         }
     }
