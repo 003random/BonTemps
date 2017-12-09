@@ -25,18 +25,17 @@
                     <i class="icons icon-arrow-down"></i>
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-group form-animate-text" style="margin-top: 40px !important;">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-text" })
+                        @Html.TextBoxFor(m => m.Password, new { @class = "form-text", required = "" })
                         <span class="bar"></span>
-                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                        @Html.LabelFor(m => m.Email)
                         @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group form-animate-text" style="margin-top: 40px !important;">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control form-text" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-text", required = "" })
                         <span class="bar"></span>
-                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                        @Html.LabelFor(m => m.Password)
                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-
-                    </div>
+                        </div>
                     <label class="pull-left">
                         @Html.CheckBoxFor(m => m.RememberMe, new { @class = "icheck pull-left" })
                         &nbsp;&nbsp; @Html.LabelFor(m => m.RememberMe)
