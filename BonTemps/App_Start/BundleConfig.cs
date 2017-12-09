@@ -22,6 +22,7 @@ namespace BonTemps
                 "~/asset/js/plugins/jquery.validate.min.js",
                 "~/asset/js/bootstrap.min.js",
                 "~/asset/js/plugins/moment.min.js",
+                "~/asset/js/plugins/chart.min.js",
                 "~/asset/js/plugins/jquery.knob.js",
                 "~/asset/js/plugins/ion.rangeSlider.min.js",
                 "~/asset/js/plugins/bootstrap-material-datetimepicker.js",
@@ -30,6 +31,7 @@ namespace BonTemps
                 "~/asset/js/plugins/select2.full.min.js",
                 "~/asset/js/plugins/nouislider.min.js",
                 "~/asset/js/plugins/icheck.min.js",
+                "~/asset/js/plugins/alertify.min.js",
                 "~/asset/js/main.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
@@ -45,9 +47,12 @@ namespace BonTemps
                 "~/asset/css/plugins/ionrangeslider/ion.rangeSlider.css",
                 "~/asset/css/plugins/ionrangeslider/ion.rangeSlider.skinFlat.css",
                 "~/asset/css/plugins/bootstrap-material-datetimepicker.css",
-                "~/asset/css/style.css",
                 "~/asset/css/plugins/simple-line-icons.css",
-                "~/asset/css/plugins/icheck/skins/flat/aero.css"
+                "~/asset/css/plugins/icheck/skins/flat/aero.css",
+                "~/asset/css/plugins/alertify.min.css",
+                "~/asset/css/plugins/alertify-default.css",
+                "~/asset/css/plugins/semantic.min.css",
+                "~/asset/css/style.css"
             ));
         }
     }

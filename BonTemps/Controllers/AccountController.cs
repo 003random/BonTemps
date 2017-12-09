@@ -65,7 +65,6 @@ namespace BonTemps.Controllers
         //
         // POST: /Account/Login
         [HttpPost]
-
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
@@ -88,7 +87,7 @@ namespace BonTemps.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    TempData["error"] = "Invalid email or password!";
                     return View(model);
             }
         }
