@@ -47,18 +47,24 @@
                         @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
                     </div>
                     <label class="pull-left">
-                        <input required="" type="checkbox" class="icheck pull-left" name="checkbox1" />Ik ga akkoord met de algemene voorwaarden
+                        <input required="" type="checkbox" class="icheck pull-left" name="checkbox1" />Ik ga akkoord met de <u id="tos">algemene voorwaarden</u>
                     </label>
                     <input type="submit" class="btn col-md-12" value="Account aanmaken" />
                 </div>
                 <div class="text-center" style="padding:5px;">
-                    @Html.ActionLink("Forgot password", "ForgotPassword", "Account")
-                    @Html.ActionLink("| Register", "Register", "Account")
+                    <!--@Html.ActionLink("Forgot password", "ForgotPassword", "Account")-->
+                    @Html.ActionLink("Login", "Login", "Account")
                 </div>
             </div>
                         }
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/defaultscripts")
+
+    <script>
+        $("#tos").on("click", function () {
+            alertify.alert("¯\\_(ツ)_/¯", "Wow, iemand klikt hier op voor het eerst \\0/.");
+        });
+    </script>
 </body>
 </html>

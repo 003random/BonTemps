@@ -79,12 +79,13 @@ namespace BonTemps.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,MenuType")] Menus menus)
+        public ActionResult Edit(Menus menus)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(menus).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["success"] = "Succesvol bewerkt";
                 return RedirectToAction("Index");
             }
             return View(menus);
@@ -113,6 +114,7 @@ namespace BonTemps.Controllers
             Menus menus = db.Menus.Find(id);
             db.Menus.Remove(menus);
             db.SaveChanges();
+            TempData["success"] = "Succesvol verwijderd";
             return RedirectToAction("Index");
         }
 

@@ -1,0 +1,57 @@
+﻿@model BonTemps.Models.Menus
+
+@{
+    ViewBag.Title = "Menu verwijderen";
+}
+
+<div class="col-md-10">
+    <div class="col-md-12 panel">
+        <div class="col-md-12 panel-heading">
+            <h3>Menu details</h3>
+        </div>
+        <div class="col-md-12 panel-body" style="padding-bottom:30px;">
+            <div class="col-md-12">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.Name)</td>
+                        <td>@Html.DisplayFor(model => model.Name)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.Description)</td>
+                        <td>@Html.DisplayFor(model => model.Description)</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br />
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Delete" class="submit btn btn-danger" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    tbody tr td {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        color: #5f6062;
+        font-size: 13px;
+        border-bottom: 1px solid #e0e0e0;
+        border: 1px solid rgb(130, 126, 126) !important;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $("tr").each(function (index, value) {
+            $(this).children().eq(0).text($(this).children().eq(0).text() + ":");
+            $(this).children().eq(1).css("background-color", "#f0f3f5");
+        });
+    </script>
+}

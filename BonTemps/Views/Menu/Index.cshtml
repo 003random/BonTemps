@@ -25,9 +25,9 @@
                                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Description)</td>
                                     <td>
-                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                        <span onclick="window.location = '@Url.Action("Edit", "Menu", new {id = item.Id})';" class="fa fa-pencil-square-o" style="margin-left: 10px; font-size:20px; cursor: pointer"></span>
+                                        <span onclick="window.location = '@Url.Action("Details", "Menu", new {id = item.Id})';" class="fa fa-info-circle" style="margin-left: 10px; font-size:20px; cursor: pointer"></span>
+                                        <span onclick="window.location = '@Url.Action("Delete", "Menu", new {id = item.Id})';" class="fa fa-times" style="margin-left: 10px; font-size:20px; cursor: pointer"></span>
                                     </td>
                                 </tr>
                             }
