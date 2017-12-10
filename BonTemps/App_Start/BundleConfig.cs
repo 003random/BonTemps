@@ -32,6 +32,8 @@ namespace BonTemps
                 "~/asset/js/plugins/nouislider.min.js",
                 "~/asset/js/plugins/icheck.min.js",
                 "~/asset/js/plugins/alertify.min.js",
+                "~/asset/js/plugins/jquery.datatables.min.js",
+                "~/asset/js/plugins/datatables.bootstrap.min.js",
                 "~/asset/js/main.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
@@ -49,6 +51,7 @@ namespace BonTemps
                 "~/asset/css/plugins/bootstrap-material-datetimepicker.css",
                 "~/asset/css/plugins/simple-line-icons.css",
                 "~/asset/css/plugins/icheck/skins/flat/aero.css",
+                "~/asset/css/plugins/datatables.bootstrap.min.css",
                 "~/asset/css/plugins/alertify.min.css",
                 "~/asset/css/plugins/alertify-default.css",
                 "~/asset/css/plugins/semantic.min.css",

@@ -46,13 +46,14 @@ namespace BonTemps.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,MenuType")] Menus menus)
+        public ActionResult Create(Menus menus)
         {
             if (ModelState.IsValid)
             {
                 db.Menus.Add(menus);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["success"] = "Succesvol opgeslagen";
+                return RedirectToAction("Create");
             }
 
             return View(menus);

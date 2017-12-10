@@ -12,9 +12,10 @@ namespace BonTemps.Models
         public int Id { get; set; }
 
         [Display(Name = "Naam")]
-        [Required(ErrorMessage = "* required")]
+        [Required]
         public string Name { get; set; }
 
+        [Display(Name = "Beschrijving")]
         public string Description { get; set; }
     }
 }

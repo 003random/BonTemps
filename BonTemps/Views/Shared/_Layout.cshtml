@@ -33,13 +33,9 @@
 
                 <ul class="nav navbar-nav search-nav">
                     <li>
-                        <div class="search">
-                            <span class="fa fa-search icon-search" style="font-size:23px;"></span>
-                            <div class="form-group form-animate-text">
-                                <input type="text" class="form-text" required>
-                                <span class="bar"></span>
-                                <label class="label-search">Type anywhere to <b>Search</b> </label>
-                            </div>
+                        <div class="search" style="margin-left: 30%;">
+                            <span onclick="window.location = '@Url.Action("Create", "Reservation")';" class="fa fa-book" style="margin-left: 20px; font-size:23px; cursor: pointer"></span>
+                            <span onclick="window.location = '@Url.Action("Create", "Order")';" class="fa fa-coffee" style="margin-left: 20px; font-size:23px; cursor: pointer"></span>
                         </div>
                     </li>
                 </ul>
@@ -47,7 +43,7 @@
                 <ul class="nav navbar-nav navbar-right user-nav" style="position:fixed; right:40px;">
                     <li class="user-name"><span>Serveerster</span></li>
                     <li class="dropdown avatar-dropdown">
-                        <img onclick="window.location = '/Account/LogOut';" src="http://www.pvhc.net/img162/kzkdpyqytlhncwjrpvzf.png" style="height: 30px; width: 30px; margin-top: 40%; cursor: pointer;" alt="" />
+                        <img onclick="window.location = '@Url.Action("LogOut", "Account")';" src="http://www.pvhc.net/img162/kzkdpyqytlhncwjrpvzf.png" style="height: 30px; width: 30px; margin-top: 40%; cursor: pointer;" alt="" />
                     </li>
                 </ul>
             </div>
@@ -65,8 +61,7 @@
                     <img src="http://i.imgur.com/lLy2RMj.png" width="150px" class="animated fadeInLeft" height="150px" alt="logo" style="margin-left: 35px; margin-bottom:5px; margin-top: -20px;">
                     <hr>
                     <li class="active ripple">
-                        <a class="tree-toggle nav-header">
-                            <span class="fa-home fa"></span> Reserveren
+                        <a class="tree-toggle nav-header">Reserveren
                             <span class="fa-angle-right fa right-arrow text-right"></span>
                         </a>
                         <ul class="nav nav-list tree">
@@ -75,8 +70,7 @@
                         </ul>
                     </li>
                     <li class="active ripple">
-                        <a class="tree-toggle nav-header">
-                            <span class="fa-book fa"></span> Menu's
+                        <a class="tree-toggle nav-header">Menu's
                             <span class="fa-angle-right fa right-arrow text-right"></span>
                         </a>
                         <ul class="nav nav-list tree">
