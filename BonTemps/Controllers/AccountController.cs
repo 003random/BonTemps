@@ -53,7 +53,7 @@ namespace BonTemps.Controllers
             }
         }
 
-        //
+        
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -62,7 +62,7 @@ namespace BonTemps.Controllers
             return View();
         }
 
-        //
+
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -404,6 +404,7 @@ namespace BonTemps.Controllers
             Session.Abandon(); // it will clear the session at the end of request
             return RedirectToAction("Index", "Home");
         }
+
         //
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
