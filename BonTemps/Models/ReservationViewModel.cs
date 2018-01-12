@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Xml.Linq;
 
 namespace BonTemps.Models
 {
-    public enum GenderEnum
+    public class ReservationViewModel
     {
-        Overig,
-        man,
-        woman
-            }
+        [Required(ErrorMessage = "* required")]
+        [Display(Name = "Datum")]
+        public DateTime Date { get; set; }
 
-    public class Customers
-    {
-        [Key]
-        public int Id { get; set; }
+        [Required(ErrorMessage = "* required")]
+        [Display(Name = "Aantal personen")]
+        public int Persons { get; set; }
 
         [Display(Name = "Geslacht")]
         [Required(ErrorMessage = "* required")]

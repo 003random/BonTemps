@@ -1,0 +1,97 @@
+﻿@model BonTemps.Models.ReservationViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="col-md-10">
+    <div class="col-md-12 panel">
+        <div class="col-md-12 panel-heading">
+            <h3>Menu aanmaken</h3>
+        </div>
+        <div class="col-md-12 panel-body" style="padding-bottom:30px;">
+            <div class="col-md-12">
+                @using (Html.BeginForm("Create", "Menu", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "cmxform", role = "form" }))
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.AntiForgeryToken()
+                    <div class="col-md-6">
+                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-text", required = "" })
+                            <span class="bar"></span>
+                            @Html.LabelFor(m => m.FirstName)
+                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            @Html.TextBoxFor(m => m.Prefix, new { @class = "form-text", required = "" })
+                            <span class="bar"></span>
+                            @Html.LabelFor(m => m.Prefix)
+                            @Html.ValidationMessageFor(m => m.Prefix, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-text", required = "" })
+                            <span class="bar"></span>
+                            @Html.LabelFor(m => m.LastName)
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            @Html.EnumDropDownListFor(m => m.Gender, new { @class = "form-text", required = "" })
+                            <span class="bar"></span>
+                            @Html.LabelFor(m => m.Gender)
+                            @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-text", required = "" })
+                            <span class="bar"></span>
+                            @Html.LabelFor(m => m.PhoneNumber)
+                            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-text", required = "" })
+                            <span class="bar"></span>
+                            @Html.LabelFor(m => m.Email)
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            @Html.TextBoxFor(m => m.NewsLetter, new { @class = "form-text", required = "" })
+                            <span class="bar"></span>
+                            @Html.LabelFor(m => m.NewsLetter)
+                            @Html.ValidationMessageFor(m => m.NewsLetter, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            @Html.TextBoxFor(m => m.Persons, new { @class = "form-text", required = "" })
+                            <span class="bar"></span>
+                            @Html.LabelFor(m => m.Persons)
+                            @Html.ValidationMessageFor(m => m.Persons, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            @Html.TextBoxFor(m => m.Date, new { @class = "form-text", required = "" })
+                            <span class="bar"></span>
+                            @Html.LabelFor(m => m.Date)
+                            @Html.ValidationMessageFor(m => m.Date, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+
+                        <div class="col-md-12">
+                            <input class="submit btn btn-danger" type="submit" value="Submit">
+                        </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

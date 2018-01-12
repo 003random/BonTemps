@@ -21,6 +21,49 @@ namespace BonTemps.Controllers
             return View(reservations.ToList());
         }
 
+        // GET: Reservations/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Reservations/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(ReservationViewModel reservation_customer)
+        {
+            var customer = new Customers
+            {
+                Email = reservation_customer.Email,
+                FirstName = reservation_customer.FirstName,
+                Prefix = reservation_customer.Prefix,
+                LastName = reservation_customer.LastName,
+                Gender = reservation_customer.Gender,
+                PhoneNumber = reservation_customer.PhoneNumber,
+                NewsLetter = reservation_customer.NewsLetter
+            };
+
+            var reservation = new Reservations
+            {
+                Date = reservation_customer.Date,
+                Persons = reservation_customer.Persons,
+                Customer = customer
+            };
+
+            if (ModelState.IsValid)
+            {
+                db.Reservations.Add(reservation);
+                db.SaveChanges();
+                TempData["success"] = "Reservering succesvol aangemaakt";
+                return RedirectToAction("Index");
+            }
+
+            return View(reservation_customer);
+        }
+
+
         // GET: Reservations/Details/5
         public ActionResult Details(int? id)
         {
@@ -36,30 +79,6 @@ namespace BonTemps.Controllers
             return View(reservations);
         }
 
-        // GET: Reservations/Create
-        public ActionResult Create()
-        {
-            ViewBag.Id = new SelectList(db.Customers, "Id", "Gender");
-            return View();
-        }
-
-        // POST: Reservations/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Date,Persons")] Reservations reservations)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Reservations.Add(reservations);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.Id = new SelectList(db.Customers, "Id", "Gender", reservations.Id);
-            return View(reservations);
-        }
 
         // GET: Reservations/Edit/5
         public ActionResult Edit(int? id)
