@@ -664,10 +664,6 @@
     <Content Include="Views\Reservation\Details.cshtml" />
     <Content Include="Views\Reservation\Edit.cshtml" />
     <Content Include="Views\Reservation\Index.cshtml" />
-    <Content Include="Views\Table_layout\Create.cshtml" />
-    <Content Include="Views\Table_layout\Delete.cshtml" />
-    <Content Include="Views\Table_layout\Details.cshtml" />
-    <Content Include="Views\Table_layout\Edit.cshtml" />
     <Content Include="Views\Table_layout\Index.cshtml" />
     <Content Include="Views\Menu\Create.cshtml" />
     <Content Include="Views\Menu\Index.cshtml" />

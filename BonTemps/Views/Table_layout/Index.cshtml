@@ -1,45 +1,218 @@
 ﻿@model IEnumerable<BonTemps.Models.Table_layout>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Tafel overzicht";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.LayoutX)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LayoutY)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsTable)
-        </th>
-        <th></th>
-    </tr>
+<div class="row">
+    <div class="col-sm-1">
+        <div class="default items-col">
+            <div class='card card-free'><span class="">#1</span></div>
+            <div class='card card-free'><span class="">#2</span></div>
+            <div class='card card-free'><span class="">#3</span></div>
+            <div class='card card-free'><span class="">#1</span></div>
+            <div class='card card-free'><span class="">#2</span></div>
+            <div class='card card-free'><span class="">#3</span></div>
+            <div class='card card-free'><span class="">#3</span></div>
+        </div>
+    </div>
+    <div class="col-sm-11">
+        <div class='grid'>
+            <div class='col'>
+                <div class='cell n7 no-table'></div>
+                <div class='cell n8'></div>
+                <div class='cell n7'></div>
+                <div class='cell n8 no-table'></div>
+                <div class='cell n7'></div>
+                <div class='cell n8'></div>
+            </div>
+            <div class='col'>
+                <div class='cell n7'></div>
+                <div class='cell n8 no-table'></div>
+                <div class='cell n7'></div>
+                <div class='cell n8 no-table'></div>
+                <div class='cell n7 no-table'></div>
+                <div class='cell n8'></div>
+            </div>
+            <div class='col'>
+                <div class='cell n7'></div>
+                <div class='cell n8'></div>
+                <div class='cell n7'></div>
+                <div class='cell n8 no-table'></div>
+                <div class='cell n7 no-table'></div>
+                <div class='cell n8'></div>
+            </div>
+            <div class='col'>
+                <div class='cell n7'></div>
+                <div class='cell n8'></div>
+                <div class='cell n7'></div>
+                <div class='cell n8'></div>
+                <div class='cell n7'></div>
+                <div class='cell n8 no-table'></div>
+            </div>
+            <div class='col'>
+                <div class='cell n7'></div>
+                <div class='cell n8'></div>
+                <div class='cell n7'></div>
+                <div class='cell n8'></div>
+                <div class='cell n7'></div>
+                <div class='cell n8 no-table'></div>
+            </div>
+        </div>    
+    </div>
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.LayoutX)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LayoutY)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsTable)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TableLayoutId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TableLayoutId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TableLayoutId })
-        </td>
-    </tr>
-}
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!--<script  src="js/index.js"></script>-->
+<script>
+    $('.card').draggable({
+        appendTo: '.cell',
+        scope: 'cells',
+        stop: function() {
+            if($(this).parent().hasClass("default") !== true){
+                $(this).css({
+                    top: "10%",
+                    left: "10%"
+                });
+                $(this).children().addClass("text-occupied");
+            }
+        }
+    });
 
-</table>
+    var enableCells = function() {
+        $('.cell.cell-occupied').droppable('disable');
+        $('.no-table').droppable('disable');
+        $('.cell:not(.cell-occupied):not(.no-table)').droppable('enable');
+        $('.cell:not(.cell-occupied):not(.no-table)').droppable({
+            tolerance: 'pointer',
+            scope: 'cells',
+            activeClass: 'cell-occupiable',
+            hoverClass: 'cell-hover',
+            accept: '.card',
+            helper: 'clone',
+            drop: function(evt, ui) {
+                var draggableClass = ui.draggable.attr("class");
+                var droppableClass = $(this).attr("class");
+	  	  
+                ui.draggable.children().eq(0).text(droppableClass.split(' ')[1]);
+	  
+                console.log(draggableClass);
+                console.log(droppableClass);
+	  
+                var $cell = $(this);
+                var $card = $(ui.draggable);
+                $card.closest('.cell').removeClass('cell-occupied');
+                $card.appendTo($cell);
+                $card.addClass('card-occupier');
+                $card.removeClass('card-free');
+                $cell.addClass('cell-occupied');
+                enableCells();
+            }
+        });
+    }
+
+    $('.cell').droppable();
+    enableCells();
+</script>
+<style>
+    body {
+        background: white;
+        font-family: helvetica, sans-serif;
+        font-size: x-small;
+    }
+
+    .grid {
+        margin: 2px;
+        padding: 0.1em;
+    }
+
+    .col {
+        background: white;
+        display: inline-block;
+    }
+
+    .cell {
+        width: 6vw;
+        height: 6vw;
+        background: transparent;
+        border-style: solid;
+        border-width: 1px;
+        border-color: black;
+        margin: 5px;
+    }
+
+    .cell-hover {
+        background: #c4ef8f;
+    }
+
+    .cell-occupied {
+        border-style: dotted;
+    }
+
+    .cell-occupiable {
+
+    }
+
+    .card {
+        background: #2184be;
+        color: white;
+        text-align: center;
+    }
+
+    .card-free {
+        background: #2196F3;
+        color: white;
+        width: 2.5vw;
+        height: 2.5vw;
+        border-style: solid;
+        border-width: 1px;
+        border-color: black;
+        margin: 5px;
+        margin-bottom: -18px;
+        z-index: 999;
+    }
+
+    .card-free:nth-child(even) {
+        margin-left: 20px !important;
+    }
+
+    .card-occupier {
+        display: table;
+        width: 80% !important;
+        height: 80% !important;
+        border-radius: 5px;
+        left: 10% !important;
+        top: 10% !important;
+    }
+  
+    .text-occupied {
+        display: table-cell;
+        vertical-align: middle;
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        font-size: 3vw;
+        max-width: 1px !important;
+        word-wrap: break-word !important; 
+        white-space: pre-line;
+    }
+
+    .card-free {
+        display:inline-block;
+    }
+
+    .cell-occupiable.no-table {
+        opacity: 1;
+    }
+
+    .no-table {
+        background-color: #9fa09f;
+    }
+
+    .items-col {
+        margin-left: 20%;
+    }
+</style>
