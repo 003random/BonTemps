@@ -1,42 +1,51 @@
 ﻿@model BonTemps.Models.Reservations
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Reservering details";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Reservations</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Customer.Gender)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Customer.Gender)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Persons)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Persons)
-        </dd>
-
-    </dl>
+<div class="col-md-10">
+    <div class="col-md-12 panel">
+        <div class="col-md-12 panel-heading">
+            <h3>Menu details</h3>
+        </div>
+        <div class="col-md-12 panel-body" style="padding-bottom:30px;">
+            <div class="col-md-12">
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Customer.FirstName) @Html.DisplayNameFor(model => model.Customer.Prefix) @Html.DisplayNameFor(model => model.Customer.LastName)</th>
+                        <th>@Html.DisplayNameFor(model => model.Date)</th>
+                        <th>@Html.DisplayNameFor(model => model.Persons)</th>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayFor(model => model.Customer.FirstName) @Html.DisplayFor(model => model.Customer.Prefix) @Html.DisplayFor(model => model.Customer.LastName)</td>
+                        <td>@Html.DisplayFor(model => model.Date)</td>
+                        <td>@Html.DisplayFor(model => model.Persons)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<style>
+    tbody tr td {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        color: #5f6062;
+        font-size: 13px;
+        border-bottom: 1px solid #e0e0e0;
+        border: 1px solid rgb(130, 126, 126) !important;
+    }
+
+</style>
+
+@section Scripts {
+    <script>
+        $("tr").each(function (index, value) {
+            $(this).children().eq(0).text($(this).children().eq(0).text() + ":");
+            $(this).children().eq(1).css("background-color", "#f0f3f5");
+        });
+    </script>
+}

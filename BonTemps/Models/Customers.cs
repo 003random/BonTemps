@@ -27,7 +27,6 @@ namespace BonTemps.Models
         public string FirstName { get; set; }
 
         [Display(Name = "Tussenvoegsel")]
-        [Required(ErrorMessage = "* required")]
         public string Prefix { get; set; }
 
         [Display(Name = "Achternaam")]

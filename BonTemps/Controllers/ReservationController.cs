@@ -83,6 +83,7 @@ namespace BonTemps.Controllers
         // GET: Reservations/Edit/5
         public ActionResult Edit(int? id)
         {
+            //ToDo: use viewmodel
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -93,7 +94,7 @@ namespace BonTemps.Controllers
                 return HttpNotFound();
             }
             ViewBag.Id = new SelectList(db.Customers, "Id", "Gender", reservations.Id);
-            return View(reservations);
+            return View(new ReservationViewModel());
         }
 
         // POST: Reservations/Edit/5
@@ -110,7 +111,7 @@ namespace BonTemps.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.Id = new SelectList(db.Customers, "Id", "Gender", reservations.Id);
-            return View(reservations);
+            return View(new ReservationViewModel());
         }
 
         // GET: Reservations/Delete/5

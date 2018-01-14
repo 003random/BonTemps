@@ -1,31 +1,27 @@
-﻿@{
-    ViewBag.Title = "Tafel overzicht";
+﻿@model IEnumerable<BonTemps.Models.Table_layout>
+
+@{
+    ViewBag.Title = "Tafel overzicht wijzigen";
 }
 
-
-<div class="row">
-    <div class="col-sm-1">
-        <div class="default items-col">
-            <div class='card card-free'><span class="">#1</span></div>
-            <div class='card card-free'><span class="">#2</span></div>
-            <div class='card card-free'><span class="">#3</span></div>
-            <div class='card card-free'><span class="">#1</span></div>
-            <div class='card card-free'><span class="">#2</span></div>
-            <div class='card card-free'><span class="">#3</span></div>
-            <div class='card card-free'><span class="">#3</span></div>
+<div>
+    <div class="row">
+        <div class="col-sm-1">
+            <div class="default items-col">
+            </div>
         </div>
-    </div>
-    <div class="col-sm-11">
-        <div class='grid'>
-            @foreach (var xAxis in ViewBag.tableLayout)
-            {
-                <div class='col'>
-                    @foreach (var yAxis in xAxis)
-                    {
-                        <div x="@yAxis.LayoutX" y="@yAxis.LayoutY" class='cell @yAxis.LayoutX-@yAxis.LayoutY @if (yAxis.IsTable == false){ <TEXT>no-table</TEXT>}'></div>
-                    }
-                </div>
-            }
+        <div class="col-sm-11">
+            <div class='grid'>
+                @foreach (var xAxis in ViewBag.tableLayout)
+                {
+                    <div class='col'>
+                        @foreach (var yAxis in xAxis)
+                        {
+                            <div x="@yAxis.LayoutX" y="@yAxis.LayoutY" class='cell @yAxis.LayoutX-@yAxis.LayoutY @if (yAxis.IsTable == false){ <TEXT>no-table</TEXT>}'></div>
+                        }
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
@@ -83,6 +79,32 @@
 
     $('.cell').droppable();
     enableCells();
+
+    $(".cell").on("click",
+        function() {
+            $(this).toggleClass("no-table");
+
+            var jsonObject = {
+                "x": parseInt($(this).attr("x")),
+                "y": parseInt($(this).attr("y")),
+                "table": !$(this).hasClass("no-table")
+        };
+
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "POST",
+                data: JSON.stringify(jsonObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (response) {
+                    alert(response.responseText);
+                },
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+
+        });
 </script>
 <style>
     body {
@@ -102,6 +124,7 @@
     }
 
     .cell {
+        cursor: pointer;
         width: 6vw;
         height: 6vw;
         background: transparent;

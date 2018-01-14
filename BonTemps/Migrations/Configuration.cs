@@ -1,3 +1,5 @@
+using BonTemps.Models;
+
 namespace BonTemps.Migrations
 {
     using System;
@@ -14,18 +16,16 @@ namespace BonTemps.Migrations
 
         protected override void Seed(BonTemps.Models.ApplicationDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            for (var i = 1; i < 10; i++)//loop 9 times
+            {
+                for (var j = 1; j < 10; j++)//loop 9 times
+                {
+                    context.Table_layout.AddOrUpdate(
+                        new Table_layout { LayoutX = i, LayoutY = j, IsTable = true}
+                    );
+                }
+            }
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
         }
     }
 }
