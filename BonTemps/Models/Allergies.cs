@@ -14,5 +14,12 @@ namespace BonTemps.Models
         [Display(Name = "Naam")]
         [Required(ErrorMessage = "* required")]
         public string Name { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public Allergies()
+        {
+            this.DateCreated = DateTime.Now;
+        }
     }
 }

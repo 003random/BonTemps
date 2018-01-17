@@ -21,5 +21,12 @@ namespace BonTemps.Models
         public int Persons { get; set; }
 
         public virtual Customers Customer { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public Reservations()
+        {
+            this.DateCreated = DateTime.Now;
+        }
     }
 }

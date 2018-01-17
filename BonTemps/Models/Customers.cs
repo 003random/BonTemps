@@ -44,5 +44,12 @@ namespace BonTemps.Models
         [Display(Name = "Nieuwsrief")]
         [Required(ErrorMessage = "* required")]
         public bool NewsLetter { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public Customers()
+        {
+            this.DateCreated = DateTime.Now;
+        }
     }
 }

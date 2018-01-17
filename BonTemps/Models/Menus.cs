@@ -17,5 +17,12 @@ namespace BonTemps.Models
 
         [Display(Name = "Beschrijving")]
         public string Description { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public Menus()
+        {
+            this.DateCreated = DateTime.Now;
+        }
     }
 }

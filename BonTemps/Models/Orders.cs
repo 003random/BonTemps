@@ -15,5 +15,11 @@ namespace BonTemps.Models
         public virtual Menus Menu { get; set; }
 
         public virtual Reservations Reservation { get; set; }
+        public DateTime DateCreated { get; set; }
+
+        public Orders()
+        {
+            this.DateCreated = DateTime.Now;
+        }
     }
 }
