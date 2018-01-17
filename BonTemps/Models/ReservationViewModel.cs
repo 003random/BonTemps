@@ -26,7 +26,6 @@ namespace BonTemps.Models
         public string FirstName { get; set; }
 
         [Display(Name = "Tussenvoegsel")]
-        [Required(ErrorMessage = "* required")]
         public string Prefix { get; set; }
 
         [Display(Name = "Achternaam")]
@@ -35,13 +34,13 @@ namespace BonTemps.Models
 
         [Display(Name = "Telefoon nummer")]
         [Required(ErrorMessage = "* required")]
-        public string PhoneNumber { get; set; }
+        public int PhoneNumber { get; set; }
 
         [Display(Name = "E-mail")]
         [Required(ErrorMessage = "* required")]
         public string Email { get; set; }
 
-        [Display(Name = "Nieuwsrief")]
+        [Display(Name = "Nieuwsbrief")]
         [Required(ErrorMessage = "* required")]
         public bool NewsLetter { get; set; }
     }

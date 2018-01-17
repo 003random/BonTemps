@@ -35,7 +35,7 @@ namespace BonTemps.Models
 
         [Display(Name = "Telefoon nummer")]
         [Required(ErrorMessage = "* required")]
-        public string PhoneNumber { get; set; }
+        public int PhoneNumber { get; set; }
 
         [Display(Name = "E-mail")]
         [Required(ErrorMessage = "* required")]

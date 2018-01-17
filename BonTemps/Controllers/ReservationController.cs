@@ -12,12 +12,12 @@ namespace BonTemps.Controllers
 {
     public class ReservationController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext _db = new ApplicationDbContext();
 
         // GET: Reservations
         public ActionResult Index()
         {
-            var reservations = db.Reservations.Include(r => r.Customer);
+            var reservations = _db.Reservations.Include(r => r.Customer);
             return View(reservations.ToList());
         }
 
@@ -32,35 +32,35 @@ namespace BonTemps.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ReservationViewModel reservation_customer)
+        public ActionResult Create(ReservationViewModel reservationCustomer)
         {
             var customer = new Customers
             {
-                Email = reservation_customer.Email,
-                FirstName = reservation_customer.FirstName,
-                Prefix = reservation_customer.Prefix,
-                LastName = reservation_customer.LastName,
-                Gender = reservation_customer.Gender,
-                PhoneNumber = reservation_customer.PhoneNumber,
-                NewsLetter = reservation_customer.NewsLetter
+                Email = reservationCustomer.Email,
+                FirstName = reservationCustomer.FirstName,
+                Prefix = reservationCustomer.Prefix,
+                LastName = reservationCustomer.LastName,
+                Gender = reservationCustomer.Gender,
+                PhoneNumber = reservationCustomer.PhoneNumber,
+                NewsLetter = reservationCustomer.NewsLetter
             };
 
             var reservation = new Reservations
             {
-                Date = reservation_customer.Date,
-                Persons = reservation_customer.Persons,
+                Date = reservationCustomer.Date,
+                Persons = reservationCustomer.Persons,
                 Customer = customer
             };
 
             if (ModelState.IsValid)
             {
-                db.Reservations.Add(reservation);
-                db.SaveChanges();
+                _db.Reservations.Add(reservation);
+                _db.SaveChanges();
                 TempData["success"] = "Reservering succesvol aangemaakt";
                 return RedirectToAction("Index");
             }
 
-            return View(reservation_customer);
+            return View(reservationCustomer);
         }
 
 
@@ -71,7 +71,7 @@ namespace BonTemps.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reservations reservations = db.Reservations.Find(id);
+            Reservations reservations = _db.Reservations.Find(id);
             if (reservations == null)
             {
                 return HttpNotFound();
@@ -88,12 +88,12 @@ namespace BonTemps.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reservations reservations = db.Reservations.Find(id);
+            Reservations reservations = _db.Reservations.Find(id);
             if (reservations == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Id = new SelectList(db.Customers, "Id", "Gender", reservations.Id);
+            ViewBag.Id = new SelectList(_db.Customers, "Id", "Gender", reservations.Id);
             return View(new ReservationViewModel());
         }
 
@@ -106,11 +106,11 @@ namespace BonTemps.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(reservations).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(reservations).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Id = new SelectList(db.Customers, "Id", "Gender", reservations.Id);
+            ViewBag.Id = new SelectList(_db.Customers, "Id", "Gender", reservations.Id);
             return View(new ReservationViewModel());
         }
 
@@ -121,7 +121,7 @@ namespace BonTemps.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reservations reservations = db.Reservations.Find(id);
+            Reservations reservations = _db.Reservations.Find(id);
             if (reservations == null)
             {
                 return HttpNotFound();
@@ -134,9 +134,9 @@ namespace BonTemps.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Reservations reservations = db.Reservations.Find(id);
-            db.Reservations.Remove(reservations);
-            db.SaveChanges();
+            Reservations reservations = _db.Reservations.Find(id);
+            _db.Reservations.Remove(reservations);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -144,7 +144,7 @@ namespace BonTemps.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
