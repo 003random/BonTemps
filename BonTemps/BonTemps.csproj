@@ -230,6 +230,14 @@
     <Compile Include="Migrations\201801171959397_add createdate prop.Designer.cs">
       <DependentUpon>201801171959397_add createdate prop.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801181956550_update.cs" />
+    <Compile Include="Migrations\201801181956550_update.Designer.cs">
+      <DependentUpon>201801181956550_update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801182001432_update_uniqe table layout.cs" />
+    <Compile Include="Migrations\201801182001432_update_uniqe table layout.Designer.cs">
+      <DependentUpon>201801182001432_update_uniqe table layout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Allergies.cs" />
@@ -709,6 +717,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801171959397_add createdate prop.resx">
       <DependentUpon>201801171959397_add createdate prop.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801181956550_update.resx">
+      <DependentUpon>201801181956550_update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801182001432_update_uniqe table layout.resx">
+      <DependentUpon>201801182001432_update_uniqe table layout.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

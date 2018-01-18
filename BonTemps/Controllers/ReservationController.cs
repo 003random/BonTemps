@@ -84,17 +84,38 @@ namespace BonTemps.Controllers
         public ActionResult Edit(int? id)
         {
             //ToDo: use viewmodel
-            if (id == null)
+            if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reservations reservations = _db.Reservations.Find(id);
-            if (reservations == null)
+
+            var reservation = _db.Reservations.Include(i => i.Customer).SingleOrDefault(x => x.Id == id);
+
+            if (reservation == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Id = new SelectList(_db.Customers, "Id", "Gender", reservations.Id);
-            return View(new ReservationViewModel());
+
+            if (id != null)
+            {
+                var reservationViewModel = new ReservationViewModel
+                {
+                    FirstName = reservation.Customer.FirstName,
+                    Prefix = reservation.Customer.Prefix,
+                    LastName = reservation.Customer.LastName,
+                    Gender = reservation.Customer.Gender,
+                    Email = reservation.Customer.Email,
+                    PhoneNumber = reservation.Customer.PhoneNumber,
+                    NewsLetter = reservation.Customer.NewsLetter,
+                    Date = reservation.Date,
+                    Persons = reservation.Persons,
+                    CustomerId = reservation.Customer.Id,
+                    ReservationId = (int)id
+                };
+
+                return View(reservationViewModel);
+            }
+            return HttpNotFound();
         }
 
         // POST: Reservations/Edit/5
@@ -102,16 +123,33 @@ namespace BonTemps.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Date,Persons")] Reservations reservations)
+        public ActionResult Edit(ReservationViewModel reservationCustomer)
         {
-            if (ModelState.IsValid)
+            var reservation = _db.Reservations.Include(i => i.Customer).SingleOrDefault(x => x.Id == reservationCustomer.ReservationId);
+
+
+            if (reservation != null)
             {
-                _db.Entry(reservations).State = EntityState.Modified;
-                _db.SaveChanges();
-                return RedirectToAction("Index");
+                reservation.Customer.Email = reservationCustomer.Email;
+                reservation.Customer.FirstName = reservationCustomer.FirstName;
+                reservation.Customer.Prefix = reservationCustomer.Prefix;
+                reservation.Customer.LastName = reservationCustomer.LastName;
+                reservation.Customer.Gender = reservationCustomer.Gender;
+                reservation.Customer.PhoneNumber = reservationCustomer.PhoneNumber;
+                reservation.Customer.NewsLetter = reservationCustomer.NewsLetter;
+                
+                reservation.Date = reservationCustomer.Date;
+                reservation.Persons = reservationCustomer.Persons;
+
+                if (ModelState.IsValid)
+                {
+                    _db.Entry(reservation).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-            ViewBag.Id = new SelectList(_db.Customers, "Id", "Gender", reservations.Id);
-            return View(new ReservationViewModel());
+
+            return View(reservationCustomer);
         }
 
         // GET: Reservations/Delete/5
@@ -135,7 +173,8 @@ namespace BonTemps.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Reservations reservations = _db.Reservations.Find(id);
-            _db.Reservations.Remove(reservations);
+            if (reservations != null)
+                _db.Reservations.Remove(reservations);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }

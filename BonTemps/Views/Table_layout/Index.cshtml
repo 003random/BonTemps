@@ -6,13 +6,16 @@
 <div class="row">
     <div class="col-sm-1">
         <div class="default items-col">
-            <div class='card card-free'><span class="">#1</span></div>
-            <div class='card card-free'><span class="">#2</span></div>
-            <div class='card card-free'><span class="">#3</span></div>
-            <div class='card card-free'><span class="">#1</span></div>
-            <div class='card card-free'><span class="">#2</span></div>
-            <div class='card card-free'><span class="">#3</span></div>
-            <div class='card card-free'><span class="">#3</span></div>
+            @foreach (var reservation in ViewBag.Reservations)
+            {
+                <hr />
+                for (var i = 0; i < Math.Ceiling((double)reservation.Persons / 2); i++)
+                {
+                    <div class='card card-free'><span class="">@reservation.Customer.FirstName[0]@reservation.Customer.LastName[0]</span></div>
+                }
+                <br /> <br />
+
+            }
         </div>
     </div>
     <div class="col-sm-11">
@@ -45,6 +48,7 @@
                     left: "10%"
                 });
                 $(this).children().addClass("text-occupied");
+                $(this).draggable("true");
             }
         }
     });

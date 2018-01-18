@@ -9,6 +9,10 @@ namespace BonTemps.Models
 {
     public class ReservationViewModel
     {
+        public int CustomerId { get; set; }
+
+        public int ReservationId { get; set; }
+        
         [Required(ErrorMessage = "* required")]
         [Display(Name = "Datum")]
         public DateTime Date { get; set; }

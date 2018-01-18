@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -11,9 +12,11 @@ namespace BonTemps.Models
         [Key]
         public int TableLayoutId { get; set; }
 
+        [Index("Layouts", 1, IsUnique = true)]
         [Required(ErrorMessage = "* required")]
         public int LayoutX { get; set; }
 
+        [Index("Layouts", 2, IsUnique = true)]
         [Required(ErrorMessage = "* required")]
         public int LayoutY { get; set; }
 

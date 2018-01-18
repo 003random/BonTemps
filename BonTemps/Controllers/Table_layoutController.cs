@@ -20,6 +20,9 @@ namespace BonTemps.Controllers
             var tableLayout = tableList.Select(l => l.LayoutY).Distinct().Select(i => tableList.Where(t => t.LayoutY == i).Distinct().ToList()).ToList();
 
             ViewBag.tableLayout = tableLayout;
+            var minusTwoHours = DateTime.Now.AddHours(-2);
+            var plusTwoHours = DateTime.Now.AddHours(2);
+            ViewBag.Reservations = _db.Reservations.Where(r => r.Date > minusTwoHours && r.Date < plusTwoHours).Include(r => r.Customer);
             return View();
         }
 
