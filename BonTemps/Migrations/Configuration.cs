@@ -33,7 +33,7 @@ namespace BonTemps.Migrations
             if (!context.Customers.Any())
             {
                 //seed customers table
-                for (var i = 0; i < 500; i++)
+                for (var i = 0; i < 33; i++)
                 {
                     context.Customers.AddOrUpdate(
                         new Customers { Gender = GenderEnum.man, FirstName = "Customer" + i, Prefix = "", LastName = "Seed" + i, PhoneNumber = 061223123 + i, Email = "Customer" + i + "@localhost", NewsLetter = true, DateCreated = DateTime.Now.AddDays(-new Random().Next(0, 190)) }

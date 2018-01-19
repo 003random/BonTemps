@@ -136,7 +136,7 @@
                 ]
             };
             var lineChartData = {
-                labels: [@foreach (var m in ViewBag.lastMontsData) {
+                labels: [@foreach (var m in ViewBag.lastMonthsData) {
                     <text>
                     '@m.Key',
                     </text>
@@ -164,7 +164,7 @@
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(151,187,205,1)",
-                        data: [data: [@foreach (var m in ViewBag.lastMonthsReservations) {
+                        data: [@foreach (var m in ViewBag.lastMonthsReservations) {
                     <text>
                     '@m',
                     </text>
