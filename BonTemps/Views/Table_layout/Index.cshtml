@@ -14,7 +14,6 @@
                     <div class='card card-free'><span class="">@reservation.Customer.FirstName[0]@reservation.Customer.LastName[0]</span></div>
                 }
                 <br /> <br />
-
             }
         </div>
     </div>
@@ -48,16 +47,16 @@
                     left: "10%"
                 });
                 $(this).children().addClass("text-occupied");
-                $(this).draggable("true");
+                // $(this).draggable("true");
             }
         }
     });
 
     var enableCells = function () {
-        $('.cell.cell-occupied').droppable('disable');
-        $('.no-table').droppable('disable');
-        $('.cell:not(.cell-occupied):not(.no-table)').droppable('enable');
-        $('.cell:not(.cell-occupied):not(.no-table)').droppable({
+        //$('.cell.cell-occupied').droppable('disable');
+        //$('.no-table').droppable('disable');
+        //$('.cell:not(.cell-occupied):not(.no-table)').droppable('enable');
+        $('.cell').droppable({
             tolerance: 'pointer',
             scope: 'cells',
             activeClass: 'cell-occupiable',
@@ -65,13 +64,17 @@
             accept: '.card',
             helper: 'clone',
             drop: function (evt, ui) {
+                console.log($(this).attr("class"));
+                if ($(this).find('.card').length >= 1 || $(this).hasClass('no-table')) {
+                    // Cancel drag operation (make it always revert)
+                    ui.draggable.draggable('option', 'revert', true);
+                    return;
+                }
+
                 var draggableClass = ui.draggable.attr("class");
                 var droppableClass = $(this).attr("class");
 
                 ui.draggable.children().eq(0).text(droppableClass.split(' ')[1]);
-
-                console.log(draggableClass);
-                console.log(droppableClass);
 
                 var $cell = $(this);
                 var $card = $(ui.draggable);
@@ -80,12 +83,13 @@
                 $card.addClass('card-occupier');
                 $card.removeClass('card-free');
                 $cell.addClass('cell-occupied');
-                enableCells();
+
+                //enableCells();
             }
         });
     }
 
-    $('.cell').droppable();
+    //$('.cell').droppable();
     enableCells();
 </script>
 <style>

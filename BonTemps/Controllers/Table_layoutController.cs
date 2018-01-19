@@ -17,7 +17,14 @@ namespace BonTemps.Controllers
         public ActionResult Index()
         {
             var tableList = _db.Table_layout.ToList();
-            var tableLayout = tableList.Select(l => l.LayoutY).Distinct().Select(i => tableList.Where(t => t.LayoutY == i).Distinct().ToList()).ToList();
+            var tableLayout = tableList
+                .Select(l => l.LayoutY)
+                .Distinct()
+                .Select(i => tableList
+                    .Where(t => t.LayoutY == i)
+                    .Distinct()
+                    .ToList())
+                .ToList();
 
             ViewBag.tableLayout = tableLayout;
             var minusTwoHours = DateTime.Now.AddHours(-2);
@@ -38,25 +45,23 @@ namespace BonTemps.Controllers
         [HttpPost]
         public ActionResult Edit(int x, int y, bool table)
         {
-            if (x != 0 && y != 0)
-            {
-                var layoutObject = _db.Table_layout.FirstOrDefault(t => t.LayoutX == x && t.LayoutY == y);
+            if (x == 0 || y == 0)
+                return Json("error, x and/or y are empty");
 
-                if (layoutObject != null)
-                {
-                    layoutObject.IsTable = table;
+            var layoutObject = _db.Table_layout.FirstOrDefault(t => t.LayoutX == x && t.LayoutY == y);
 
-                    _db.Table_layout.Attach(layoutObject);
-                    var entry = _db.Entry(layoutObject);
-                    entry.Property(e => e.IsTable).IsModified = true;
+            if (layoutObject == null)
+                return Json("error, x and/or y are empty");
 
-                    _db.SaveChanges();
+            layoutObject.IsTable = table;
 
-                    return Json("Succes");
+            _db.Table_layout.Attach(layoutObject);
+            var entry = _db.Entry(layoutObject);
+            entry.Property(e => e.IsTable).IsModified = true;
 
-                }
-            }
-            return Json("error, x and/or y are empty");
+            _db.SaveChanges();
+
+            return Json("Succes");
         }
 
     }
