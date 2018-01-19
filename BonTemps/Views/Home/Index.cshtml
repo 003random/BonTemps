@@ -13,7 +13,7 @@
                     <div class="col-md-6">
                         <div class="panel">
                             <div class="panel-heading-white panel-heading text-center">
-                                <h4>Bestellingen laatste 24 uur</h4>
+                                <h4>Bestellingen laatste 7 dagen</h4>
                             </div>
                             <div class="panel-body">
                                 <center>
@@ -50,7 +50,7 @@
             <div class="col-md-6">
                 <div class="panel">
                     <div class="panel-heading-white panel-heading">
-                        <h4>Line Chart</h4>
+                        <h4>klanten/bestellingen</h4>
                     </div>
                     <div class="panel-body">
                         <div class="col-md-12">
@@ -136,27 +136,39 @@
                 ]
             };
             var lineChartData = {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                labels: [@foreach (var m in ViewBag.lastMontsData) {
+                    <text>
+                    '@m.Key',
+                    </text>
+                }],
                 datasets: [
                     {
-                        label: "My First dataset",
+                        label: "Klanten",
                         fillColor: "rgba(21,186,103,0.5)",
                         strokeColor: "rgba(220,220,220,1)",
                         pointColor: "rgba(220,220,220,1)",
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: [65, 59, 80, 81, 56, 55, 40]
+                        data: [@foreach (var m in ViewBag.lastMonthsData) {
+                    <text>
+                    '@m.Value',
+                    </text>
+                }]
                     },
                     {
-                        label: "My Second dataset",
+                        label: "Bestellingen",
                         fillColor: "rgba(21,113,186,0.5)",
                         strokeColor: "rgba(151,187,205,1)",
                         pointColor: "rgba(151,187,205,1)",
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(151,187,205,1)",
-                        data: [28, 48, 40, 19, 86, 27, 90]
+                        data: [data: [@foreach (var m in ViewBag.lastMonthsReservations) {
+                    <text>
+                    '@m',
+                    </text>
+                }]
                     }
                 ]
             };
