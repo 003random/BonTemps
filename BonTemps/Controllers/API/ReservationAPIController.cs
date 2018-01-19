@@ -17,6 +17,7 @@ namespace BonTemps.Controllers
             return _db.Reservations.ToList();
         }
 
+        [HttpPost]
         public bool MakeReservation(ReservationViewModel reservationCustomer)
         {
             var customer = new Customers
