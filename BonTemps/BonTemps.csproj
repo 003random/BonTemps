@@ -618,6 +618,7 @@
     <Content Include="asset\js\plugins\flot\examples\axes-time-zones\tz\zone.tab" />
     <Content Include="asset\js\plugins\silverlightmediaelement.xap" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery_3.2.1.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -691,6 +692,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Employee\" />
+    <Folder Include="Views\Extern\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
