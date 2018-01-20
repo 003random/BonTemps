@@ -19,9 +19,9 @@ namespace BonTemps.Migrations
             if(!context.Table_layout.Any())
             {
                 //Seed table layout
-                for (var i = 1; i < 10; i++)//loop 9 times
+                for (var i = 1; i < 9; i++)//loop 8 times
                 {
-                    for (var j = 1; j < 10; j++)//loop 9 times
+                    for (var j = 1; j < 9; j++)//loop 8 times
                     {
                         context.Table_layout.AddOrUpdate(
                             new Table_layout { LayoutX = i, LayoutY = j, IsTable = true }

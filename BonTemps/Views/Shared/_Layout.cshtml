@@ -100,6 +100,38 @@
         <!-- start: content -->
         <div id="content">
             <br />
+            <div class="container">
+
+                @if (TempData["messageSuccess"] != null)
+                {
+                    <div class="alert alert-success fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <span class="glyphicon glyphicon-info-sign"></span> @TempData["messageSuccess"]
+                    </div>
+                }
+                @if (TempData["messageWarning"] != null)
+                {
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <span class="glyphicon glyphicon-warning-sign"></span> @TempData["messageWarning"]
+                    </div>
+                }
+                @if (TempData["messageError"] != null)
+                {
+                    <div class="alert alert-danger fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <span class="glyphicon glyphicon-exclamation-sign"></span> @TempData["messageError"]
+                    </div>
+                }
+                @if (TempData["messageInfo"] != null)
+                {
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <span class="glyphicon glyphicon-info-sign"></span> @TempData["messageInfo"]
+                    </div>
+                }
+            </div>
+
             @RenderBody()
         </div>
         <!-- end: content -->

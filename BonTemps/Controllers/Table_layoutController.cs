@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -29,7 +30,31 @@ namespace BonTemps.Controllers
             ViewBag.tableLayout = tableLayout;
             var minusTwoHours = DateTime.Now.AddHours(-2);
             var plusTwoHours = DateTime.Now.AddHours(2);
-            ViewBag.Reservations = _db.Reservations.Where(r => r.Date > minusTwoHours && r.Date < plusTwoHours).Include(r => r.Customer);
+            var upcommingReservations = _db.Reservations.Where(r => r.Date > minusTwoHours && r.Date < plusTwoHours).Include(r => r.Customer);
+            ViewBag.Reservations = upcommingReservations;
+            var reservationsTableLayout = _db.Reservations_Table_Layout.ToList();
+
+            var reservationsTableLayoutViewModelList = new List<Table_layout_ReservationsModelView>();
+            foreach (var item in reservationsTableLayout)
+            {
+                var row = new Table_layout_ReservationsModelView { LayoutX = item.Table_layout.LayoutX, LayoutY = item.Table_layout.LayoutY, ReservationId = item.Reservation.Id};
+                reservationsTableLayoutViewModelList.Add(row);
+            }
+
+            ViewBag.ReservationsTableLayoutModelViewList = reservationsTableLayoutViewModelList;
+
+            var today = DateTime.Now;
+            var firstReservation = _db.Reservations.Where(t => t.Date >= today).OrderBy(t => t.Date);
+
+            if (!upcommingReservations.Any() && firstReservation.Any())
+            {
+                TempData["messageInfo"] = "De eerst volgende reservering is om " + firstReservation.First().Date;
+            }
+            else if (!upcommingReservations.Any() && !firstReservation.Any())
+            {
+                TempData["messageInfo"] = "Er zijn geen opkomende reserveringen op het moment";
+            }
+
             return View();
         }
 
@@ -64,5 +89,32 @@ namespace BonTemps.Controllers
             return Json("Succes");
         }
 
+
+        [HttpPost]
+        public ActionResult Save(List<Table_layout_ReservationsModelView> list)
+        {
+            if (!list.Any())
+                return Json("Error: Empty list.");
+
+            var all = from t in _db.Reservations_Table_Layout select t;
+            _db.Reservations_Table_Layout.RemoveRange(all);
+            _db.SaveChanges();
+
+            foreach (var item in list)
+            {
+                if (item.ReservationId == 0)
+                    continue;
+
+                var tableLayout = _db.Table_layout.FirstOrDefault(t => t.LayoutX == item.LayoutX && t.LayoutY == item.LayoutY);
+                var reservation = _db.Reservations.FirstOrDefault(r => r.Id == item.ReservationId);
+
+                if (reservation != null && tableLayout != null)
+                    _db.Reservations_Table_Layout.Add(new Reservations_Table_Layout { Table_layout = tableLayout, Reservation = reservation });
+
+            }
+
+            _db.SaveChanges();
+            return Json("Success");
+        }
     }
 }
