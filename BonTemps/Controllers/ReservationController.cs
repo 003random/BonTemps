@@ -172,7 +172,9 @@ namespace BonTemps.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Reservations reservations = _db.Reservations.Find(id);
+            var reservations = _db.Reservations.Find(id);
+            _db.Reservations_Table_Layout.RemoveRange(_db.Reservations_Table_Layout.Include(r => r.Reservation).Where(r => r.Reservation.Id == reservations.Id));
+
             if (reservations != null)
                 _db.Reservations.Remove(reservations);
             _db.SaveChanges();

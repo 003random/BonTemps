@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -17,12 +18,43 @@ namespace BonTemps.Controllers
         public ActionResult Index()
         {
             var tableList = _db.Table_layout.ToList();
-            var tableLayout = tableList.Select(l => l.LayoutY).Distinct().Select(i => tableList.Where(t => t.LayoutY == i).Distinct().ToList()).ToList();
+            var tableLayout = tableList
+                .Select(l => l.LayoutY)
+                .Distinct()
+                .Select(i => tableList
+                    .Where(t => t.LayoutY == i)
+                    .Distinct()
+                    .ToList())
+                .ToList();
 
             ViewBag.tableLayout = tableLayout;
             var minusTwoHours = DateTime.Now.AddHours(-2);
             var plusTwoHours = DateTime.Now.AddHours(2);
-            ViewBag.Reservations = _db.Reservations.Where(r => r.Date > minusTwoHours && r.Date < plusTwoHours).Include(r => r.Customer);
+
+            //remove all where the date is not in the minus 2 and plus 2 hours range. (old reservations etc.)
+            _db.Reservations_Table_Layout.RemoveRange(_db.Reservations_Table_Layout.Include(r => r.Reservation).Where(r => r.Reservation.Date < minusTwoHours || r.Reservation.Date > plusTwoHours));
+
+            var upcommingReservations = _db.Reservations.Where(r => r.Date > minusTwoHours && r.Date < plusTwoHours).Include(r => r.Customer);
+            ViewBag.Reservations = upcommingReservations;
+            var reservationsTableLayout = _db.Reservations_Table_Layout.ToList().OrderBy(r => r.Reservation.Id);
+
+            //Convert to modelview
+            var reservationsTableLayoutViewModelList = reservationsTableLayout.Select(item => new Table_layout_ReservationsModelView {LayoutX = item.Table_layout.LayoutX, LayoutY = item.Table_layout.LayoutY, ReservationId = item.Reservation.Id}).ToList();
+
+            ViewBag.ReservationsTableLayoutModelViewList = reservationsTableLayoutViewModelList;
+
+            var today = DateTime.Now;
+            var firstReservation = _db.Reservations.Where(t => t.Date >= today).OrderBy(t => t.Date);
+
+            if (!upcommingReservations.Any() && firstReservation.Any())
+            {
+                TempData["messageInfo"] = "De eerst volgende reservering is om " + firstReservation.First().Date;
+            }
+            else if (!upcommingReservations.Any() && !firstReservation.Any())
+            {
+                TempData["messageInfo"] = "Er zijn geen opkomende reserveringen op het moment";
+            }
+
             return View();
         }
 
@@ -38,26 +70,51 @@ namespace BonTemps.Controllers
         [HttpPost]
         public ActionResult Edit(int x, int y, bool table)
         {
-            if (x != 0 && y != 0)
-            {
-                var layoutObject = _db.Table_layout.FirstOrDefault(t => t.LayoutX == x && t.LayoutY == y);
+            if (x == 0 || y == 0)
+                return Json("error, x and/or y are empty");
 
-                if (layoutObject != null)
-                {
-                    layoutObject.IsTable = table;
+            var layoutObject = _db.Table_layout.FirstOrDefault(t => t.LayoutX == x && t.LayoutY == y);
 
-                    _db.Table_layout.Attach(layoutObject);
-                    var entry = _db.Entry(layoutObject);
-                    entry.Property(e => e.IsTable).IsModified = true;
+            if (layoutObject == null)
+                return Json("error, x and/or y are empty");
 
-                    _db.SaveChanges();
+            layoutObject.IsTable = table;
 
-                    return Json("Succes");
+            _db.Table_layout.Attach(layoutObject);
+            var entry = _db.Entry(layoutObject);
+            entry.Property(e => e.IsTable).IsModified = true;
 
-                }
-            }
-            return Json("error, x and/or y are empty");
+            _db.SaveChanges();
+
+            return Json("Succes");
         }
 
+
+        [HttpPost]
+        public ActionResult Save(List<Table_layout_ReservationsModelView> list)
+        {
+            if (!list.Any())
+                return Json("Error: Empty list.");
+
+            var all = from t in _db.Reservations_Table_Layout select t;
+            _db.Reservations_Table_Layout.RemoveRange(all);
+            _db.SaveChanges();
+
+            foreach (var item in list)
+            {
+                if (item.ReservationId == 0)
+                    continue;
+
+                var tableLayout = _db.Table_layout.FirstOrDefault(t => t.LayoutX == item.LayoutX && t.LayoutY == item.LayoutY);
+                var reservation = _db.Reservations.FirstOrDefault(r => r.Id == item.ReservationId);
+
+                if (reservation != null && tableLayout != null)
+                    _db.Reservations_Table_Layout.Add(new Reservations_Table_Layout { Table_layout = tableLayout, Reservation = reservation });
+
+            }
+
+            _db.SaveChanges();
+            return Json("Success");
+        }
     }
 }

@@ -46,17 +46,18 @@
     });
 
     var enableCells = function () {
-        $('.cell.cell-occupied').droppable('disable');
-        $('.no-table').droppable('disable');
-        $('.cell:not(.cell-occupied):not(.no-table)').droppable('enable');
+        //$('.cell.cell-occupied').droppable('disable');
+        //$('.no-table').droppable('disable');
+        //$('.cell:not(.cell-occupied):not(.no-table)').droppable('enable');
         $('.cell:not(.cell-occupied):not(.no-table)').droppable({
             tolerance: 'pointer',
             scope: 'cells',
             activeClass: 'cell-occupiable',
             hoverClass: 'cell-hover',
-            accept: '.card',
+            accept: '.card',    
             helper: 'clone',
             drop: function (evt, ui) {
+                $(this).droppable('disable');
                 var draggableClass = ui.draggable.attr("class");
                 var droppableClass = $(this).attr("class");
 
@@ -72,12 +73,13 @@
                 $card.addClass('card-occupier');
                 $card.removeClass('card-free');
                 $cell.addClass('cell-occupied');
-                enableCells();
+                //enableCells();
             }
         });
     }
 
-    $('.cell').droppable();
+
+    //$('.cell').droppable();
     enableCells();
 
     $(".cell").on("click",
