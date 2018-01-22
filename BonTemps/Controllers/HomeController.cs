@@ -52,8 +52,30 @@ namespace BonTemps.Controllers
             ViewBag.lastMonthsData = dictionary.Reverse();
             ViewBag.lastMonthsReservations = bestellingen.Reverse();
 
+            Dictionary<string, int> lastWeekReservations = new Dictionary<string, int>();
+            int[] customerCount = new int[7];
 
-                return View();
+            for (var i = 0; i < 6; i++)
+            {
+                DateTime startDateTime = DateTime.Today;
+                DateTime endDateTime = DateTime.Today.AddDays(1).AddTicks(-1);
+                DateTime first;
+                DateTime last;
+
+                first = startDateTime.AddDays(-i);
+                last = endDateTime.AddDays(-i);
+
+                int count = db.Reservations.Count(m => m.DateCreated >= first && m.DateCreated <= last);
+                int custCount = db.Customers.Count(m => m.DateCreated >= first && m.DateCreated <= last);
+
+                lastWeekReservations.Add(first.DayOfWeek.ToString(), count);
+                customerCount[i] = custCount;
+            }
+            ViewBag.lastWeekReservations = lastWeekReservations;
+            ViewBag.lastWeekCustomers = customerCount;
+
+
+            return View();
         }
     }
 }

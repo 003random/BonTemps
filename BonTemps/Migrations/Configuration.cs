@@ -16,7 +16,8 @@ namespace BonTemps.Migrations
 
         protected override void Seed(BonTemps.Models.ApplicationDbContext context)
         {
-            if(!context.Table_layout.Any())
+            //ToDo: increase test data
+            if (!context.Table_layout.Any())
             {
                 //Seed table layout
                 for (var i = 1; i < 10; i++)//loop 9 times
