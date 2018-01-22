@@ -91,9 +91,9 @@
                         strokeColor: "rgba(220,220,220,0.8)",
                         highlightFill: "rgba(220,220,220,0.75)",
                         highlightStroke: "rgba(220,220,220,1)",
-                        data: [@foreach (var m in ViewBag.lastWeekReservations) {
+                        data: [@foreach (var m in ViewBag.lastWeekCustomers) {
                     <text>
-                    '@m.Value',
+                    '@m',
                     </text>
                 }]
                     }
@@ -148,7 +148,7 @@
                     showTooltips: true
                 });
                 var ctx5 = $(".bar-chart2")[0].getContext("2d");
-                window.myBar2 = new Chart(ctx4).Bar(barData2, {
+                window.myBar2 = new Chart(ctx5).Bar(barData2, {
                     responsive: true,
                     showTooltips: true
                 });;

@@ -71,8 +71,8 @@ namespace BonTemps.Controllers
                 lastWeekReservations.Add(first.DayOfWeek.ToString(), count);
                 customerCount[i] = custCount;
             }
-            ViewBag.lastWeekReservations = lastWeekReservations;
-            ViewBag.lastWeekCustomers = customerCount;
+            ViewBag.lastWeekReservations = lastWeekReservations.Reverse();
+            ViewBag.lastWeekCustomers = customerCount.Reverse();
 
 
             return View();
