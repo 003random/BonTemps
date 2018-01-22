@@ -30,16 +30,16 @@ namespace BonTemps.Controllers
             ViewBag.tableLayout = tableLayout;
             var minusTwoHours = DateTime.Now.AddHours(-2);
             var plusTwoHours = DateTime.Now.AddHours(2);
+
+            //remove all where the date is not in the minus 2 and plus 2 hours range. (old reservations etc.)
+            _db.Reservations_Table_Layout.RemoveRange(_db.Reservations_Table_Layout.Include(r => r.Reservation).Where(r => r.Reservation.Date < minusTwoHours || r.Reservation.Date > plusTwoHours));
+
             var upcommingReservations = _db.Reservations.Where(r => r.Date > minusTwoHours && r.Date < plusTwoHours).Include(r => r.Customer);
             ViewBag.Reservations = upcommingReservations;
-            var reservationsTableLayout = _db.Reservations_Table_Layout.ToList();
+            var reservationsTableLayout = _db.Reservations_Table_Layout.ToList().OrderBy(r => r.Reservation.Id);
 
-            var reservationsTableLayoutViewModelList = new List<Table_layout_ReservationsModelView>();
-            foreach (var item in reservationsTableLayout)
-            {
-                var row = new Table_layout_ReservationsModelView { LayoutX = item.Table_layout.LayoutX, LayoutY = item.Table_layout.LayoutY, ReservationId = item.Reservation.Id};
-                reservationsTableLayoutViewModelList.Add(row);
-            }
+            //Convert to modelview
+            var reservationsTableLayoutViewModelList = reservationsTableLayout.Select(item => new Table_layout_ReservationsModelView {LayoutX = item.Table_layout.LayoutX, LayoutY = item.Table_layout.LayoutY, ReservationId = item.Reservation.Id}).ToList();
 
             ViewBag.ReservationsTableLayoutModelViewList = reservationsTableLayoutViewModelList;
 
