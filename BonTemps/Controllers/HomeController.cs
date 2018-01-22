@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using BonTemps.Models;
 using Microsoft.AspNet.Identity;
+using System.Globalization;
+using System.Threading;
 
 namespace BonTemps.Controllers
 {
@@ -37,13 +39,13 @@ namespace BonTemps.Controllers
                 {
                     first = month.AddMonths(-i);
                     last = month.AddMonths(-(i - 1)).AddDays(-1);
-                    keymonth = month.AddMonths(-(i - 1)).AddDays(-1).ToString("MMM");
+                    keymonth = Thread.CurrentThread.CurrentCulture.DateTimeFormat.GetMonthName(month.AddMonths(-(i - 1)).AddDays(-1).Month);
                 }
                 else
                 {
                     first = month.AddMonths(0);
                     last = month.AddMonths(1).AddDays(-1);
-                    keymonth = month.AddMonths(1).AddDays(-1).ToString("MMM");
+                    keymonth = Thread.CurrentThread.CurrentCulture.DateTimeFormat.GetMonthName(month.AddMonths(1).AddDays(-1).Month);
                 }
                 int count = db.Customers.Count(m => m.DateCreated >= first && m.DateCreated <= last);
                 bestellingen[i] = db.Reservations.Count(m => m.DateCreated >= first && m.DateCreated <= last);
@@ -68,7 +70,10 @@ namespace BonTemps.Controllers
                 int count = db.Reservations.Count(m => m.DateCreated >= first && m.DateCreated <= last);
                 int custCount = db.Customers.Count(m => m.DateCreated >= first && m.DateCreated <= last);
 
-                lastWeekReservations.Add(first.DayOfWeek.ToString(), count);
+               var day = Thread.CurrentThread.CurrentCulture.DateTimeFormat.GetDayName(first.DayOfWeek);
+
+
+                lastWeekReservations.Add(day, count);
                 customerCount[i] = custCount;
             }
             ViewBag.lastWeekReservations = lastWeekReservations.Reverse();
