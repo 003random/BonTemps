@@ -39,7 +39,7 @@ namespace BonTemps.Controllers
             var reservationsTableLayout = _db.Reservations_Table_Layout.ToList().OrderBy(r => r.Reservation.Id);
 
             //Convert to modelview
-            var reservationsTableLayoutViewModelList = reservationsTableLayout.Select(item => new Table_layout_ReservationsModelView {LayoutX = item.Table_layout.LayoutX, LayoutY = item.Table_layout.LayoutY, ReservationId = item.Reservation.Id}).ToList();
+            var reservationsTableLayoutViewModelList = reservationsTableLayout.Select(item => new Table_layout_ReservationsModelView {LayoutX = item.Table_layout.LayoutX, LayoutY = item.Table_layout.LayoutY, ReservationId = item.Reservation.Id}).ToList().OrderBy(r => r.ReservationId);
 
             ViewBag.ReservationsTableLayoutModelViewList = reservationsTableLayoutViewModelList;
 
