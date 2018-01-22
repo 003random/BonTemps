@@ -2,6 +2,8 @@ using BonTemps.Models;
 
 namespace BonTemps.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -41,7 +43,107 @@ namespace BonTemps.Migrations
                     );
                 }
             }
-            
+            createRolesandUsers();
+        }
+
+        // In this method we will create default User roles and Admin user for login  
+        private void createRolesandUsers()
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+            // In Startup I am creating first Admin Role and creating a default Admin User   
+            if (!roleManager.RoleExists("Admin"))
+            {
+
+                // first we create Admin role   
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole
+                {
+                    Name = "Admin"
+                };
+                roleManager.Create(role);
+            }
+
+            if (context.Users.Any(u => u.UserName == "admin@bontemps.com"))
+            {
+                var user = new ApplicationUser();
+                user.UserName = "admin@bontemps.com";
+                user.Email = "admin@bontemps.com";
+
+                string userPWD = "Qwerty123#";
+
+                var chkUser = UserManager.Create(user, userPWD);
+
+                //Add default User to Role Admin  
+                if (chkUser.Succeeded)
+                {
+                    var result = UserManager.AddToRole(user.Id, "Admin");
+
+                }
+            }
+
+
+            // Create Serveerster role
+            if (!roleManager.RoleExists("Serveerster"))
+            {
+
+                // first we create Admin role   
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole
+                {
+                    Name = "Serveerster"
+                };
+                roleManager.Create(role);
+            }
+
+            if (context.Users.Any(u => u.UserName == "serveerster@bontemps.com"))
+            {
+                var user = new ApplicationUser();
+                user.UserName = "serveerster@bontemps.com";
+                user.Email = "serveerster@bontemps.com";
+
+                string userPWD = "Qwerty123#";
+
+                var chkUser = UserManager.Create(user, userPWD);
+
+                //Add default User to Role Admin  
+                if (chkUser.Succeeded)
+                {
+                    var result = UserManager.AddToRole(user.Id, "Serveerster");
+
+                }
+            }
+
+            // Create Kok role
+            if (!roleManager.RoleExists("kok"))
+            {
+
+                // first we create Admin role   
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole
+                {
+                    Name = "kok"
+                };
+                roleManager.Create(role);
+            }
+
+            if (context.Users.Any(u => u.UserName == "kok@bontemps.com"))
+            {
+                var user = new ApplicationUser();
+                user.UserName = "kok@bontemps.com";
+                user.Email = "kok@bontemps.com";
+
+                string userPWD = "Qwerty123#";
+
+                var chkUser = UserManager.Create(user, userPWD);
+
+                //Add default User to Role kok  
+                if (chkUser.Succeeded)
+                {
+                    var result = UserManager.AddToRole(user.Id, "kok");
+
+                }
+            }
 
         }
     }
