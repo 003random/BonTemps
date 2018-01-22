@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using BonTemps.Models;
 using Microsoft.AspNet.Identity;
+using System.Globalization;
+using System.Threading;
 
 namespace BonTemps.Controllers
 {
@@ -37,13 +39,13 @@ namespace BonTemps.Controllers
                 {
                     first = month.AddMonths(-i);
                     last = month.AddMonths(-(i - 1)).AddDays(-1);
-                    keymonth = month.AddMonths(-(i - 1)).AddDays(-1).ToString("MMM");
+                    keymonth = Thread.CurrentThread.CurrentCulture.DateTimeFormat.GetMonthName(month.AddMonths(-(i - 1)).AddDays(-1).Month);
                 }
                 else
                 {
                     first = month.AddMonths(0);
                     last = month.AddMonths(1).AddDays(-1);
-                    keymonth = month.AddMonths(1).AddDays(-1).ToString("MMM");
+                    keymonth = Thread.CurrentThread.CurrentCulture.DateTimeFormat.GetMonthName(month.AddMonths(1).AddDays(-1).Month);
                 }
                 int count = db.Customers.Count(m => m.DateCreated >= first && m.DateCreated <= last);
                 bestellingen[i] = db.Reservations.Count(m => m.DateCreated >= first && m.DateCreated <= last);
@@ -52,8 +54,33 @@ namespace BonTemps.Controllers
             ViewBag.lastMonthsData = dictionary.Reverse();
             ViewBag.lastMonthsReservations = bestellingen.Reverse();
 
+            Dictionary<string, int> lastWeekReservations = new Dictionary<string, int>();
+            int[] customerCount = new int[7];
 
-                return View();
+            for (var i = 0; i < 6; i++)
+            {
+                DateTime startDateTime = DateTime.Today;
+                DateTime endDateTime = DateTime.Today.AddDays(1).AddTicks(-1);
+                DateTime first;
+                DateTime last;
+
+                first = startDateTime.AddDays(-i);
+                last = endDateTime.AddDays(-i);
+
+                int count = db.Reservations.Count(m => m.DateCreated >= first && m.DateCreated <= last);
+                int custCount = db.Customers.Count(m => m.DateCreated >= first && m.DateCreated <= last);
+
+               var day = Thread.CurrentThread.CurrentCulture.DateTimeFormat.GetDayName(first.DayOfWeek);
+
+
+                lastWeekReservations.Add(day, count);
+                customerCount[i] = custCount;
+            }
+            ViewBag.lastWeekReservations = lastWeekReservations.Reverse();
+            ViewBag.lastWeekCustomers = customerCount.Reverse();
+
+
+            return View();
         }
     }
 }
