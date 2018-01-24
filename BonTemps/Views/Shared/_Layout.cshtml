@@ -173,32 +173,7 @@
     <!-- custom -->
     <script type="text/javascript">
         (function (jQuery) {
-
-            $('.dateAnimate').bootstrapMaterialDatePicker({ weekStart: 0, time: false, animation: true });
-            $('.date').bootstrapMaterialDatePicker({ weekStart: 0, time: false });
-            $('.time').bootstrapMaterialDatePicker({ date: false, format: 'HH:mm', animation: true });
-            $('.datetime').bootstrapMaterialDatePicker({ format: 'dddd DD MMMM YYYY - HH:mm', animation: true });
-            $('.date-fr').bootstrapMaterialDatePicker({ format: 'DD/MM/YYYY HH:mm', lang: 'nl', weekStart: 1, cancelText: 'Annuleer' });
-            $('.min-date').bootstrapMaterialDatePicker({ format: 'DD/MM/YYYY HH:mm', minDate: new Date() });
-
-
-            // start: Maps============
-
-            jQuery('.maps').vectorMap({
-                map: 'world_en',
-                backgroundColor: null,
-                color: '#fff',
-                hoverOpacity: 0.7,
-                selectedColor: '#666666',
-                enableZoom: true,
-                showTooltip: true,
-                values: sample_data,
-                scaleColors: ['#C8EEFF', '#006491'],
-                normalizeFunction: 'polynomial'
-            });
-
-            // end: Maps==============
-
+            $('.date-fr').bootstrapMaterialDatePicker({ format: 'YYYY-MM-DD HH:mm:ss', animation: true, lang: 'nl', weekStart: 1, cancelText: 'Annuleer' });
         })(jQuery);
     </script>
     <!-- end: Javascript -->

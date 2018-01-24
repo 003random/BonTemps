@@ -24,6 +24,7 @@ namespace BonTemps.Controllers
         // GET: Reservations/Create
         public ActionResult Create()
         {
+            TempData["message"] = DateTime.Now;
             return View();
         }
 

@@ -34,6 +34,8 @@ namespace BonTemps.Controllers
             //remove all where the date is not in the minus 2 and plus 2 hours range. (old reservations etc.)
             _db.Reservations_Table_Layout.RemoveRange(_db.Reservations_Table_Layout.Include(r => r.Reservation).Where(r => r.Reservation.Date < minusTwoHours || r.Reservation.Date > plusTwoHours));
 
+            _db.SaveChanges();
+
             var upcommingReservations = _db.Reservations.Where(r => r.Date > minusTwoHours && r.Date < plusTwoHours).Include(r => r.Customer);
             ViewBag.Reservations = upcommingReservations;
             var reservationsTableLayout = _db.Reservations_Table_Layout.ToList().OrderBy(r => r.Reservation.Id);
