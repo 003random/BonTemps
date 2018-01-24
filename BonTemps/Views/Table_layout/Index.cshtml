@@ -159,13 +159,23 @@
     }
 
     <script>
-        $(".card-free[reservation-id='@item.ReservationId']").appendTo($(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0));
-        $(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied').children().children().addClass("text-occupied");
-        $(".card-free[reservation-id='@item.ReservationId']").eq(0).addClass('card-occupier').removeClass('card-free').css("background", color);;
+$(".card-free[reservation-id='@item.ReservationId']").appendTo($(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0));
+$(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied').children().children().addClass("text-occupied");
+$(".card-free[reservation-id='@item.ReservationId']").eq(0).addClass('card-occupier').removeClass('card-free').css("background", color);;
     </script>
 
     lastReservationId = item.ReservationId;
 }
+
+<script>
+    $(".text-occupied").append("<hr><span class='fa fa-times fa-1 btn-delete' style='cursor: pointer;'></span>");
+</script>
+
+<script>
+    $(".btn-delete").on("click", function () {
+        alert(0);
+    });
+</script>
 
 <style>
     body {
