@@ -5,18 +5,17 @@ namespace BonTemps.Migrations
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<BonTemps.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(BonTemps.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             //ToDo: increase test data
             if (!context.Table_layout.Any())
@@ -43,108 +42,90 @@ namespace BonTemps.Migrations
                     );
                 }
             }
-            createRolesandUsers();
+            CreateRolesandUsers();
         }
 
         // In this method we will create default User roles and Admin user for login  
-        private void createRolesandUsers()
+        private void CreateRolesandUsers()
         {
-            ApplicationDbContext context = new ApplicationDbContext();
+            var context = new ApplicationDbContext();
 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
-            // In Startup I am creating first Admin Role and creating a default Admin User   
-            if (!roleManager.RoleExists("Admin"))
+            #region admin
+            if (!context.Roles.Any(r => r.Name == "Admin"))
             {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = "Admin" };
 
-                // first we create Admin role   
-                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole
-                {
-                    Name = "Admin"
-                };
-                roleManager.Create(role);
+                manager.Create(role);
             }
 
-            if (context.Users.Any(u => u.UserName == "admin@bontemps.com"))
+            if (!context.Users.Any(u => u.UserName == "admin@bontemps.com"))
             {
-                var user = new ApplicationUser();
-                user.UserName = "admin@bontemps.com";
-                user.Email = "admin@bontemps.com";
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser { UserName = "admin@bontemps.com", Email = "admin@bontemps.com" };
 
-                string userPWD = "Qwerty123#";
+                manager.Create(user, "Qwerty123#");
+                manager.AddToRole(user.Id, "Admin");
+            }
+            #endregion
 
-                var chkUser = UserManager.Create(user, userPWD);
+            #region Serveerster
+            if (!context.Roles.Any(r => r.Name == "Serveerster"))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = "Serveerster" };
 
-                //Add default User to Role Admin  
-                if (chkUser.Succeeded)
-                {
-                    var result = UserManager.AddToRole(user.Id, "Admin");
-
-                }
+                manager.Create(role);
             }
 
-
-            // Create Serveerster role
-            if (!roleManager.RoleExists("Serveerster"))
+            if (!context.Users.Any(u => u.UserName == "serveerster@bontemps.com"))
             {
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser { UserName = "serveerster@bontemps.com", Email = "serveerster@bontemps.com" };
 
-                // first we create Admin role   
-                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole
-                {
-                    Name = "Serveerster"
-                };
-                roleManager.Create(role);
+                manager.Create(user, "Qwerty123#");
+                manager.AddToRole(user.Id, "Serveerster");
+            }
+            #endregion
+
+            #region Kok
+            if (!context.Roles.Any(r => r.Name == "Kok"))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = "Kok" };
+
+                manager.Create(role);
             }
 
-            if (context.Users.Any(u => u.UserName == "serveerster@bontemps.com"))
+            if (!context.Users.Any(u => u.UserName == "kok@bontemps.com"))
             {
-                var user = new ApplicationUser();
-                user.UserName = "serveerster@bontemps.com";
-                user.Email = "serveerster@bontemps.com";
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser { UserName = "kok@bontemps.com", Email = "kok@bontemps.com" };
 
-                string userPWD = "Qwerty123#";
-
-                var chkUser = UserManager.Create(user, userPWD);
-
-                //Add default User to Role Admin  
-                if (chkUser.Succeeded)
-                {
-                    var result = UserManager.AddToRole(user.Id, "Serveerster");
-
-                }
+                manager.Create(user, "Qwerty123#");
+                manager.AddToRole(user.Id, "Kok");
             }
+            #endregion
 
-            // Create Kok role
-            if (!roleManager.RoleExists("kok"))
+            #region defaultUserRole
+            if (!context.Roles.Any(r => r.Name == "Default"))
             {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = "Default" };
 
-                // first we create Admin role   
-                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole
-                {
-                    Name = "kok"
-                };
-                roleManager.Create(role);
+                manager.Create(role);
             }
-
-            if (context.Users.Any(u => u.UserName == "kok@bontemps.com"))
-            {
-                var user = new ApplicationUser();
-                user.UserName = "kok@bontemps.com";
-                user.Email = "kok@bontemps.com";
-
-                string userPWD = "Qwerty123#";
-
-                var chkUser = UserManager.Create(user, userPWD);
-
-                //Add default User to Role kok  
-                if (chkUser.Succeeded)
-                {
-                    var result = UserManager.AddToRole(user.Id, "kok");
-
-                }
-            }
-
+            #endregion
         }
     }
 }
