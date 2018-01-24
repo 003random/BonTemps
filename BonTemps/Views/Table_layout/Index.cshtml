@@ -15,7 +15,6 @@
                     {
                         <div class='card card-free' reservation-id="@reservation.Id"><span class="">@reservation.Customer.FirstName[0]@reservation.Customer.LastName[0]</span></div>
                     }
-                    <br /> <br />
                 }
             </div>
         </div>
@@ -44,39 +43,6 @@
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!--<script  src="js/index.js"></script>-->
-<script>
-    $(".text-occupied").append("<hr><span class='fa fa-times fa-1 btn-delete' style='cursor: pointer;'></span>");
-
-
-    // how many milliseconds is a long press?
-    var longpress = 3000;
-    // holds the start time
-    var start;
-
-    jQuery("#pressme").on('mousedown', function (e) {
-        start = new Date().getTime();
-    });
-
-    jQuery("#pressme").on('mouseleave', function (e) {
-        start = 0;
-    });
-
-    jQuery("#pressme").on('mouseup', function (e) {
-        if (new Date().getTime() >= (start + longpress)) {
-            alert('long press!');
-        } else {
-            alert('short press!');
-        }
-    });
-
-    $(".btn-delete").on("click", function () {
-        alert(0);
-    });
-
-</script>
-
-
-
 <script>
     $("#save-grid").on("click", function () {
 
@@ -173,6 +139,8 @@
     }
 
     var color = "#fff";
+
+
 </script>
 @{
     var lastReservationId = 0;
@@ -192,13 +160,65 @@
     }
 
     <script>
-$(".card-free[reservation-id='@item.ReservationId']").appendTo($(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0));
-$(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied').children().children().addClass("text-occupied");
-$(".card-free[reservation-id='@item.ReservationId']").eq(0).addClass('card-occupier').removeClass('card-free').css("background", color);;
+        $(".card-free[reservation-id='@item.ReservationId']").eq(0).removeClass('card-free').addClass('card-occupier').css("background", color).appendTo($(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0));
+        $(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied').children().children().addClass("text-occupied");
     </script>
 
     lastReservationId = item.ReservationId;
 }
+<script>
+    $(".card-occupier").append("<span class='fa fa-times fa btn-delete' style='font-size: 5vw; cursor: pointer; display: none;'></span>");
+</script>
+
+<script>
+    var longpress = 500;
+    var start;
+
+
+    var longpress2 = 500;
+    var start2;
+
+    jQuery(".text-occupied").on('mousedown', function (e) {
+        start = new Date().getTime();
+    });
+
+    jQuery(".text-occupied").on('mouseleave', function (e) {
+        start = 0;
+    });
+
+    jQuery(".text-occupied").on('mouseup', function (e) {
+        if (new Date().getTime() >= (start + longpress)) {
+            $(this).toggle();
+            $(this).siblings("span").toggle();
+        } else {
+            //alert('short press!');
+        }
+    });
+
+    jQuery(".btn-delete").on('mousedown', function (e) {
+        start2 = new Date().getTime();
+    });
+
+    jQuery(".btn-delete").on('mouseleave', function (e) {
+        start2 = 0;
+    });
+
+    jQuery(".btn-delete").on('mouseup', function (e) {
+        if (new Date().getTime() >= (start2 + longpress2)) {
+            $(this).toggle();
+            $(this).siblings("span").toggle();
+        } else {
+            //alert('short press!');
+            $(this).parent().parent().removeClass("cell-occupied");
+            $(this).parent().appendTo(".items-col");
+            $(this).toggle();
+            $(this).siblings("span").toggle().removeClass("text-occupied").css("display", "");
+            $(this).parent().removeClass("card-occupier").addClass("card-free");
+            $(this).parent().css("background", "").css("height", "").css("widht", "");
+        }
+    });
+</script>
+
 
 <style>
     body {
