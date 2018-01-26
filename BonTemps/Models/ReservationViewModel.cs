@@ -47,5 +47,7 @@ namespace BonTemps.Models
         [Display(Name = "Nieuwsbrief")]
         [Required(ErrorMessage = "* required")]
         public bool NewsLetter { get; set; }
+
+        List<Menus> Menus = new List<Menus>();
     }
 }
