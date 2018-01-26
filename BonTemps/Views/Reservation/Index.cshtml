@@ -35,6 +35,11 @@
                         }
                         </tbody>
                     </table>
+
+                    @using (Html.BeginForm("ExportToExcel", "Reservation", FormMethod.Post))
+                    {
+                        <input type="submit" value="Exporteer naar Excel" class="button" />
+                    }
                 </div>
             </div>
         </div>

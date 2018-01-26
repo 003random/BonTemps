@@ -38,7 +38,7 @@ namespace BonTemps.Migrations
                 for (var i = 0; i < 300; i++)
                 {
                     context.Customers.AddOrUpdate(
-                        new Customers { Gender = GenderEnum.man, FirstName = "Customer" + i, Prefix = "", LastName = "Seed" + i, PhoneNumber = 061223123 + i, Email = "Customer" + i + "@localhost", NewsLetter = true, DateCreated = DateTime.Now.AddDays(-new Random().Next(0, 190)) }
+                        new Customers { Gender = GenderEnum.Man, FirstName = "Customer" + i, Prefix = "", LastName = "Seed" + i, PhoneNumber = "061223123" + i, Email = "Customer" + i + "@localhost", NewsLetter = true, DateCreated = DateTime.Now.AddDays(-new Random().Next(0, 190)) }
                     );
                 }
             }

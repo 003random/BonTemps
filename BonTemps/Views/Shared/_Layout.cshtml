@@ -29,22 +29,10 @@
                 <a href="index.html" class="navbar-brand">
                     <b>Bon Temps</b>
                 </a>
-
-                <ul class="nav navbar-nav search-nav">
-                    <li>
-                        <div class="search" style="margin-left: 30%;">
-                            <span onclick="window.location = '@Url.Action("Create", "Reservation")';" class="fa fa-book" style="margin-left: 20px; font-size:23px; cursor: pointer"></span><!-- TODO: Icons naast elkaar weergeven -->
-                        </div>
-                    </li>
-                    <li>
-                        <div class="search" style="margin-left: 30%;">
-                            <span onclick="window.location = '@Url.Action("Create", "Order")';" class="fa fa-coffee" style="margin-left: 20px; font-size:23px; cursor: pointer"></span>
-                        </div>
-                    </li>
-                </ul>
-
                 <ul class="nav navbar-nav navbar-right user-nav" style="position:fixed; right:40px;">
-                    <li class="user-name"><span>Serveerster</span></li>
+                    <li class="user-name">
+                        <span>Serveerster</span>
+                    </li>
                     <li class="dropdown avatar-dropdown">
                         <img onclick="window.location = '@Url.Action("LogOut", "Account")';" src="http://www.pvhc.net/img162/kzkdpyqytlhncwjrpvzf.png" style="height: 30px; width: 30px; margin-top: 40%; cursor: pointer;" alt="" />
                     </li>
@@ -67,15 +55,19 @@
                         <a class="tree-toggle nav-header" onclick="window.location = '@Url.Action("Index", "Home")';">
                             Home
                         </a>
-                                            </li>
+                    </li>
                     <li class="active ripple">
                         <a class="tree-toggle nav-header">
                             Reserveren
                             <span class="fa-angle-right fa right-arrow text-right"></span>
                         </a>
                         <ul class="nav nav-list tree">
-                            <li><a href="@Url.Action("Create", "Reservation")">Aanmaken</a></li>
-                            <li><a href="@Url.Action("Index", "Reservation")">Overzicht</a></li>
+                            <li>
+                                <a href="@Url.Action("Create", "Reservation")">Aanmaken</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "Reservation")">Overzicht</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="active ripple">
@@ -84,8 +76,12 @@
                             <span class="fa-angle-right fa right-arrow text-right"></span>
                         </a>
                         <ul class="nav nav-list tree">
-                            <li><a href="@Url.Action("Create", "Menu")">Aanmaken</a></li>
-                            <li><a href="@Url.Action("Index", "Menu")">Overzicht</a></li>
+                            <li>
+                                <a href="@Url.Action("Create", "Menu")">Aanmaken</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "Menu")">Overzicht</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="active ripple">
@@ -94,8 +90,12 @@
                             <span class="fa-angle-right fa right-arrow text-right"></span>
                         </a>
                         <ul class="nav nav-list tree">
-                            <li><a href="@Url.Action("Index", "Table_layout")">Bekijken</a></li>
-                            <li><a href="@Url.Action("Edit", "Table_layout")">Wijzigen</a></li>
+                            <li>
+                                <a href="@Url.Action("Index", "Table_layout")">Bekijken</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Edit", "Table_layout")">Wijzigen</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -177,7 +177,7 @@
 
     <!-- custom -->
     <script type="text/javascript">
-        (function() {
+        (function () {
             //$('.date-fr').bootstrapMaterialDatePicker({ format: 'YYYY-MM-DD HH:mm:ss', animation: true, lang: 'nl', weekStart: 1, cancelText: 'Annuleer' }); ToDO: change date time picker plugin
         })(jQuery);
     </script>

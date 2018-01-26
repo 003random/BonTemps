@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BonTemps.Models;
+using System.Web.UI.WebControls;
+using OfficeOpenXml;
 
 namespace BonTemps.Controllers
 {
@@ -190,5 +192,72 @@ namespace BonTemps.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public List<Reservations> Reservations()
+        {
+            var reservations = (from e in _db.Reservations
+                            select e).ToList();
+            return reservations;
+        }
+
+
+        public EmptyResult ExportToExcel()
+        {
+
+            List<Reservations> Reservation = _db.Reservations.ToList();
+            List<Customers> Customer = _db.Customers.ToList();
+            ExcelPackage pck = new ExcelPackage();
+            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Report");
+
+            ws.Cells["A1"].Value = "Bedrijf:";
+            ws.Cells["B1"].Value = "Bon Temps";
+            ws.Cells["A2"].Value = "Gemaakt op";
+            ws.Cells["B2"].Value = string.Format("{0:dd MMMM yyyy} op {0:H: mm tt}", DateTimeOffset.Now);
+            ws.Cells["A3"].Value = "Reserveringen";
+
+            ws.Cells["A5"].Value = "Voornaam";
+            ws.Cells["B5"].Value = "Tussenvoegsel";
+            ws.Cells["C5"].Value = "Achternaam";
+            ws.Cells["D5"].Value = "Geslacht";
+            ws.Cells["E5"].Value = "Mobiel";
+            ws.Cells["F5"].Value = "Nieuwsbrief";
+            ws.Cells["G5"].Value = "E-mail";
+
+
+
+            ws.Cells["I5"].Value = "Datum";
+            ws.Cells["J5"].Value = "Aantal Personen";
+
+            int rowStart = 6;
+
+            foreach (var item in Customer)
+            {
+                ws.Cells[string.Format("A{0}", rowStart)].Value = item.FirstName;
+                ws.Cells[string.Format("B{0}", rowStart)].Value = item.Prefix;
+                ws.Cells[string.Format("C{0}", rowStart)].Value = item.LastName;
+                ws.Cells[string.Format("D{0}", rowStart)].Value = item.Gender;
+                ws.Cells[string.Format("E{0}", rowStart)].Value = item.PhoneNumber;
+                ws.Cells[string.Format("F{0}", rowStart)].Value = item.NewsLetter;
+                ws.Cells[string.Format("G{0}", rowStart)].Value = item.Email;
+            }
+
+            foreach (var item in Reservation)
+            {
+                ws.Cells[string.Format("I{0}", rowStart)].Value = Convert.ToString(item.Date);
+                ws.Cells[string.Format("J{0}", rowStart)].Value = item.Persons;
+
+                rowStart++;
+            }
+
+            ws.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content - disposition", "attachment: filename = " + "BonTempsReservations.xlsx");
+            Response.BinaryWrite(pck.GetAsByteArray());
+            Response.End();
+
+            return new EmptyResult();
+        }
+
     }
 }

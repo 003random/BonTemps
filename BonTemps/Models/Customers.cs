@@ -8,10 +8,10 @@ namespace BonTemps.Models
 {
     public enum GenderEnum
     {
-        Overig,
-        man,
-        woman
-            }
+        Man,
+        Vrouw,
+        Overig
+    }
 
     public class Customers
     {
@@ -33,15 +33,18 @@ namespace BonTemps.Models
         [Required(ErrorMessage = "* required")]
         public string LastName { get; set; }
 
-        [Display(Name = "Telefoon nummer")]
+        [MaxLength(14)]
+        [MinLength(10)]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "must be numeric")]
+        [Display(Name = "Mobiel")]
         [Required(ErrorMessage = "* required")]
-        public int PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         [Display(Name = "E-mail")]
         [Required(ErrorMessage = "* required")]
         public string Email { get; set; }
 
-        [Display(Name = "Nieuwsrief")]
+        [Display(Name = "Nieuwsbrief")]
         [Required(ErrorMessage = "* required")]
         public bool NewsLetter { get; set; }
 
