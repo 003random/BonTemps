@@ -48,6 +48,6 @@ namespace BonTemps.Models
         [Required(ErrorMessage = "* required")]
         public bool NewsLetter { get; set; }
 
-        List<Menus> Menus = new List<Menus>();
+        List<int> Menus = new List<int>();
     }
 }
