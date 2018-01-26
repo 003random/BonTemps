@@ -238,6 +238,10 @@
     <Compile Include="Migrations\201801182001432_update_uniqe table layout.Designer.cs">
       <DependentUpon>201801182001432_update_uniqe table layout.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801260837372_Menu image.cs" />
+    <Compile Include="Migrations\201801260837372_Menu image.Designer.cs">
+      <DependentUpon>201801260837372_Menu image.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Allergies.cs" />
@@ -729,6 +733,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801182001432_update_uniqe table layout.resx">
       <DependentUpon>201801182001432_update_uniqe table layout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801260837372_Menu image.resx">
+      <DependentUpon>201801260837372_Menu image.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

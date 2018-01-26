@@ -18,14 +18,7 @@ namespace BonTemps.Controllers
         public ActionResult Index()
         {
             var tableList = _db.Table_layout.ToList();
-            var tableLayout = tableList
-                .Select(l => l.LayoutY)
-                .Distinct()
-                .Select(i => tableList
-                    .Where(t => t.LayoutY == i)
-                    .Distinct()
-                    .ToList())
-                .ToList();
+            var tableLayout = tableList.Select(l => l.LayoutY).Distinct().Select(i => tableList.Where(t => t.LayoutY == i).Distinct().ToList()).ToList();
 
             ViewBag.tableLayout = tableLayout;
             var minusTwoHours = DateTime.Now.AddHours(-2);

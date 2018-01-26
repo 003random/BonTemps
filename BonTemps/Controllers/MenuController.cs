@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -41,22 +42,26 @@ namespace BonTemps.Controllers
             return View();
         }
 
-        // POST: Menus/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Menus menus)
+        public ActionResult Create(Menus menus, HttpPostedFileBase picture)
         {
-            if (ModelState.IsValid)
+            if (picture == null)
             {
-                db.Menus.Add(menus);
-                db.SaveChanges();
-                TempData["success"] = "Succesvol opgeslagen";
-                return RedirectToAction("Create");
+                TempData["error"] = "No image uploaded";
+                return View(menus);
             }
 
-            return View(menus);
+            menus.Image = UploadImage(picture);
+
+            if (!ModelState.IsValid)
+                return View(menus);
+
+            db.Menus.Add(menus);
+            db.SaveChanges();
+            TempData["success"] = "Succesvol opgeslagen";
+            return RedirectToAction("Create");
+
         }
 
         // GET: Menus/Edit/5
@@ -79,8 +84,13 @@ namespace BonTemps.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Menus menus)
+        public ActionResult Edit(Menus menus, HttpPostedFileBase picture)
         {
+            if (picture != null)
+            {
+                menus.Image = UploadImage(picture);
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(menus).State = EntityState.Modified;
@@ -116,6 +126,17 @@ namespace BonTemps.Controllers
             db.SaveChanges();
             TempData["success"] = "Succesvol verwijderd";
             return RedirectToAction("Index");
+        }
+
+        public string UploadImage(HttpPostedFileBase image)
+        {
+            var uploadPath = Server.MapPath("~/Content/Uploads/menu-images");
+            Directory.CreateDirectory(uploadPath);
+            var fileGuid = Guid.NewGuid().ToString();
+            var extension = Path.GetExtension(image.FileName);
+            var newFilename = fileGuid + extension;
+            image.SaveAs(Path.Combine(uploadPath, newFilename));
+            return newFilename;
         }
 
         protected override void Dispose(bool disposing)

@@ -11,7 +11,7 @@
         </div>
         <div class="col-md-12 panel-body" style="padding-bottom:30px;">
             <div class="col-md-12">
-                @using (Html.BeginForm("Edit", "Menu", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "cmxform", role = "form" }))
+                @using (Html.BeginForm("Edit", "Menu", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "cmxform", role = "form", enctype = "Multipart/form-data" }))
                 {
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.AntiForgeryToken()
@@ -28,6 +28,10 @@
                             <span class="bar"></span>
                             @Html.LabelFor(m => m.Description)
                             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            <input type="file" name="picture" id="picture" accept=".png,.jpg,.jpeg,.gif,.tif" />
                         </div>
                     </div>
 
