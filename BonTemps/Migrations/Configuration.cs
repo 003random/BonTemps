@@ -35,11 +35,21 @@ namespace BonTemps.Migrations
             if (!context.Customers.Any())
             {
                 //seed customers table
-                for (var i = 0; i < 33; i++)
+                for (var i = 0; i < 300; i++)
                 {
                     context.Customers.AddOrUpdate(
                         new Customers { Gender = GenderEnum.man, FirstName = "Customer" + i, Prefix = "", LastName = "Seed" + i, PhoneNumber = 061223123 + i, Email = "Customer" + i + "@localhost", NewsLetter = true, DateCreated = DateTime.Now.AddDays(-new Random().Next(0, 190)) }
                     );
+                }
+            }
+            if (!context.Reservations.Any())
+            {
+                //seed reservations table
+                for(var i = 0; i < 300; i++)
+                {
+                    context.Reservations.AddOrUpdate(
+                        new Reservations { Date = DateTime.Now.AddDays(-new Random().Next(-10, 190)), Persons = new Random().Next(1,10), DateCreated = DateTime.Now.AddDays(-new Random().Next(0, 190)) }
+                        );
                 }
             }
             CreateRolesandUsers();
