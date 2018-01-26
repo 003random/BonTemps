@@ -38,6 +38,9 @@
     </div>
 </div>
 
+<img src="https://t4.ftcdn.net/jpg/01/18/74/15/240_F_118741564_fPRFBlHO5a98qdaeGRmTAD3Fc7lYmG3H.jpg" alt="trash bin" class="trash-bin" />
+
+
 
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
@@ -79,8 +82,12 @@
 
     $('.card').draggable({
         appendTo: '.cell',
+        start: function( event, ui ) {
+            $(".trash-bin").effect("fade", 333);
+        },
         scope: 'cells',
         stop: function () {
+            $(".trash-bin").hide();
             if ($(this).parent().hasClass("default") !== true) {
                 $(this).css({
                     top: "10%",
@@ -96,7 +103,7 @@
         //$('.cell.cell-occupied').droppable('disable');
         //$('.no-table').droppable('disable');
         //$('.cell:not(.cell-occupied):not(.no-table)').droppable('enable');
-        $('.cell').droppable({
+        $('.cell, .trash-bin').droppable({
             tolerance: 'pointer',
             scope: 'cells',
             activeClass: 'cell-occupiable',
@@ -104,26 +111,42 @@
             accept: '.card',
             helper: 'clone',
             drop: function (evt, ui) {
-                console.log($(this).attr("class"));
-                if ($(this).find('.card').length >= 1 || $(this).hasClass('no-table')) {
-                    // Cancel drag operation (make it always revert)
-                    ui.draggable.draggable('option', 'revert', true);
-                    return;
+                if ($(this).hasClass("trash-bin")) {
+                    ui.draggable.appendTo(".items-col");
+                    ui.draggable.removeClass("card-occupier").addClass("card-free");
+                    ui.draggable.css("background", "").css("height", "").css("width", "");
+                    ui.draggable.css("background", "").css("top", "").css("left", "");
+                    ui.draggable.children("span").eq(0).removeClass("text-occupied").css("display", "");
+                    ui.draggable.children("span").eq(1).hide();
+                    setTimeout(function() {
+                        $(".trash-bin").show().effect("bounce", { times: 1 }, 300);;
+                    }, 1);
+                    setTimeout(function () { $(".trash-bin").animate({ height: "5vw", width: "5vw" }); }, 333);
+                    setTimeout(function () { $(".trash-bin").hide(); }, 700);
+
+
+                } else {
+                    if ($(this).find('.card').length >= 1 || $(this).hasClass('no-table')) {
+                        // Cancel drag operation (make it always revert)
+                        ui.draggable.draggable('option', 'revert', true);
+                        return;
+                    }
+
+                    var draggableClass = ui.draggable.attr("class");
+                    var droppableClass = $(this).attr("class");
+
+                    var $cell = $(this);
+                    var $card = $(ui.draggable);
+                    $card.closest('.cell').removeClass('cell-occupied');
+                    $card.appendTo($cell);
+                    $card.addClass('card-occupier');
+                    $card.removeClass('card-free');
+                    $cell.addClass('cell-occupied');
                 }
-
-                var draggableClass = ui.draggable.attr("class");
-                var droppableClass = $(this).attr("class");
-
-                var $cell = $(this);
-                var $card = $(ui.draggable);
-                $card.closest('.cell').removeClass('cell-occupied');
-                $card.appendTo($cell);
-                $card.addClass('card-occupier');
-                $card.removeClass('card-free');
-                $cell.addClass('cell-occupied');
             }
         });
     }
+
 
     //$('.cell').droppable();
     enableCells();
@@ -221,6 +244,20 @@
 
 
 <style>
+
+    .trash-bin {
+        display: none;
+        position: fixed;
+        top: 10%;
+        right: 10%;
+        width: 5vw;
+        height: 5vw;
+        border: solid 1px white;
+        -webkit-box-shadow: 0 0 10px black;
+        box-shadow: 0 0 15px black;
+        border-radius: 60%;
+    }
+
     body {
         background: white;
         font-family: helvetica, sans-serif;
