@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -193,21 +194,12 @@ namespace BonTemps.Controllers
             base.Dispose(disposing);
         }
 
-        public List<Reservations> Reservations()
-        {
-            var reservations = (from e in _db.Reservations
-                            select e).ToList();
-            return reservations;
-        }
-
-
         public EmptyResult ExportToExcel()
         {
 
-            List<Reservations> Reservation = _db.Reservations.ToList();
-            List<Customers> Customer = _db.Customers.ToList();
-            ExcelPackage pck = new ExcelPackage();
-            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Report");
+            var reservation = _db.Reservations.Include(r => r.Customer).ToList();
+            var pck = new ExcelPackage();
+            var ws = pck.Workbook.Worksheets.Add("Report");
 
             ws.Cells["A1"].Value = "Bedrijf:";
             ws.Cells["B1"].Value = "Bon Temps";
@@ -222,29 +214,24 @@ namespace BonTemps.Controllers
             ws.Cells["E5"].Value = "Mobiel";
             ws.Cells["F5"].Value = "Nieuwsbrief";
             ws.Cells["G5"].Value = "E-mail";
-
-
-
+            
             ws.Cells["I5"].Value = "Datum";
             ws.Cells["J5"].Value = "Aantal Personen";
 
-            int rowStart = 6;
+            var rowStart = 6;
 
-            foreach (var item in Customer)
+            foreach (var item in reservation)
             {
-                ws.Cells[string.Format("A{0}", rowStart)].Value = item.FirstName;
-                ws.Cells[string.Format("B{0}", rowStart)].Value = item.Prefix;
-                ws.Cells[string.Format("C{0}", rowStart)].Value = item.LastName;
-                ws.Cells[string.Format("D{0}", rowStart)].Value = item.Gender;
-                ws.Cells[string.Format("E{0}", rowStart)].Value = item.PhoneNumber;
-                ws.Cells[string.Format("F{0}", rowStart)].Value = item.NewsLetter;
-                ws.Cells[string.Format("G{0}", rowStart)].Value = item.Email;
-            }
-
-            foreach (var item in Reservation)
-            {
-                ws.Cells[string.Format("I{0}", rowStart)].Value = Convert.ToString(item.Date);
-                ws.Cells[string.Format("J{0}", rowStart)].Value = item.Persons;
+                ws.Cells[$"A{rowStart}"].Value = item.Customer.FirstName;
+                ws.Cells[$"B{rowStart}"].Value = item.Customer.Prefix;
+                ws.Cells[$"C{rowStart}"].Value = item.Customer.LastName;
+                ws.Cells[$"D{rowStart}"].Value = item.Customer.Gender;
+                ws.Cells[$"E{rowStart}"].Value = item.Customer.PhoneNumber;
+                ws.Cells[$"F{rowStart}"].Value = item.Customer.NewsLetter;
+                ws.Cells[$"G{rowStart}"].Value = item.Customer.Email;
+     
+                ws.Cells[$"I{rowStart}"].Value = Convert.ToString(item.Date, CultureInfo.InvariantCulture);
+                ws.Cells[$"J{rowStart}"].Value = item.Persons;
 
                 rowStart++;
             }
@@ -252,7 +239,7 @@ namespace BonTemps.Controllers
             ws.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content - disposition", "attachment: filename = " + "BonTempsReservations.xlsx");
+            Response.AddHeader("content - disposition", "attachment: filename = " + "Bon Temps Reservations Export" + DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year + ".xls");
             Response.BinaryWrite(pck.GetAsByteArray());
             Response.End();
 
