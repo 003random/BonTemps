@@ -3,34 +3,52 @@
 @{
     ViewBag.Title = "Tafel overzicht wijzigen";
 }
+<div class="row content-part" style="horiz-align: center; position: relative;">
 
-<div>
-    <div class="row">
-        <div class="col-sm-1">
-            <div class="default items-col">
-            </div>
-        </div>
-        <div class="col-sm-11">
-            <div class='grid'>
-                @foreach (var xAxis in ViewBag.tableLayout)
+    <div class='grid' style="  display: table; margin: 0 auto;">
+        @foreach (var xAxis in ViewBag.tableLayout)
+        {
+            <div class='col cells-column'>
+                @foreach (var yAxis in xAxis)
                 {
-                    <div class='col'>
-                        @foreach (var yAxis in xAxis)
-                        {
-                            <div x="@yAxis.LayoutX" y="@yAxis.LayoutY" class='cell @yAxis.LayoutX-@yAxis.LayoutY @if (yAxis.IsTable == false){ <TEXT>no-table</TEXT>}'></div>
-                        }
-                    </div>
-                }
+                    <div x="@yAxis.LayoutX" y="@yAxis.LayoutY" class='cell @yAxis.LayoutX-@yAxis.LayoutY @if (yAxis.IsTable == false)
+                                                                                                     {<TEXT>no-table</TEXT>} grid-cells'></div><!-- Since we loop through it in the wrong direction, we use the value from x on the y attr, and the other way around -->}
             </div>
-        </div>
+        }
     </div>
 </div>
+
 
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!--<script  src="js/index.js"></script>-->
 <script>
+    function SetCellsWidthHeight() {
+        var amountOfColumns = $(".cells-column").length;
+        var amountOfRows = $(".cells-column").eq(0).children().length;
+        var contentWidth = $(".content-part").width();
+        var contentWidthMargin = contentWidth / 8;
+        contentWidth = contentWidth - contentWidthMargin;
+        contentWidth = contentWidth - (amountOfColumns * 10);
+        var cellWidth = (contentWidth / amountOfColumns);
+
+        console.log("amountOfColumns " + amountOfColumns);
+        console.log("amountOfRows " + amountOfRows);
+        console.log("contentWidth " + contentWidth);
+        console.log("contentWidthMargin " + contentWidthMargin);
+        console.log("cellWidth " + parseInt(cellWidth));
+
+        $(".grid-cells").css("width", parseInt(cellWidth) + "px");
+        $(".grid-cells").css("height", parseInt(cellWidth) + "px");
+    }
+
+    SetCellsWidthHeight();
+
+    $(window).on('resize', function () {
+        SetCellsWidthHeight();
+    });
+
     $('.card').draggable({
         appendTo: '.cell',
         scope: 'cells',
@@ -54,7 +72,7 @@
             scope: 'cells',
             activeClass: 'cell-occupiable',
             hoverClass: 'cell-hover',
-            accept: '.card',    
+            accept: '.card',
             helper: 'clone',
             drop: function (evt, ui) {
                 $(this).droppable('disable');
@@ -90,7 +108,7 @@
                 "x": parseInt($(this).attr("x")),
                 "y": parseInt($(this).attr("y")),
                 "table": !$(this).hasClass("no-table")
-        };
+            };
 
             $.ajax({
                 url: "@Url.Action("Edit")",
@@ -109,6 +127,28 @@
         });
 </script>
 <style>
+    .container-margin {
+        margin-top: 22px !important;
+    }
+
+    .row {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .trash-bin {
+        display: none;
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        width: 5vw;
+        height: 5vw;
+        border: solid 1px white;
+        -webkit-box-shadow: 0 0 10px black;
+        box-shadow: 0 0 15px black;
+        border-radius: 60%;
+    }
+
     body {
         background: white;
         font-family: helvetica, sans-serif;
@@ -116,24 +156,25 @@
     }
 
     .grid {
-        margin: 2px;
+        margin-top: 40px !important;
+        margin: 5px;
         padding: 0.1em;
     }
 
     .col {
+        margin: -2px !important;
         background: white;
         display: inline-block;
     }
 
     .cell {
-        cursor: pointer;
-        width: 6vw;
-        height: 6vw;
+        /*width: 6vw;
+        height: 6vw;*/
         background: transparent;
         border-style: solid;
         border-width: 1px;
         border-color: black;
-        margin: 5px;
+        margin: 2px;
     }
 
     .cell-hover {
@@ -166,9 +207,9 @@
         z-index: 999;
     }
 
-        .card-free:nth-child(even) {
+    /*.card-free:nth-child(even) {
             margin-left: 20px !important;
-        }
+        }*/
 
     .card-occupier {
         display: table;
