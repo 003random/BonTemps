@@ -204,12 +204,12 @@
     <Compile Include="Controllers\API\MenuAPIController.cs" />
     <Compile Include="Controllers\API\ReservationAPIController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
-    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
+    <Compile Include="Controllers\Role_manageController.cs" />
     <Compile Include="Controllers\Table_layoutController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -251,6 +251,7 @@
     <Compile Include="Models\Reservations-Table_Layout.cs" />
     <Compile Include="Models\Reservations.cs" />
     <Compile Include="Models\ReservationViewModel.cs" />
+    <Compile Include="Models\RolesViewModel.cs" />
     <Compile Include="Models\Table_layout-ReservationsModelView.cs" />
     <Compile Include="Models\Table_layout.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -693,6 +694,7 @@
     <Content Include="Views\Menu\Edit.cshtml" />
     <Content Include="Views\Menu\Delete.cshtml" />
     <Content Include="Views\Table_layout\Edit.cshtml" />
+    <Content Include="Views\Role_manage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Employee\" />

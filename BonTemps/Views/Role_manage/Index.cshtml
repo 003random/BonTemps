@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@model IEnumerable<BonTemps.Models.RolesViewModel>
+@foreach (var user in Model.ToList())
+{
+    <div> @user.UserName -- </div>
+    foreach (var role in user.RoleNames)
+    {
+        <div> @role </div>
+    }
+    <br />
+}
