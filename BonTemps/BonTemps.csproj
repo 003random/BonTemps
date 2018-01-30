@@ -325,6 +325,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Allergies.cs" />
+    <Compile Include="Models\allergyMenuViewModel.cs" />
     <Compile Include="Models\Customers.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Mail_credentials.cs" />

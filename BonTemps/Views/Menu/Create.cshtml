@@ -11,8 +11,7 @@
         </div>
         <div class="col-md-12 panel-body" style="padding-bottom:30px;">
             <div class="col-md-12">
-                @using (Html.BeginForm("Create", "Menu", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "cmxform", role = "form", enctype = "Multipart/form-data" }))
-                {
+              
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.AntiForgeryToken()
                     <div class="col-md-6">
@@ -30,30 +29,124 @@
                             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                         </div>
 
+                        <select id="allergy-ddl">
+                            <option value="0">Kies een allergie</option>
+                            @foreach (var a in ViewBag.allergies)
+                            {
+                                <option value="@a.Id">@a.Name</option>
+                            }
+                        </select>
 
+                        <br />
+                        <br />
+                        <br />
+
+                        <table class="allergy-table table table-hover table-bordered"></table>
 
                         <div class="form-group form-animate-text" style="margin-top: 40px !important;">
                             <input type="file" name="picture" id="picture" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn fileupload-v1-btn" />
                         </div>
-
-                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
-                            @Html.LabelFor(x => Model.Allergy, htmlAttributes: new { @class = "" })
-                            <span class="bar"></span><br /><br />
-                            @Html.DropDownList("Allergydropdown", new SelectList(ViewBag.Allergies, "Id", "Name"), "Kies een optie")
-                            @Html.ValidationMessageFor(x => x.Allergy, "", new { @class = "text-danger" })
-                        </div>
-
                     </div>
 
                     <div class="col-md-12">
                         <input class="submit btn btn-danger" type="submit" value="Aanmaken">
                     </div>
-                }
+               
             </div>
         </div>
     </div>
 </div>
+<style>
+    ul li {
+    }
+
+    .table-bordered {
+        border: 2px solid gray !important;
+    }
+
+    .fa-check:before {
+        /*font-family: 'FontAwesome';
+        content: '\f00d';*/
+        margin-right: 10px;
+        color: green;
+    }
+</style>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        Array.prototype.contains = function(obj) {
+            var i = this.length;
+            while (i--) {
+                if (this[i] == obj) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        var allergies = [];
+        $(document).ready(function() {
+            $("#allergy-ddl").change(function() {
+                console.log("on change event");
+                if (parseInt($("#allergy-ddl").val()) !== 0 &&
+                    allergies.contains(parseInt($("#allergy-ddl").val())) === false) {
+                    console.log("inside if");
+                    allergies.push(parseInt($("#allergy-ddl").val()));
+                    $(".allergy-table").append("<tr><td class='" +
+                        parseInt($("#allergy-ddl").val()) +
+                        "'><span class='fa fa-check' aria-hidden='true'></span>" +
+                        $("#allergy-ddl :selected").text() +
+                        "</td></tr>");
+                }
+            });
+        });
+
+        $(".submit").on("click",
+            function() {
+                var name = $("#Name").val();
+                var description = $("#Description").val();
+                var image = $("#picture").get(0).files;
+
+                console.log("name is " + name);
+                console.log("description is " + description);
+                console.log("image is " + image);
+                
+                if (name && description) {
+                    console.log("inside if json post");
+                    var jsonObject = {
+                        "Name": name,
+                        "Description": description,
+                        "Allergies": allergies,
+                        "Image": image
+                    };
+
+                    $.ajax({
+                        url: "@Url.Action("Create")",
+                        type: "POST",
+                        data: JSON.stringify(jsonObject),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        error: function(response) {
+                            alert(response.responseText);
+                        },
+                        success: function(response) {
+                            console.log(response);
+                        }
+                    });
+                } else {
+                    console.log("else if json post");
+                }
+            });
+
+        $(".fa").on("click",
+            function() {
+                alert(0);
+                console.log(allergies);
+                $(this).remove();
+                allergies.remove(parseInt($(this).attr("allergy-id")));
+                console.log(allergies);
+            });
+    </script>
 }
+

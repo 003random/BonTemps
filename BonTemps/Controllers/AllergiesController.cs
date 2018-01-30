@@ -90,24 +90,23 @@ namespace BonTemps.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Allergies allergies, HttpPostedFileBase picture)
         {
+            if (!ModelState.IsValid)
+                return View(allergies);
+
             if (picture != null)
             {
                 allergies.Image = UploadImage(picture);
             }
-            else
-            {
-                var find = db.Allergies.Find(allergies.Id);
-                if (find != null) allergies.Image = find.Image;
-            }
 
-            if (ModelState.IsValid)
+            db.Entry(allergies).State = EntityState.Modified;
+
+            if (picture == null)
             {
-                db.Entry(allergies).State = EntityState.Modified;
-                db.SaveChanges();
-                TempData["success"] = "Succesvol bewerkt";
-                return RedirectToAction("Index");
+                db.Entry(allergies).Property(x => x.Image).IsModified = false;
             }
-            return View(allergies);
+            db.SaveChanges();
+            TempData["success"] = "Succesvol bewerkt";
+            return RedirectToAction("Index");
         }
 
         // GET: Allergies/Delete/5
