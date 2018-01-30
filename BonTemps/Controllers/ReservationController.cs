@@ -222,18 +222,21 @@ namespace BonTemps.Controllers
 
             foreach (var item in reservation)
             {
-                ws.Cells[$"A{rowStart}"].Value = item.Customer.FirstName;
-                ws.Cells[$"B{rowStart}"].Value = item.Customer.Prefix;
-                ws.Cells[$"C{rowStart}"].Value = item.Customer.LastName;
-                ws.Cells[$"D{rowStart}"].Value = item.Customer.Gender;
-                ws.Cells[$"E{rowStart}"].Value = item.Customer.PhoneNumber;
-                ws.Cells[$"F{rowStart}"].Value = item.Customer.NewsLetter;
-                ws.Cells[$"G{rowStart}"].Value = item.Customer.Email;
-     
-                ws.Cells[$"I{rowStart}"].Value = Convert.ToString(item.Date, CultureInfo.InvariantCulture);
-                ws.Cells[$"J{rowStart}"].Value = item.Persons;
+                if(item.Customer != null)
+                {
+                    ws.Cells[$"A{rowStart}"].Value = item.Customer.FirstName;
+                    ws.Cells[$"B{rowStart}"].Value = item.Customer.Prefix;
+                    ws.Cells[$"C{rowStart}"].Value = item.Customer.LastName;
+                    ws.Cells[$"D{rowStart}"].Value = item.Customer.Gender;
+                    ws.Cells[$"E{rowStart}"].Value = item.Customer.PhoneNumber;
+                    ws.Cells[$"F{rowStart}"].Value = item.Customer.NewsLetter;
+                    ws.Cells[$"G{rowStart}"].Value = item.Customer.Email;
 
-                rowStart++;
+                    ws.Cells[$"I{rowStart}"].Value = Convert.ToString(item.Date, CultureInfo.InvariantCulture);
+                    ws.Cells[$"J{rowStart}"].Value = item.Persons;
+
+                    rowStart++;
+                }
             }
 
             ws.Cells["A:AZ"].AutoFitColumns();

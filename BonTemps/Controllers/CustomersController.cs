@@ -36,29 +36,6 @@ namespace BonTemps.Controllers
             return View(customers);
         }
 
-        // GET: Customers/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Customers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Gender,FirstName,Prefix,LastName,PhoneNumber,Email,NewsLetter")] Customers customers)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Customers.Add(customers);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(customers);
-        }
-
         // GET: Customers/Edit/5
         public ActionResult Edit(int? id)
         {

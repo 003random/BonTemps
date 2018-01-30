@@ -18,6 +18,7 @@ namespace BonTemps.Controllers
         // GET: Menus
         public ActionResult Index()
         {
+            var menus = db.Allergies.Include(r => r.Name);
             return View(db.Menus.ToList());
         }
 
@@ -39,16 +40,23 @@ namespace BonTemps.Controllers
         // GET: Menus/Create
         public ActionResult Create()
         {
+            ViewBag.Allergies = db.Allergies.ToList();
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Menus menus, HttpPostedFileBase picture)
-        {
+        public ActionResult Create(Menus menus, int? Allergydropdown, HttpPostedFileBase picture)
+        { 
+
+            ViewBag.Allergies = db.Allergies.ToList();
+            if (Allergydropdown != null && Allergydropdown > 0 && db.Allergies.Any(c => c.Id == Allergydropdown))
+            {
+                menus.Allergy = db.Allergies.FirstOrDefault(c => c.Id == Allergydropdown);
+            }
+
             if (picture == null)
             {
-                TempData["error"] = "No image uploaded";
                 return View(menus);
             }
 
@@ -88,7 +96,13 @@ namespace BonTemps.Controllers
         {
             if (picture != null)
             {
+                TempData["error"] = "No image uploaded";
                 menus.Image = UploadImage(picture);
+            }
+            else
+            {
+                var find = db.Menus.Find(menus.Id);
+                if (find != null) menus.Image = find.Image;
             }
 
             if (ModelState.IsValid)

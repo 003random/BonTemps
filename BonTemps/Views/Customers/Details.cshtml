@@ -4,71 +4,55 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Customers</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Prefix)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Prefix)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NewsLetter)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NewsLetter)
-        </dd>
-
-    </dl>
+<div class="col-md-10">
+    <div class="col-md-12 panel">
+        <div class="col-md-12 panel-heading">
+            <h3>Klant details</h3>
+        </div>
+        <div class="col-md-12 panel-body" style="padding-bottom:30px;">
+            <div class="col-md-12">
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Gender)</th>
+                            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+                            <th>@Html.DisplayNameFor(model => model.Prefix)</th>
+                            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+                            <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+                            <th>@Html.DisplayNameFor(model => model.Email)</th>
+                            <th>@Html.DisplayNameFor(model => model.NewsLetter)</th>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayFor(model => model.Gender)</td>
+                            <td>@Html.DisplayFor(model => model.FirstName)</td>
+                            <td>@Html.DisplayFor(model => model.Prefix)</td>
+                            <td>@Html.DisplayFor(model => model.LastName)</td>
+                            <td>@Html.DisplayFor(model => model.PhoneNumber)</td>
+                            <td>@Html.DisplayFor(model => model.Email)</td>
+                            <td>@Html.DisplayFor(model => model.NewsLetter)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<style>
+    tbody tr td {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        color: #5f6062;
+        font-size: 13px;
+        border-bottom: 1px solid #e0e0e0;
+        border: 1px solid rgb(130, 126, 126) !important;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $("tr").each(function (index, value) {
+            $(this).children().eq(0).text($(this).children().eq(0).text() + ":");
+            $(this).children().eq(1).css("background-color", "#f0f3f5");
+        });
+    </script>
+    }

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BonTemps.Models;
+using System.IO;
 
 namespace BonTemps.Controllers
 {
@@ -46,44 +47,64 @@ namespace BonTemps.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] Allergies allergies)
+        public ActionResult Create([Bind(Include = "Id,Name")] Allergies allergies, HttpPostedFileBase picture)
         {
+            if (picture == null)
+            {
+                TempData["error"] = "No image uploaded";
+                return View(allergies);
+            }
+
+            allergies.Image = UploadImage(picture);
+
             if (ModelState.IsValid)
             {
                 db.Allergies.Add(allergies);
                 db.SaveChanges();
+                TempData["success"] = "Succesvol opgeslagen";
                 return RedirectToAction("Index");
             }
 
             return View(allergies);
         }
 
-        // GET: Allergies/Edit/5
+        // GET: Menus/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Allergies allergies = db.Allergies.Find(id);
-            if (allergies == null)
+            var allergy = db.Allergies.Find(id);
+            if (allergy == null)
             {
                 return HttpNotFound();
             }
-            return View(allergies);
+            return View(allergy);
         }
 
-        // POST: Allergies/Edit/5
+        // POST: Menus/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] Allergies allergies)
+        public ActionResult Edit(Allergies allergies, HttpPostedFileBase picture)
         {
+            if (picture != null)
+            {
+                allergies.Image = UploadImage(picture);
+            }
+            else
+            {
+                var find = db.Allergies.Find(allergies.Id);
+                if (find != null) allergies.Image = find.Image;
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(allergies).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["success"] = "Succesvol bewerkt";
                 return RedirectToAction("Index");
             }
             return View(allergies);
@@ -112,7 +133,20 @@ namespace BonTemps.Controllers
             Allergies allergies = db.Allergies.Find(id);
             db.Allergies.Remove(allergies);
             db.SaveChanges();
+            TempData["success"] = "Succesvol verwijderd";
             return RedirectToAction("Index");
+        }
+
+
+        public string UploadImage(HttpPostedFileBase image)
+        {
+            var uploadPath = Server.MapPath("~/Content/Uploads/allergy-images");
+            Directory.CreateDirectory(uploadPath);
+            var fileGuid = Guid.NewGuid().ToString();
+            var extension = Path.GetExtension(image.FileName);
+            var newFilename = fileGuid + extension;
+            image.SaveAs(Path.Combine(uploadPath, newFilename));
+            return newFilename;
         }
 
         protected override void Dispose(bool disposing)

@@ -20,6 +20,9 @@ namespace BonTemps.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+
         public AccountController()
         {
         }
@@ -81,6 +84,9 @@ namespace BonTemps.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    var user = db.Users.FirstOrDefault(u => u.UserName == model.Email);
+                    var roles = await UserManager.GetRolesAsync(user.Id);
+                    Session["roles"] = roles;
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -171,6 +177,10 @@ namespace BonTemps.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    var user2 = db.Users.FirstOrDefault(u => u.UserName == model.Email);
+                    var roles = await UserManager.GetRolesAsync(user2.Id);
+                    Session["roles"] = roles;
 
                     return RedirectToAction("Index", "Home");
                 }
