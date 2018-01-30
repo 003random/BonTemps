@@ -45,10 +45,11 @@ namespace BonTemps.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Menus menus, HttpPostedFileBase picture, Allergies allergies)
+        public ActionResult Create(Menus menus, HttpPostedFileBase picture, List<Allergies> allergies)
         {
             if (picture == null)
             {
+                TempData["error"] = "Geen afbeelding geupload";
                 return View(menus);
             }
 
@@ -86,25 +87,23 @@ namespace BonTemps.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Menus menus, HttpPostedFileBase picture)
         {
+            if (!ModelState.IsValid)
+                return View(menus);
+
             if (picture != null)
             {
-                TempData["error"] = "No image uploaded";
                 menus.Image = UploadImage(picture);
             }
-            else
-            {
-                var find = db.Menus.Find(menus.Id);
-                if (find != null) menus.Image = find.Image;
-            }
 
-            if (ModelState.IsValid)
+            db.Entry(menus).State = EntityState.Modified;
+
+            if (picture == null)
             {
-                db.Entry(menus).State = EntityState.Modified;
-                db.SaveChanges();
-                TempData["success"] = "Succesvol bewerkt";
-                return RedirectToAction("Index");
+                db.Entry(menus).Property(x => x.Image).IsModified = false;
             }
-            return View(menus);
+            db.SaveChanges();
+            TempData["success"] = "Succesvol bewerkt";
+            return RedirectToAction("Index");
         }
 
         // GET: Menus/Delete/5
