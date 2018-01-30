@@ -224,7 +224,7 @@ namespace BonTemps.Controllers
             {
                 if(item.Customer != null)
                 {
-                    ws.Cells[$"A{rowStart}"].Value = item.Customer.FirstName ?? "";
+                    ws.Cells[$"A{rowStart}"].Value = item.Customer.FirstName;
                     ws.Cells[$"B{rowStart}"].Value = item.Customer.Prefix;
                     ws.Cells[$"C{rowStart}"].Value = item.Customer.LastName;
                     ws.Cells[$"D{rowStart}"].Value = item.Customer.Gender;
@@ -241,9 +241,9 @@ namespace BonTemps.Controllers
 
             ws.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content - disposition", "attachment: filename = " + "Bon Temps Reservations Export" + DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year + ".xls");
             Response.BinaryWrite(pck.GetAsByteArray());
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment;  filename=Reserveringen_Bon_Temps.xlsx");
             Response.End();
 
             return new EmptyResult();

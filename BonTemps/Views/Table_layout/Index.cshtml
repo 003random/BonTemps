@@ -36,21 +36,9 @@
     </div>
 </div>
 
-<div style="display: none; height: 200px; width: 100vw; background-color: #f7f4f4; overflow: hidden" class="toggle-div">
+<div style="display: none; height: 200px; width: 100vw; background-color: #f7f4f4;" class="toggle-div">
     <div class="fade-div" style="display: none;">
-        <div class="default items-col" style="overflow-y: scroll">
-
-            @foreach (var reservation in ViewBag.Reservations)
-            {
-                for (var i = 0; i < reservation.Persons; i++)
-                {
-                    <div class='card card-free' reservation-id="@reservation.Id" style="z-index: 333;">
-                        <span class="" style="z-index: 333;">@reservation.Customer.FirstName[0]@reservation.Customer.LastName[0]</span>
-                    </div>
-                }
-            }
-
-        </div>
+        
     </div>
 </div>
 
@@ -66,18 +54,39 @@
         }
     </div>
 
-    <span id="btn-arrow" class="fa fa-arrow-down btn-toggle-div" aria-hidden="true" style="cursor: pointer; font-size: 4em; position: absolute; top: 10px; left: 25px;"></span>
+    @*<span id="btn-arrow" class="fa fa-arrow-down btn-toggle-div" aria-hidden="true" style="cursor: pointer; font-size: 4em; position: absolute; top: 10px; left: 25px;"></span>*@
+    
+<div class="row">
 
-    <div class='grid' style="display: table; margin: 0 auto;">
-        @foreach (var xAxis in ViewBag.tableLayout)
+    <div class="default items-col col-md-1" style="">
+        <div class="default items-col">
+        @foreach (var reservation in ViewBag.Reservations)
         {
-            <div class='col cells-column'>
-                @foreach (var yAxis in xAxis)
-                {
-                    <div x="@yAxis.LayoutX" y="@yAxis.LayoutY" class='cell @yAxis.LayoutX-@yAxis.LayoutY @if (yAxis.IsTable == false)
-                                                                                                         {<TEXT>no-table</TEXT>} grid-cells'></div><!-- Since we loop through it in the wrong direction, we use the value from x on the y attr, and the other way around -->}
-            </div>
+            for (var i = 0; i < Math.Ceiling((double)reservation.Persons / 2); i++)
+            {
+                <div class='card card-free' reservation-id="@reservation.Id" style="z-index: 333;">
+                    <span class="" style="z-index: 333;">@reservation.Customer.FirstName[0]@reservation.Customer.LastName[0]</span>
+                </div>
+            }
+            <hr />
         }
+        </div>
+
+    </div>
+
+    <div class="col-md-11">
+        <div class='grid' style="display: table; margin: 0 auto;">
+            @foreach (var xAxis in ViewBag.tableLayout)
+            {
+                <div class='col cells-column'>
+                    @foreach (var yAxis in xAxis)
+                    {
+                        <div x="@yAxis.LayoutX" y="@yAxis.LayoutY" class='cell @yAxis.LayoutX-@yAxis.LayoutY @if (yAxis.IsTable == false)
+                                                                                                             {<TEXT>no-table</TEXT>} grid-cells'></div><!-- Since we loop through it in the wrong direction, we use the value from x on the y attr, and the other way around -->}
+                </div>
+            }
+        </div>
+
     </div>
     <img id="save-grid" src="http://pngimages.net/sites/default/files/floppy-disk-png-image-100860.png" alt="save" class="btn-save" />
     <img src="https://t4.ftcdn.net/jpg/01/18/74/15/240_F_118741564_fPRFBlHO5a98qdaeGRmTAD3Fc7lYmG3H.jpg" alt="trash bin" class="trash-bin" />
@@ -98,7 +107,7 @@
         var skipMultiplePairsCheck = false;
 
         function removeCellColors() {
-            $(".grid-cells:not(.no-table)").css("background-color", "white")
+            $(".grid-cells:not(.no-table)").css("background-color", "white");
         }
 
         function colorFourSeatsTables() {
@@ -143,7 +152,7 @@
             var amountOfColumns = $(".cells-column").length;
             var amountOfRows = $(".cells-column").eq(0).children().length;
             var contentWidth = $(".content-part").width();
-            var contentWidthMargin = contentWidth / 8;
+            var contentWidthMargin = contentWidth / 5;
             contentWidth = contentWidth - contentWidthMargin;
             contentWidth = contentWidth - (amountOfColumns * 10);
             var cellWidth = (contentWidth / amountOfColumns);
@@ -366,6 +375,10 @@
             skipMultiplePairsCheck = false;
         });
 
+        function makeConnectionForFour() {
+
+        }
+
         function makeConnection(cell) {
             console.log("makeConnection function triggered with cell: ");
             console.log(cell);
@@ -379,7 +392,7 @@
             var top = $(".grid-cells[x='" + parseInt(cell.attr("x")) + "'][y='" + (parseInt(cell.attr("y")) - 1) + "']");
             var bottom = $(".grid-cells[x='" + parseInt(cell.attr("x")) + "'][y='" + (parseInt(cell.attr("y")) + 1) + "']");
 
-            if (tablesFor2.length < 4) {
+            if (/*tablesFor2.length < 4*/ true) {
                 console.log("skipMultiplePairsCheck = " + skipMultiplePairsCheck);
                 if (!skipMultiplePairsCheck) {
                     if (right.children().length > 0 &&
@@ -758,24 +771,21 @@
 
 
             if (cell) {
-
+                makeConnectionForFour(cell);
             }
 
-
-
-
-
+            
             leftOption = true;
             rightOption = true;
             topOption = true;
             bottomOption = true;
 
             removeCellColors();
-            if (tablesFor2.length >= 4) {
-                colorFourSeatsTables();
-            } else {
-                colorTwoSeatsTables();
-            }
+            //if (tablesFor2.length >= 4) {
+            //    colorFourSeatsTables();
+            //} else {
+               colorTwoSeatsTables();
+            //}
 
             console.log(tablesFor2);
         }
@@ -1053,9 +1063,9 @@ $(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied')
         z-index: 999;
     }
 
-    /*.card-free:nth-child(even) {
+    .card-free:nth-child(even) {
             margin-left: 20px !important;
-        }*/
+        }
 
     .card-occupier {
         display: table;
@@ -1090,9 +1100,6 @@ $(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied')
         background-color: #9fa09f;
     }
 
-    .items-col {
-        margin-left: 20%;
-    }
 
     .animate {
         transition: all 0.1s;

@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BonTemps.Models;
+using OfficeOpenXml;
+using System.Globalization;
 
 namespace BonTemps.Controllers
 {
@@ -33,29 +35,6 @@ namespace BonTemps.Controllers
             {
                 return HttpNotFound();
             }
-            return View(customers);
-        }
-
-        // GET: Customers/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Customers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Gender,FirstName,Prefix,LastName,PhoneNumber,Email,NewsLetter")] Customers customers)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Customers.Add(customers);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
             return View(customers);
         }
 
@@ -123,6 +102,61 @@ namespace BonTemps.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public EmptyResult ExportToExcel()
+        {
+
+            var customer = db.Customers.ToList();
+            var pck = new ExcelPackage();
+            var ws = pck.Workbook.Worksheets.Add("Report");
+
+            ws.Cells["A1"].Value = "Bedrijf:";
+            ws.Cells["B1"].Value = "Bon Temps";
+            ws.Cells["A2"].Value = "Gemaakt op";
+            ws.Cells["B2"].Value = string.Format("{0:dd MMMM yyyy} op {0:H: mm tt}", DateTimeOffset.Now);
+            ws.Cells["A3"].Value = "Reserveringen";
+
+            ws.Cells["A5"].Value = "Voornaam";
+            ws.Cells["B5"].Value = "Tussenvoegsel";
+            ws.Cells["C5"].Value = "Achternaam";
+            ws.Cells["D5"].Value = "Geslacht";
+            ws.Cells["E5"].Value = "Mobiel";
+            ws.Cells["F5"].Value = "Nieuwsbrief";
+            ws.Cells["G5"].Value = "E-mail";
+
+            ws.Cells["I5"].Value = "Datum";
+            ws.Cells["J5"].Value = "Aantal Personen";
+
+            var rowStart = 6;
+
+            foreach (var item in customer)
+            {
+                if (customer != null)
+                {
+                    ws.Cells[$"A{rowStart}"].Value = item.FirstName;
+                    ws.Cells[$"B{rowStart}"].Value = item.Prefix;
+                    ws.Cells[$"C{rowStart}"].Value = item.LastName;
+                    ws.Cells[$"D{rowStart}"].Value = item.Gender;
+                    ws.Cells[$"E{rowStart}"].Value = item.PhoneNumber;
+                    ws.Cells[$"F{rowStart}"].Value = item.NewsLetter;
+                    ws.Cells[$"G{rowStart}"].Value = item.Email;
+
+
+
+                    rowStart++;
+                }
+            }
+
+
+            ws.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.BinaryWrite(pck.GetAsByteArray());
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment;  filename=Klanten_Bon_Temps.xlsx");
+            Response.End();
+
+            return new EmptyResult();
         }
     }
 }

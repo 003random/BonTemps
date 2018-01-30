@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using BonTemps.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Net;
 
 namespace BonTemps.Controllers
 {
@@ -26,7 +27,8 @@ namespace BonTemps.Controllers
             {
                 var r = new RolesViewModel
                 {
-                    UserName = user.UserName
+                    UserName = user.UserName,
+                    UserId = user.Id
                 };
                 userRoles.Add(r);
             }
@@ -37,6 +39,47 @@ namespace BonTemps.Controllers
             }
 
             return View(userRoles);
+        }
+
+        public ActionResult Edit(string id)
+        {
+            if (id == null)
+            {
+
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var user = _db.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.username = user.UserName;
+            var role = user.Roles.First().RoleId;
+            ViewBag.role = _db.Roles.FirstOrDefault(u => u.Id == role).Name;
+            ViewBag.roles = _db.Roles.ToList();
+            ViewBag.userid = user.Id;
+            
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Edit(string userId, string roleId)
+        {
+            if (!string.IsNullOrEmpty(userId) && roleId != null)
+            {
+                var context = new ApplicationDbContext();
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+                var user = _db.Users.FirstOrDefault(u => u.Id == userId);
+
+                userManager.RemoveFromRoles(userId, user.Roles.First().RoleId);
+                userManager.AddToRole(userId, roleId);
+                
+                TempData["success"] = "Succesvol bewerkt!";
+                return View();
+            }
+            TempData["error"] = "een of meer is/zijn incorrect";
+            return View();
         }
     }
 }

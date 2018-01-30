@@ -29,20 +29,6 @@
                 <a href="index.html" class="navbar-brand">
                     <b>Bon Temps</b>
                 </a>
-
-                <ul class="nav navbar-nav search-nav">
-                    <li>
-                        <div class="search" style="margin-left: 30%;">
-                            <span onclick="window.location = '@Url.Action("Create", "Reservation")';" class="fa fa-book" style="margin-left: 20px; font-size:23px; cursor: pointer"></span><!-- TODO: Icons naast elkaar weergeven -->
-                        </div>
-                    </li>
-                    <li>
-                        <div class="search" style="margin-left: 30%;">
-                            <span onclick="window.location = '@Url.Action("Create", "Order")';" class="fa fa-coffee" style="margin-left: 20px; font-size:23px; cursor: pointer"></span>
-                        </div>
-                    </li>
-                </ul>
-
                 <ul class="nav navbar-nav navbar-right user-nav" style="position:fixed; right:40px;">
                     <li class="user-name">
                         <span>
@@ -119,11 +105,20 @@
                     </li>
                     <li class="active ripple">
                         <a class="tree-toggle nav-header">
+                            Klant overzicht
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="@Url.Action("Index", "Customers")">Bekijken</a></li>
+                        </ul>
+                    </li>
+                    <li class="active ripple">
+                        <a class="tree-toggle nav-header">
                             Account Overzicht
                             <span class="fa-angle-right fa right-arrow text-right"></span>
                         </a>
                         <ul class="nav nav-list tree">
-                            <li><a href="@Url.Action("Index", "Role_manage")">Bekijken</a></li>
+                            <li><a href="@Url.Action("Index", "Role_Manage")">Aanmaken</a></li>
                         </ul>
                     </li>
                 </ul>
