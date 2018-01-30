@@ -17,7 +17,6 @@ namespace BonTemps.Controllers.API
 
         public IEnumerable<Menus> GetMenus()
         {
-
             return db.Menus.ToList();
         }
     }

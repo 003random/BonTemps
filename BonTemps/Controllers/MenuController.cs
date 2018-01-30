@@ -40,30 +40,26 @@ namespace BonTemps.Controllers
         // GET: Menus/Create
         public ActionResult Create()
         {
+            ViewBag.allergies = db.Allergies.ToList();
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Menus menus, HttpPostedFileBase picture, List<Allergies> allergies)
+        public ActionResult Create(allergyMenuViewModel allergyMenuViewModel)
         {
-            if (picture == null)
-            {
-                TempData["error"] = "Geen afbeelding geupload";
-                return View(menus);
+            //ViewBag.allergies = db.Allergies.ToList();
+
+            //if (allergyMenuViewModel.Image == null)
+            //{
+            //    Json("Geen afbeelding geupload");
+            //}
+
+            //(allergyMenuViewModel.Image = UploadImage(picture);
+
+            //db.Menus.Add(menus);
+            //db.SaveChanges();
+            return Json("Succesvol opgeslagen");
             }
-
-            menus.Image = UploadImage(picture);
-
-            if (!ModelState.IsValid)
-                return View(menus);
-
-            db.Menus.Add(menus);
-            db.SaveChanges();
-            TempData["success"] = "Succesvol opgeslagen";
-            return RedirectToAction("Create");
-
-        }
 
         // GET: Menus/Edit/5
         public ActionResult Edit(int? id)
