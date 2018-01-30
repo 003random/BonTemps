@@ -15,7 +15,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                @Html.DisplayNameFor(model => model.Name)
+                                    @Html.DisplayNameFor(model => model.Name)
                                 </th>
                                 <th>Afbeeling</th>
                                 <th>Opties</th>
@@ -33,6 +33,7 @@
                                         <img src="~/Content/Uploads/allergy-images/@Html.DisplayFor(modelItem => item.Image)" onerror="this.src = 'https://vignette.wikia.nocookie.net/bokunoheroacademia/images/d/d5/NoPicAvailable.png/revision/latest?cb=20160326222204';" alt="menu image" width="50px" height="50px" />
                                     </td>
                                     <td>
+                                        <span onclick="window.location = '@Url.Action("Edit", "Allergies", new {id = item.Id})';" class="fa fa-pencil-square-o" style="margin-left: 10px; font-size:20px; cursor: pointer"></span>
                                         <span onclick="window.location = '@Url.Action("Details", "Allergies", new {id = item.Id})';" class="fa fa-info-circle" style="margin-left: 10px; font-size:20px; cursor: pointer"></span>
                                         <span onclick="window.location = '@Url.Action("Delete", "Allergies", new {id = item.Id})';" class="fa fa-times" style="margin-left: 10px; font-size:20px; cursor: pointer"></span>
                                     </td>

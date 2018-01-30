@@ -29,12 +29,20 @@
                             @Html.LabelFor(m => m.Description)
                             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                         </div>
-                            
+
 
 
                         <div class="form-group form-animate-text" style="margin-top: 40px !important;">
                             <input type="file" name="picture" id="picture" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn fileupload-v1-btn" />
                         </div>
+
+                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            @Html.LabelFor(x => Model.Allergy, htmlAttributes: new { @class = "" })
+                            <span class="bar"></span><br /><br />
+                            @Html.DropDownList("Allergydropdown", new SelectList(ViewBag.Allergies, "Id", "Name"), "Kies een optie")
+                            @Html.ValidationMessageFor(x => x.Allergy, "", new { @class = "text-danger" })
+                        </div>
+
                     </div>
 
                     <div class="col-md-12">
