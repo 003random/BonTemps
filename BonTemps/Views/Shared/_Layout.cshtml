@@ -47,118 +47,119 @@
                     <li class="user-name">
                         <span>
                             @if (Session["roles"] != null)
-                        {
-                            foreach (var role in (List<string>)Session["roles"])
-                            { <span>@role </span>  }
+                            {
+                                foreach (var role in (List<string>)Session["roles"])
+                                {<span>@role </span> }
                         }
-                        else { <span>is null</span>}
-                    </span>
-                </li>
-                <li class="dropdown avatar-dropdown">
-                    <img onclick="window.location = '@Url.Action("LogOut", "Account")';" src="http://www.pvhc.net/img162/kzkdpyqytlhncwjrpvzf.png" style="height: 30px; width: 30px; margin-top: 40%; cursor: pointer;" alt="" />
-                </li>
-            </ul>
+                        else
+                        { <span>Gebruiker</span>}
+                        </span>
+                    </li>
+                    <li class="dropdown avatar-dropdown">
+                        <img onclick="window.location = '@Url.Action("LogOut", "Account")';" src="http://www.pvhc.net/img162/kzkdpyqytlhncwjrpvzf.png" style="height: 30px; width: 30px; margin-top: 40%; cursor: pointer;" alt="" />
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-<!-- end: Header -->
+    </nav>
+    <!-- end: Header -->
 
-<div class="container-fluid mimin-wrapper">
+    <div class="container-fluid mimin-wrapper">
 
-    <!-- start:Left Menu -->
-    <div id="left-menu">
-        <div class="sub-left-menu scroll">
-            <ul class="nav nav-list">
-                <!--<li><div class="left-bg"></div></li>-->
-                <img src="http://i.imgur.com/lLy2RMj.png" width="150px" class="animated fadeInLeft" height="150px" alt="logo" style="margin-left: 35px; margin-bottom:5px; margin-top: 10%;">
-                <hr>
-                <li class="active ripple">
-                    <a class="tree-toggle nav-header">
-                        Reserveren
-                        <span class="fa-angle-right fa right-arrow text-right"></span>
-                    </a>
-                    <ul class="nav nav-list tree">
-                        <li><a href="@Url.Action("Create", "Reservation")">Aanmaken</a></li>
-                        <li><a href="@Url.Action("Index", "Reservation")">Overzicht</a></li>
-                    </ul>
-                </li>
-                <li class="active ripple">
-                    <a class="tree-toggle nav-header">
-                        Menu's
-                        <span class="fa-angle-right fa right-arrow text-right"></span>
-                    </a>
-                    <ul class="nav nav-list tree">
-                        <li><a href="@Url.Action("Create", "Menu")">Aanmaken</a></li>
-                        <li><a href="@Url.Action("Index", "Menu")">Overzicht</a></li>
-                    </ul>
-                </li>
-                <li class="active ripple">
-                    <a class="tree-toggle nav-header">
-                        Tafel Overzicht
-                        <span class="fa-angle-right fa right-arrow text-right"></span>
-                    </a>
-                    <ul class="nav nav-list tree">
-                        <li><a href="@Url.Action("Index", "Table_layout")">Bekijken</a></li>
-                        <li><a href="@Url.Action("Edit", "Table_layout")">Wijzigen</a></li>
-                    </ul>
-                </li>
-            </ul>
+        <!-- start:Left Menu -->
+        <div id="left-menu">
+            <div class="sub-left-menu scroll">
+                <ul class="nav nav-list">
+                    <!--<li><div class="left-bg"></div></li>-->
+                    <img src="http://i.imgur.com/lLy2RMj.png" width="150px" class="animated fadeInLeft" height="150px" alt="logo" style="margin-left: 35px; margin-bottom:5px; margin-top: 10%;">
+                    <hr>
+                    <li class="active ripple">
+                        <a class="tree-toggle nav-header">
+                            Reserveren
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="@Url.Action("Create", "Reservation")">Aanmaken</a></li>
+                            <li><a href="@Url.Action("Index", "Reservation")">Overzicht</a></li>
+                        </ul>
+                    </li>
+                    <li class="active ripple">
+                        <a class="tree-toggle nav-header">
+                            Menu's
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="@Url.Action("Create", "Menu")">Aanmaken</a></li>
+                            <li><a href="@Url.Action("Index", "Menu")">Overzicht</a></li>
+                        </ul>
+                    </li>
+                    <li class="active ripple">
+                        <a class="tree-toggle nav-header">
+                            Tafel Overzicht
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="@Url.Action("Index", "Table_layout")">Bekijken</a></li>
+                            <li><a href="@Url.Action("Edit", "Table_layout")">Wijzigen</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <!-- end: Left Menu -->
-    <!-- start: content -->
-    <div id="content">
-        <br />
-        <div class="container">
+        <!-- end: Left Menu -->
+        <!-- start: content -->
+        <div id="content">
+            <br />
+            <div class="container">
 
-            @if (TempData["messageSuccess"] != null)
-            {
-                <div class="alert alert-success fade in">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <span class="glyphicon glyphicon-info-sign"></span> @TempData["messageSuccess"]
-                </div>
-            }
-            @if (TempData["messageWarning"] != null)
-            {
-                <div class="alert alert-warning fade in">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <span class="glyphicon glyphicon-warning-sign"></span> @TempData["messageWarning"]
-                </div>
-            }
-            @if (TempData["messageError"] != null)
-            {
-                <div class="alert alert-danger fade in">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <span class="glyphicon glyphicon-exclamation-sign"></span> @TempData["messageError"]
-                </div>
-            }
-            @if (TempData["messageInfo"] != null)
-            {
-                <div class="alert alert-info fade in">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <span class="glyphicon glyphicon-info-sign"></span> @TempData["messageInfo"]
-                </div>
-            }
+                @if (TempData["messageSuccess"] != null)
+                {
+                    <div class="alert alert-success fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <span class="glyphicon glyphicon-info-sign"></span> @TempData["messageSuccess"]
+                    </div>
+                }
+                @if (TempData["messageWarning"] != null)
+                {
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <span class="glyphicon glyphicon-warning-sign"></span> @TempData["messageWarning"]
+                    </div>
+                }
+                @if (TempData["messageError"] != null)
+                {
+                    <div class="alert alert-danger fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <span class="glyphicon glyphicon-exclamation-sign"></span> @TempData["messageError"]
+                    </div>
+                }
+                @if (TempData["messageInfo"] != null)
+                {
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <span class="glyphicon glyphicon-info-sign"></span> @TempData["messageInfo"]
+                    </div>
+                }
+            </div>
+
+            @RenderBody()
         </div>
+        <!-- end: content -->
 
-        @RenderBody()
+
     </div>
-    <!-- end: content -->
 
+    <!-- start: Mobile -->
+    <button id="mimin-mobile-menu-opener" class="animated rubberBand btn btn-circle btn-danger">
+        <span class="fa fa-bars"></span>
+    </button>
+    <!-- end: Mobile -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/defaultscripts")
+    @RenderSection("Scripts", false)
 
-</div>
-
-<!-- start: Mobile -->
-<button id="mimin-mobile-menu-opener" class="animated rubberBand btn btn-circle btn-danger">
-    <span class="fa fa-bars"></span>
-</button>
-<!-- end: Mobile -->
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/defaultscripts")
-@RenderSection("Scripts", false)
-
-<!-- alerts-->
-<script>
+    <!-- alerts-->
+    <script>
     @{
         if (TempData["error"] != null)
         {
@@ -177,14 +178,14 @@
             <text>alertify.message('@TempData["message"]');</text>
         }
        }
-</script>
+    </script>
 
-<!-- custom -->
-<script type="text/javascript">
-    (function () {
-       $('.date-fr').bootstrapMaterialDatePicker({ format: 'DD-MM-YYYY HH:mm:ss', animation: true, lang: 'nl', weekStart: 1, cancelText: 'Annuleer' }); ToDO: change date time picker plugin
-    })(jQuery);
-</script>
-<!-- end: Javascript -->
+    <!-- custom -->
+    <script type="text/javascript">
+        (function () {
+            $('.date-fr').bootstrapMaterialDatePicker({ format: 'DD-MM-YYYY HH:mm:ss', animation: true, lang: 'nl', weekStart: 1, cancelText: 'Annuleer' });
+        })(jQuery);
+    </script>
+    <!-- end: Javascript -->
 </body>
 </html>
