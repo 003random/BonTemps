@@ -18,6 +18,7 @@ namespace BonTemps.Controllers
         // GET: Menus
         public ActionResult Index()
         {
+            var menus = db.Allergies.Include(r => r.Name);
             return View(db.Menus.ToList());
         }
 
@@ -44,7 +45,7 @@ namespace BonTemps.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Menus menus, HttpPostedFileBase picture)
+        public ActionResult Create(Menus menus, HttpPostedFileBase picture, Allergies allergies)
         {
             if (picture == null)
             {
@@ -88,6 +89,7 @@ namespace BonTemps.Controllers
         {
             if (picture != null)
             {
+                TempData["error"] = "No image uploaded";
                 menus.Image = UploadImage(picture);
             }
 

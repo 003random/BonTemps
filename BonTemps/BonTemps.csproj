@@ -318,6 +318,10 @@
     <Compile Include="Migrations\201801262111474_Customermodel edited. Phone to string with regex.Designer.cs">
       <DependentUpon>201801262111474_Customermodel edited. Phone to string with regex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801291129427_Allergy model altered.cs" />
+    <Compile Include="Migrations\201801291129427_Allergy model altered.Designer.cs">
+      <DependentUpon>201801291129427_Allergy model altered.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Allergies.cs" />
@@ -749,7 +753,6 @@
     <Content Include="Views\Allergies\Create.cshtml" />
     <Content Include="Views\Allergies\Delete.cshtml" />
     <Content Include="Views\Allergies\Details.cshtml" />
-    <Content Include="Views\Allergies\Edit.cshtml" />
     <Content Include="Views\Allergies\Index.cshtml" />
     <Content Include="Views\Customers\Create.cshtml" />
     <Content Include="Views\Customers\Delete.cshtml" />
@@ -815,6 +818,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801262111474_Customermodel edited. Phone to string with regex.resx">
       <DependentUpon>201801262111474_Customermodel edited. Phone to string with regex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801291129427_Allergy model altered.resx">
+      <DependentUpon>201801291129427_Allergy model altered.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

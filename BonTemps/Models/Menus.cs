@@ -26,5 +26,7 @@ namespace BonTemps.Models
         {
             this.DateCreated = DateTime.Now;
         }
+
+        public virtual Allergies Allergy { get; set; }
     }
 }

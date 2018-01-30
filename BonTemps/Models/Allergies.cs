@@ -17,6 +17,8 @@ namespace BonTemps.Models
 
         public DateTime DateCreated { get; set; }
 
+        public string Image { get; set; }
+
         public Allergies()
         {
             this.DateCreated = DateTime.Now;
