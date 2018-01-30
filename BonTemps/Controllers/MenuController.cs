@@ -47,17 +47,18 @@ namespace BonTemps.Controllers
         [HttpPost]
         public ActionResult Create(allergyMenuViewModel allergyMenuViewModel)
         {
-            //ViewBag.allergies = db.Allergies.ToList();
+            var menu = new Menus { DateCreated = DateTime.Now, Description = allergyMenuViewModel.Description, Name = allergyMenuViewModel.Name};
+            ViewBag.allergies = db.Allergies.ToList();
 
             //if (allergyMenuViewModel.Image == null)
             //{
             //    Json("Geen afbeelding geupload");
             //}
 
-            //(allergyMenuViewModel.Image = UploadImage(picture);
+            //menu.Image = UploadImage(allergyMenuViewModel.Image);
 
-            //db.Menus.Add(menus);
-            //db.SaveChanges();
+            db.Menus.Add(menu);
+            db.SaveChanges();
             return Json("Succesvol opgeslagen");
             }
 
