@@ -18,14 +18,7 @@ namespace BonTemps.Controllers
         public ActionResult Index()
         {
             var tableList = _db.Table_layout.ToList();
-            var tableLayout = tableList
-                .Select(l => l.LayoutY)
-                .Distinct()
-                .Select(i => tableList
-                    .Where(t => t.LayoutY == i)
-                    .Distinct()
-                    .ToList())
-                .ToList();
+            var tableLayout = tableList.Select(l => l.LayoutX).Distinct().Select(i => tableList.Where(t => t.LayoutX == i).Distinct().ToList()).ToList();
 
             ViewBag.tableLayout = tableLayout;
             var minusTwoHours = DateTime.Now.AddHours(-2);
@@ -50,11 +43,11 @@ namespace BonTemps.Controllers
 
             if (!upcommingReservations.Any() && firstReservation.Any())
             {
-                TempData["messageInfo"] = "De eerst volgende reservering is om " + firstReservation.First().Date;
+                ViewBag.message = "De eerst volgende reservering is om " + firstReservation.First().Date;
             }
             else if (!upcommingReservations.Any() && !firstReservation.Any())
             {
-                TempData["messageInfo"] = "Er zijn geen opkomende reserveringen op het moment";
+                ViewBag.message = "Er zijn geen opkomende reserveringen op het moment";
             }
 
             return View();
@@ -63,7 +56,7 @@ namespace BonTemps.Controllers
         public ActionResult Edit()
         {
             var tableList = _db.Table_layout.ToList();
-            var tableLayout = tableList.Select(l => l.LayoutY).Distinct().Select(i => tableList.Where(t => t.LayoutY == i).Distinct().ToList()).ToList();
+            var tableLayout = tableList.Select(l => l.LayoutX).Distinct().Select(i => tableList.Where(t => t.LayoutX == i).Distinct().ToList()).ToList();
 
             ViewBag.tableLayout = tableLayout;
             return View();

@@ -3,130 +3,852 @@
     ViewBag.Title = "Tafel overzicht";
 }
 
-<h1 style="margin-left: 30%;" class="message">@ViewBag.message</h1>
-<div class="@if(TempData["messageInfo"] != null){ <TEXT>container</TEXT>}">
-    <div class="row">
-        <div class="@if(TempData["messageInfo"] == null){ <TEXT>col-sm-1</TEXT>}">
-            <div class="default items-col">
-                @foreach (var reservation in ViewBag.Reservations)
-                {
-                    <hr />
-                    for (var i = 0; i < Math.Ceiling((double)reservation.Persons / 2); i++)
-                    {
-                        <div class='card card-free' reservation-id="@reservation.Id"><span class="">@reservation.Customer.FirstName[0]@reservation.Customer.LastName[0]</span></div>
-                    }
-                }
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-        </div>
-        <div class="@if(TempData["messageInfo"] == null){ <TEXT>col-sm-11</TEXT>}">
-            <div class='grid'>
-                @foreach (var xAxis in ViewBag.tableLayout)
-                {
-                    <div class='col'>
-                        @foreach (var yAxis in xAxis)
-                        {
-                            <div x="@yAxis.LayoutY" y="@yAxis.LayoutX" class='cell @yAxis.LayoutY-@yAxis.LayoutX @if (yAxis.IsTable == false){ <TEXT>no-table</TEXT>}'></div><!-- Since we loop through it in the wrong direction, we use the value from x on the y attr, and the other way around -->
-                        }
-                    </div>
-                }
+            <div class="modal-body">
+
+                <div style="display: table; margin: 0 auto;">
+
+                    <span class="fa fa-chevron-up option-top direction-option" id="top" aria-hidden="true" style="font-size: 5em; cursor: pointer; margin-left: 38px; margin-bottom: -8px;"></span>
+                    <br />
+                    <span class="fa fa-chevron-left option-left direction-option" id="left" aria-hidden="true" style="font-size: 5em; cursor: pointer;"></span>
+                    <span class="fa fa-times option-middle direction-option" id="middle" aria-hidden="true" style="font-size: 5em; cursor: pointer; margin-left: 5px; margin-right: 5px;"></span>
+                    <span class="fa fa-chevron-right option-right direction-option" id="right" aria-hidden="true" style="font-size: 5em; cursor: pointer;"></span>
+                    <br />
+                    <span class="fa fa-chevron-down option-bottom direction-option" id="bottom" aria-hidden="true" style="font-size: 5em; cursor: pointer; margin-left: 38px; margin-top: -8px;"></span>
+
+                </div>
+
             </div>
-            @if (TempData["messageInfo"] == null)
-            {
-                <button type="button" id="save-grid" class="btn btn-success" style="margin-left: 8px;">Opslaan</button>
-            }
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
         </div>
     </div>
 </div>
 
+<div style="display: none; height: 200px; width: 100vw; background-color: #f7f4f4; overflow: hidden" class="toggle-div">
+    <div class="fade-div" style="display: none;">
+        <div class="default items-col" style="overflow-y: scroll">
+
+            @foreach (var reservation in ViewBag.Reservations)
+            {
+                for (var i = 0; i < reservation.Persons; i++)
+                {
+                    <div class='card card-free' reservation-id="@reservation.Id" style="z-index: 333;">
+                        <span class="" style="z-index: 333;">@reservation.Customer.FirstName[0]@reservation.Customer.LastName[0]</span>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+</div>
+
+<div class="row content-part" style="box-shadow: 0 -5px 5px -5px #888888; horiz-align: center; position: relative;">
+
+    <div style="margin-top: 20px; margin-bottom: 20px; margin-left: 10%; margin-right: 10%;">
+        @if (ViewBag.message != null)
+        {
+            <div class="alert alert-info fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <span class="glyphicon glyphicon-info-sign"></span> @ViewBag.message
+            </div>
+        }
+    </div>
+
+    <span id="btn-arrow" class="fa fa-arrow-down btn-toggle-div" aria-hidden="true" style="cursor: pointer; font-size: 4em; position: absolute; top: 10px; left: 25px;"></span>
+
+    <div class='grid' style="display: table; margin: 0 auto;">
+        @foreach (var xAxis in ViewBag.tableLayout)
+        {
+            <div class='col cells-column'>
+                @foreach (var yAxis in xAxis)
+                {
+                    <div x="@yAxis.LayoutX" y="@yAxis.LayoutY" class='cell @yAxis.LayoutX-@yAxis.LayoutY @if (yAxis.IsTable == false)
+                                                                                                         {<TEXT>no-table</TEXT>} grid-cells'></div><!-- Since we loop through it in the wrong direction, we use the value from x on the y attr, and the other way around -->}
+            </div>
+        }
+    </div>
+    <img id="save-grid" src="http://pngimages.net/sites/default/files/floppy-disk-png-image-100860.png" alt="save" class="btn-save" />
+    <img src="https://t4.ftcdn.net/jpg/01/18/74/15/240_F_118741564_fPRFBlHO5a98qdaeGRmTAD3Fc7lYmG3H.jpg" alt="trash bin" class="trash-bin" />
+</div>
 
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!--<script  src="js/index.js"></script>-->
 <script>
-    $("#save-grid").on("click", function () {
+    $(document).ready(function () {
 
-        var tableLayoutReservationsModelView = [];
+        var tablesFor2 = [];
+        var tablesFor4 = [];
 
-        $('.cell').each(function (i, obj) {
-            var reservationId = 0;
+        var conflict = false;
+        var conflictCell;
+        var skipMultiplePairsCheck = false;
 
-            if ($(this).children().length > 0 ) {
-                reservationId = $(this).children().eq(0).attr("reservation-id");
-            }
-
-            tableLayoutReservationsModelView.push({ LayoutX: $(this).attr("x"), LayoutY: $(this).attr("y"), ReservationId: reservationId });
-        });
-
-        var jsonTableLayoutReservationsModelView = JSON.stringify({ 'list': tableLayoutReservationsModelView });
-
-        $.ajax({
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            type: 'POST',
-            url: '@Url.Action("Save")',
-            data: jsonTableLayoutReservationsModelView,
-            success: function (response) {
-                console.log(response);
-            },
-            failure: function (response) {
-                console.log(response);
-            }
-        });
-
-
-    });
-
-    $('.card').draggable({
-        appendTo: '.cell',
-        scope: 'cells',
-        stop: function () {
-            if ($(this).parent().hasClass("default") !== true) {
-                $(this).css({
-                    top: "10%",
-                    left: "10%"
-                });
-                $(this).children().addClass("text-occupied");
-                // $(this).draggable("true");
-            }
+        function removeCellColors() {
+            $(".grid-cells:not(.no-table)").css("background-color", "white")
         }
-    });
 
-    var enableCells = function () {
-        //$('.cell.cell-occupied').droppable('disable');
-        //$('.no-table').droppable('disable');
-        //$('.cell:not(.cell-occupied):not(.no-table)').droppable('enable');
-        $('.cell').droppable({
-            tolerance: 'pointer',
+        function colorFourSeatsTables() {
+        $(".grid-cells:not(.no-table)").each(function(i) {
+            var x = parseInt($(this).attr("x"));
+            var y = parseInt($(this).attr("y"));
+            //console.log(x + " " + y);
+            if ($(".grid-cells:not(.no-table)[x='" + (x + 1) + "'][y='" + y + "']").length > 0 &&
+                $(".grid-cells:not(.no-table)[x='" + x + "'][y='" + (y + 1) + "']").length > 0 &&
+                $(".grid-cells:not(.no-table)[x='" + (x + 1) + "'][y='" + (y + 1) + "']").length > 0) {
+                //alert(x + " - " + y);
+                $(this).css("background-color", "#C4EDDF");
+                $(".grid-cells[x='" + (x + 1) + "'][y='" + y + "']").css("background-color", "#C4EDDF");
+                $(".grid-cells[x='" + x + "'][y='" + (y + 1) + "']").css("background-color", "#C4EDDF");
+                $(".grid-cells[x='" + (x + 1) + "'][y='" + (y + 1) + "']").css("background-color", "#C4EDDF");
+            }
+            });
+        }
+
+        function colorTwoSeatsTables() {
+        $(".grid-cells:not(.no-table)").each(function() {
+            var x = parseInt($(this).attr("x"));
+            var y = parseInt($(this).attr("y"));
+            //console.log(x + " " + y);
+            if ($(".grid-cells:not(.no-table)[x='" + (x + 1) + "'][y='" + y + "']").length > 0) {
+                //alert(x + " - " + y);
+                $(this).css("background-color", "#C4EDDF");
+                $(".grid-cells[x='" + (x + 1) + "'][y='" + y + "']").css("background-color", "#C4EDDF");
+            }
+
+            if ($(".grid-cells:not(.no-table)[x='" + (x) + "'][y='" + (y + 1) + "']").length > 0) {
+                //alert(x + " - " + y);
+                $(this).css("background-color", "#C4EDDF");
+                $(".grid-cells:not(.no-table)[x='" + (x) + "'][y='" + (y + 1) + "']").css("background-color", "#C4EDDF");
+            }
+            });
+         }
+
+        colorTwoSeatsTables();
+
+        function setCellsWidthHeight() {
+            var amountOfColumns = $(".cells-column").length;
+            var amountOfRows = $(".cells-column").eq(0).children().length;
+            var contentWidth = $(".content-part").width();
+            var contentWidthMargin = contentWidth / 8;
+            contentWidth = contentWidth - contentWidthMargin;
+            contentWidth = contentWidth - (amountOfColumns * 10);
+            var cellWidth = (contentWidth / amountOfColumns);
+
+            console.log("amountOfColumns " + amountOfColumns);
+            console.log("amountOfRows " + amountOfRows);
+            console.log("contentWidth " + contentWidth);
+            console.log("contentWidthMargin " + contentWidthMargin);
+            console.log("cellWidth " + parseInt(cellWidth));
+
+            $(".grid-cells").css("width", parseInt(cellWidth) + "px");
+            $(".grid-cells").css("height", parseInt(cellWidth) + "px");
+        }
+
+        setCellsWidthHeight();
+
+        $(".toggle-div").width(($(".toggle-div").width() + 13) - 260);
+
+        $(window).on('resize',
+            function() {
+                $(".toggle-div").width("100vw");
+                $(".toggle-div").width(($(".toggle-div").width() + 13) - 245);
+
+                setCellsWidthHeight();
+            });
+
+        $(".btn-toggle-div").on("click",
+            function() {
+                $(".toggle-div").slideToggle();
+                $(".fade-div").fadeToggle();
+                $(this).toggleClass("fa-arrow-down");
+                $(this).toggleClass("fa-arrow-up");
+            });
+
+        $("#save-grid").on("click",
+            function() {
+
+                var tableLayoutReservationsModelView = [];
+
+                $('.cell').each(function(i, obj) {
+                    var reservationId = 0;
+
+                    if ($(this).children().length > 0) {
+                        reservationId = $(this).children().eq(0).attr("reservation-id");
+                    }
+
+                    tableLayoutReservationsModelView.push({
+                        LayoutX: $(this).attr("x"),
+                        LayoutY: $(this).attr("y"),
+                        ReservationId: reservationId
+                    });
+                });
+
+                var jsonTableLayoutReservationsModelView = JSON.stringify({
+                    'list': tableLayoutReservationsModelView
+                });
+
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '@Url.Action("Save")',
+                    data: jsonTableLayoutReservationsModelView,
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    failure: function(response) {
+                        console.log(response);
+                    }
+                });
+
+
+            });
+
+        $('.card').draggable({
+            appendTo: '.cell',
+            start: function(event, ui) {
+                $(".trash-bin").effect("fade", 150);
+               //$(".btn-toggle-div").hide();
+            },
             scope: 'cells',
-            activeClass: 'cell-occupiable',
-            hoverClass: 'cell-hover',
-            accept: '.card',
-            helper: 'clone',
-            drop: function (evt, ui) {
-                console.log($(this).attr("class"));
-                if ($(this).find('.card').length >= 1 || $(this).hasClass('no-table')) {
-                    // Cancel drag operation (make it always revert)
-                    ui.draggable.draggable('option', 'revert', true);
-                    return;
+            stop: function() {
+                $(".trash-bin").hide();
+                //setTimeout(function () { $(".btn-toggle-div").fadeIn(); }, 800);
+                if ($(this).parent().hasClass("default") !== true) {
+                    $(this).css({
+                        top: "10%",
+                        left: "10%"
+                    });
+                    $(this).children().addClass("text-occupied");
+                    // $(this).draggable("true");
+                }
+            }
+        });
+
+        function setSideBorders(cell) {
+            cell.css("border-left-color", "#2184BE");
+            cell.css("border-left-style", "solid");
+            cell.css("border-left-width", "3px");
+
+            cell.css("border-right-color", "#2184BE");
+            cell.css("border-right-style", "solid");
+            cell.css("border-right-width", "3px");
+        }
+
+        function setTopBottomBorders(cell) {
+            cell.css("border-top-color", "#2184BE");
+            cell.css("border-top-style", "solid");
+            cell.css("border-top-width", "3px");
+
+            cell.css("border-bottom-color", "#2184BE");
+            cell.css("border-bottom-style", "solid");
+            cell.css("border-bottom-width", "3px");
+        }
+
+        var leftOption = true;
+        var rightOption = true;
+        var topOption = true;
+        var bottomOption = true;
+
+        function multiplePairs(cell) {
+            conflict = true;
+            conflictCell = cell;
+
+            var left = $(".grid-cells[x='" + (parseInt(cell.attr("x")) - 1) + "'][y='" + parseInt(cell.attr("y")) + "']");
+            var right = $(".grid-cells[x='" + (parseInt(cell.attr("x")) + 1) + "'][y='" + parseInt(cell.attr("y")) + "']");
+            var top = $(".grid-cells[x='" + parseInt(cell.attr("x")) + "'][y='" + (parseInt(cell.attr("y")) - 1) + "']");
+            var bottom = $(".grid-cells[x='" + parseInt(cell.attr("x")) + "'][y='" + (parseInt(cell.attr("y")) + 1) + "']");
+
+
+            if (right.children().length > 0 &&
+                !tablesFor2.filter(e => (e.x1 === parseInt(right.attr("x")) && e.y1 === parseInt(right.attr("y"))) ||
+                    (e.x2 === parseInt(right.attr("x")) && e.y2 === parseInt(right.attr("y")))).length >
+                0) {
+                console.log("found a possible connection for right");
+                $(".option-right").css("color", "gray").css("opacity", "1");
+            } else {
+                $(".option-right").css("color", "gray").css("opacity", "0.3");
+            }
+
+            if (left.children().length > 0 && !tablesFor2.filter(e => (e.x1 === parseInt(left.attr("x")) && e.y1 === parseInt(left.attr("y"))) ||
+                (e.x2 === parseInt(left.attr("x")) && e.y2 === parseInt(left.attr("y")))).length > 0) {
+                console.log("found a possible connection for left");
+                $(".option-left").css("color", "gray").css("opacity", "1");
+            } else {
+                $(".option-left").css("color", "gray").css("opacity", "0.3");
+            }
+
+            if (top.children().length > 0 && !tablesFor2.filter(e => (e.x1 === parseInt(top.attr("x")) && e.y1 === parseInt(top.attr("y"))) ||
+                (e.x2 === parseInt(top.attr("x")) && e.y2 === parseInt(top.attr("y")))).length > 0) {
+                console.log("found a possible connection for top");
+                $(".option-top").css("color", "gray").css("opacity", "1");
+            } else {
+                $(".option-top").css("color", "gray").css("opacity", "0.3");
+            }
+
+            if (bottom.children().length > 0 && !tablesFor2.filter(e => (e.x1 === parseInt(bottom.attr("x")) && e.y1 === parseInt(bottom.attr("y"))) ||
+                (e.x2 === parseInt(bottom.attr("x")) && e.y2 === parseInt(bottom.attr("y")))).length > 0) {
+                console.log("found a possible connection for bottom");
+                $(".option-bottom").css("color", "gray").css("opacity", "1");
+            } else {
+                $(".option-bottom").css("color", "gray").css("opacity", "0.3");
+            }
+
+            $(".option-middle").css("color", "gray").css("opacity", "1");
+
+            $('#myModal').modal('show');
+            $(".modal-footer").hide();
+            $(".close").hide();
+            $(".modal-title").text("Kies een verbinding");
+        }
+
+        $(".direction-option").on("click", function () {
+            conflict = false;
+
+            $('#myModal').modal('hide');
+
+            leftOption = true;
+            rightOption = true;
+            topOption = true;
+            bottomOption = true;
+            var direction = $(this).attr("id");
+            console.log("Direction choosen is " + direction.toLowerCase())
+            //alert(direction);
+            switch (direction.toLowerCase()) {
+                case "left":
+                    rightOption = false;
+                    topOption = false;
+                    bottomOption = false;
+                    console.log("left clicked");
+                    break;
+                case "right":
+                    leftOption = false;
+                    topOption = false;
+                    bottomOption = false;
+                    console.log("right clicked");
+                    break;
+                case "top":
+                    rightOption = false;
+                    leftOption = false;
+                    bottomOption = false;
+                    console.log("top clicked");
+                    break;
+                case "bottom":
+                    rightOption = false;
+                    topOption = false;
+                    leftOption = false;
+                    console.log("bottom clicked");
+                    break;
+                default:
+                    console.log("not a valid direction found");
+                    leftOption = false;
+                    rightOption = false;
+                    topOption = false;
+                    bottomOption = false;
+            }
+
+            skipMultiplePairsCheck = true;
+            makeConnection(conflictCell);
+            skipMultiplePairsCheck = false;
+        });
+
+        function makeConnection(cell) {
+            console.log("makeConnection function triggered with cell: ");
+            console.log(cell);
+
+            console.log("---------------");
+            console.log("x - " + parseInt(cell.attr("x")));
+            console.log("y - " + parseInt(cell.attr("y")));
+
+            var left = $(".grid-cells[x='" + (parseInt(cell.attr("x")) - 1) + "'][y='" + parseInt(cell.attr("y")) + "']");
+            var right = $(".grid-cells[x='" + (parseInt(cell.attr("x")) + 1) + "'][y='" + parseInt(cell.attr("y")) + "']");
+            var top = $(".grid-cells[x='" + parseInt(cell.attr("x")) + "'][y='" + (parseInt(cell.attr("y")) - 1) + "']");
+            var bottom = $(".grid-cells[x='" + parseInt(cell.attr("x")) + "'][y='" + (parseInt(cell.attr("y")) + 1) + "']");
+
+            if (tablesFor2.length < 4) {
+                console.log("skipMultiplePairsCheck = " + skipMultiplePairsCheck);
+                if (!skipMultiplePairsCheck) {
+                    if (right.children().length > 0 &&
+                        !tablesFor2.filter(
+                            e => (e.x1 === parseInt(right.attr("x")) && e.y1 === parseInt(right.attr("y"))) ||
+                            (e.x2 === parseInt(right.attr("x")) && e.y2 === parseInt(right.attr("y")))).length >
+                        0) {
+                        if (left.children().length > 0 &&
+                            !tablesFor2.filter(e => (e.x1 === parseInt(left.attr("x")) &&
+                                    e.y1 === parseInt(left.attr("y"))) ||
+                                (e.x2 === parseInt(left.attr("x")) && e.y2 === parseInt(left.attr("y"))))
+                            .length >
+                            0 ||
+                            top.children().length > 0 &&
+                            !tablesFor2.filter(e => (e.x1 === parseInt(top.attr("x")) &&
+                                    e.y1 === parseInt(top.attr("y"))) ||
+                                (e.x2 === parseInt(top.attr("x")) && e.y2 === parseInt(top.attr("y")))).length >
+                            0 ||
+                            bottom.children().length > 0 &&
+                            !tablesFor2.filter(e => (e.x1 === parseInt(bottom.attr("x")) &&
+                                    e.y1 === parseInt(bottom.attr("y"))) ||
+                                (e.x2 === parseInt(bottom.attr("x")) && e.y2 === parseInt(bottom.attr("y"))))
+                            .length >
+                            0) {
+                            console.log("mutiple pairs found. asking user for advise");
+                            multiplePairs(cell);
+                        }
+                    } else if (left.children().length > 0 &&
+                        !tablesFor2.filter(e => (e.x1 === parseInt(left.attr("x")) &&
+                                e.y1 === parseInt(left.attr("y"))) ||
+                            (e.x2 === parseInt(left.attr("x")) && e.y2 === parseInt(left.attr("y")))).length >
+                        0) {
+                        if (right.children().length > 0 &&
+                            !tablesFor2.filter(e => (e.x1 === parseInt(right.attr("x")) &&
+                                    e.y1 === parseInt(right.attr("y"))) ||
+                                (e.x2 === parseInt(right.attr("x")) && e.y2 === parseInt(right.attr("y"))))
+                            .length >
+                            0 ||
+                            top.children().length > 0 &&
+                            !tablesFor2.filter(e => (e.x1 === parseInt(top.attr("x")) &&
+                                    e.y1 === parseInt(top.attr("y"))) ||
+                                (e.x2 === parseInt(top.attr("x")) && e.y2 === parseInt(top.attr("y")))).length >
+                            0 ||
+                            bottom.children().length > 0 &&
+                            !tablesFor2.filter(e => (e.x1 === parseInt(bottom.attr("x")) &&
+                                    e.y1 === parseInt(bottom.attr("y"))) ||
+                                (e.x2 === parseInt(bottom.attr("x")) && e.y2 === parseInt(bottom.attr("y"))))
+                            .length >
+                            0) {
+                            console.log("mutiple pairs found. asking user for advise");
+                            multiplePairs(cell);
+                        }
+                    } else if (top.children().length > 0 &&
+                        !tablesFor2.filter(e => (e.x1 === parseInt(top.attr("x")) &&
+                                e.y1 === parseInt(top.attr("y"))) ||
+                            (e.x2 === parseInt(top.attr("x")) && e.y2 === parseInt(top.attr("y")))).length >
+                        0) {
+                        if (left.children().length > 0 &&
+                            !tablesFor2.filter(e => (e.x1 === parseInt(left.attr("x")) &&
+                                    e.y1 === parseInt(left.attr("y"))) ||
+                                (e.x2 === parseInt(left.attr("x")) && e.y2 === parseInt(left.attr("y"))))
+                            .length >
+                            0 ||
+                            right.children().length > 0 &&
+                            !tablesFor2.filter(e => (e.x1 === parseInt(right.attr("x")) &&
+                                    e.y1 === parseInt(right.attr("y"))) ||
+                                (e.x2 === parseInt(right.attr("x")) && e.y2 === parseInt(right.attr("y"))))
+                            .length >
+                            0 ||
+                            bottom.children().length > 0 &&
+                            !tablesFor2.filter(e => (e.x1 === parseInt(bottom.attr("x")) &&
+                                    e.y1 === parseInt(bottom.attr("y"))) ||
+                                (e.x2 === parseInt(bottom.attr("x")) && e.y2 === parseInt(bottom.attr("y"))))
+                            .length >
+                            0) {
+                            console.log("mutiple pairs found. asking user for advise");
+                            multiplePairs(cell);
+                        }
+                    } else if (bottom.children().length > 0 &&
+                        !tablesFor2.filter(e => (e.x1 === parseInt(bottom.attr("x")) &&
+                                e.y1 === parseInt(bottom.attr("y"))) ||
+                            (e.x2 === parseInt(bottom.attr("x")) && e.y2 === parseInt(bottom.attr("y"))))
+                        .length >
+                        0) {
+                        if (left.children().length > 0 &&
+                            !tablesFor2.filter(e => (e.x1 === parseInt(left.attr("x")) &&
+                                    e.y1 === parseInt(left.attr("y"))) ||
+                                (e.x2 === parseInt(left.attr("x")) && e.y2 === parseInt(left.attr("y"))))
+                            .length >
+                            0 ||
+                            right.children().length > 0 &&
+                            !tablesFor2.filter(e => (e.x1 === parseInt(right.attr("x")) &&
+                                    e.y1 === parseInt(right.attr("y"))) ||
+                                (e.x2 === parseInt(right.attr("x")) && e.y2 === parseInt(right.attr("y"))))
+                            .length >
+                            0 ||
+                            top.children().length > 0 &&
+                            !tablesFor2.filter(e => (e.x1 === parseInt(top.attr("x")) &&
+                                    e.y1 === parseInt(top.attr("y"))) ||
+                                (e.x2 === parseInt(top.attr("x")) && e.y2 === parseInt(top.attr("y")))).length >
+                            0) {
+                            console.log("mutiple pairs found. asking user for advise");
+                            multiplePairs(cell);
+                        }
+                    }
                 }
 
-                var draggableClass = ui.draggable.attr("class");
-                var droppableClass = $(this).attr("class");
+                if (!conflict) {
 
-                var $cell = $(this);
-                var $card = $(ui.draggable);
-                $card.closest('.cell').removeClass('cell-occupied');
-                $card.appendTo($cell);
-                $card.addClass('card-occupier');
-                $card.removeClass('card-free');
-                $cell.addClass('cell-occupied');
+                    if (right.children().length > 0 &&
+                        !tablesFor2.filter(e => (e.x1 === parseInt(right.attr("x")) &&
+                                e.y1 === parseInt(right.attr("y"))) ||
+                            (e.x2 === parseInt(right.attr("x")) && e.y2 === parseInt(right.attr("y")))).length >
+                        0 &&
+                        rightOption) {
+                        if (right.children().attr("reservation-id") !== cell.children().attr("reservation-id")) {
+                            alertify.confirm(
+                                "De andere stoel is van een andere reservering. Wil je nog steeds een tafel vormen?",
+                                function() {
+
+                                    console.log("Found a draggable right. connecting to it...");
+                                    cell.css("border-left-color", "#2184BE");
+                                    cell.css("border-left-style", "solid");
+                                    cell.css("border-left-width", "3px");
+                                    setTopBottomBorders(cell);
+
+                                    var pairingCell = $(".grid-cells[x='" +
+                                        (parseInt(cell.attr("x")) + 1) +
+                                        "'][y='" +
+                                        parseInt(cell.attr("y")) +
+                                        "']");
+                                    pairingCell.css("border-right-color", "#2184BE");
+                                    pairingCell.css("border-right-style", "solid");
+                                    pairingCell.css("border-right-width", "3px");
+                                    setTopBottomBorders(pairingCell);
+
+                                    tablesFor2.push({
+                                        x1: parseInt(cell.attr("x")),
+                                        y1: parseInt(cell.attr("y")),
+                                        x2: parseInt(pairingCell.attr("x")),
+                                        y2: parseInt(pairingCell.attr("y"))
+                                    });
+
+                                },
+                                function() {
+                                    console.log("Not connecting on users advice");
+                                });
+                        } else {
+
+                            console.log("Found a draggable right. connecting to it...");
+                            cell.css("border-left-color", "#2184BE");
+                            cell.css("border-left-style", "solid");
+                            cell.css("border-left-width", "3px");
+                            setTopBottomBorders(cell);
+
+                            var pairingCell = $(".grid-cells[x='" +
+                                (parseInt(cell.attr("x")) + 1) +
+                                "'][y='" +
+                                parseInt(cell.attr("y")) +
+                                "']");
+                            pairingCell.css("border-right-color", "#2184BE");
+                            pairingCell.css("border-right-style", "solid");
+                            pairingCell.css("border-right-width", "3px");
+                            setTopBottomBorders(pairingCell);
+
+                            tablesFor2.push({
+                                x1: parseInt(cell.attr("x")),
+                                y1: parseInt(cell.attr("y")),
+                                x2: parseInt(pairingCell.attr("x")),
+                                y2: parseInt(pairingCell.attr("y"))
+                            });
+                        }
+                        }
+
+                    if (left.children().length > 0 &&
+                        !tablesFor2.filter(e => (e.x1 === parseInt(left.attr("x")) &&
+                                e.y1 === parseInt(left.attr("y"))) ||
+                            (e.x2 === parseInt(left.attr("x")) && e.y2 === parseInt(left.attr("y")))).length >
+                        0 &&
+                        leftOption) {
+
+                        if (left.children().attr("reservation-id") !== cell.children().attr("reservation-id")) {
+                            alertify.confirm(
+                                "De andere stoel is van een andere reservering. Wil je nog steeds een tafel vormen?",
+                                function() {
+
+                                    console.log("Found a draggable left. connecting to it...");
+                                    cell.css("border-right-color", "#2184BE");
+                                    cell.css("border-right-style", "solid");
+                                    cell.css("border-right-width", "3px");
+                                    setTopBottomBorders(cell);
+
+                                    var pairingCell = $(".grid-cells[x='" +
+                                        (parseInt(cell.attr("x")) - 1) +
+                                        "'][y='" +
+                                        parseInt(cell.attr("y")) +
+                                        "']");
+                                    pairingCell.css("border-left-color", "#2184BE");
+                                    pairingCell.css("border-left-style", "solid");
+                                    pairingCell.css("border-left-width", "3px");
+                                    setTopBottomBorders(pairingCell);
+
+                                    tablesFor2.push({
+                                        x1: parseInt(cell.attr("x")),
+                                        y1: parseInt(cell.attr("y")),
+                                        x2: parseInt(pairingCell.attr("x")),
+                                        y2: parseInt(pairingCell.attr("y"))
+                                    });
+
+                                },
+                                function() {
+                                    console.log("Not connecting on users advice");
+                                });
+                        } else {
+                            console.log("Found a draggable left. connecting to it...");
+                            cell.css("border-right-color", "#2184BE");
+                            cell.css("border-right-style", "solid");
+                            cell.css("border-right-width", "3px");
+                            setTopBottomBorders(cell);
+
+                            var pairingCell = $(".grid-cells[x='" +
+                                (parseInt(cell.attr("x")) - 1) +
+                                "'][y='" +
+                                parseInt(cell.attr("y")) +
+                                "']");
+                            pairingCell.css("border-left-color", "#2184BE");
+                            pairingCell.css("border-left-style", "solid");
+                            pairingCell.css("border-left-width", "3px");
+                            setTopBottomBorders(pairingCell);
+
+                            tablesFor2.push({
+                                x1: parseInt(cell.attr("x")),
+                                y1: parseInt(cell.attr("y")),
+                                x2: parseInt(pairingCell.attr("x")),
+                                y2: parseInt(pairingCell.attr("y"))
+                            });
+                        }
+                        }
+
+                    if (bottom.children().length > 0 &&
+                        !tablesFor2.filter(e => (e.x1 === parseInt(bottom.attr("x")) &&
+                                e.y1 === parseInt(bottom.attr("y"))) ||
+                            (e.x2 === parseInt(bottom.attr("x")) && e.y2 === parseInt(bottom.attr("y"))))
+                        .length >
+                        0 &&
+                        bottomOption) {
+
+                        if (bottom.children().attr("reservation-id") !== cell.children().attr("reservation-id")) {
+                            alertify.confirm(
+                                "De andere stoel is van een andere reservering. Wil je nog steeds een tafel vormen?",
+                                function() {
+
+                                    console.log("Found a draggable bottom connecting to it...");
+                                    cell.css("border-top-color", "#2184BE");
+                                    cell.css("border-top-style", "solid");
+                                    cell.css("border-top-width", "3px");
+                                    setSideBorders(cell);
+
+                                    var pairingCell = $(".grid-cells[x='" +
+                                        parseInt(cell.attr("x")) +
+                                        "'][y='" +
+                                        (parseInt(cell.attr("y")) + 1) +
+                                        "']");
+                                    pairingCell.css("border-bottom-color", "#2184BE");
+                                    pairingCell.css("border-bottom-style", "solid");
+                                    pairingCell.css("border-bottom-width", "3px");
+                                    setSideBorders(pairingCell);
+
+                                    tablesFor2.push({
+                                        x1: parseInt(cell.attr("x")),
+                                        y1: parseInt(cell.attr("y")),
+                                        x2: parseInt(pairingCell.attr("x")),
+                                        y2: parseInt(pairingCell.attr("y"))
+                                    });
+
+                                },
+                                function() {
+                                    console.log("Not connecting on users advice");
+                                });
+                        } else {
+
+                            console.log("Found a draggable bottom connecting to it...");
+                            cell.css("border-top-color", "#2184BE");
+                            cell.css("border-top-style", "solid");
+                            cell.css("border-top-width", "3px");
+                            setSideBorders(cell);
+
+                            var pairingCell = $(".grid-cells[x='" +
+                                parseInt(cell.attr("x")) +
+                                "'][y='" +
+                                (parseInt(cell.attr("y")) + 1) +
+                                "']");
+                            pairingCell.css("border-bottom-color", "#2184BE");
+                            pairingCell.css("border-bottom-style", "solid");
+                            pairingCell.css("border-bottom-width", "3px");
+                            setSideBorders(pairingCell);
+
+                            tablesFor2.push({
+                                x1: parseInt(cell.attr("x")),
+                                y1: parseInt(cell.attr("y")),
+                                x2: parseInt(pairingCell.attr("x")),
+                                y2: parseInt(pairingCell.attr("y"))
+                            });
+                        }
+                        }
+
+                    if (top.children().length > 0 &&
+                        !tablesFor2.filter(e => (e.x1 === parseInt(top.attr("x")) &&
+                                e.y1 === parseInt(top.attr("y"))) ||
+                            (e.x2 === parseInt(top.attr("x")) && e.y2 === parseInt(top.attr("y")))).length >
+                        0 &&
+                        topOption) {
+
+                        if (top.children().attr("reservation-id") !== cell.children().attr("reservation-id")) {
+                            alertify.confirm(
+                                "De andere stoel is van een andere reservering. Wil je nog steeds een tafel vormen?",
+                                function() {
+
+                                    console.log("Found a draggable top connecting to it...");
+                                    cell.css("border-bottom-color", "#2184BE");
+                                    cell.css("border-bottom-style", "solid");
+                                    cell.css("border-bottom-width", "3px");
+                                    setSideBorders(cell);
+
+                                    var pairingCell = $(".grid-cells[x='" +
+                                        parseInt(cell.attr("x")) +
+                                        "'][y='" +
+                                        (parseInt(cell.attr("y")) - 1) +
+                                        "']");
+                                    pairingCell.css("border-top-color", "#2184BE");
+                                    pairingCell.css("border-top-style", "solid");
+                                    pairingCell.css("border-top-width", "3px");
+                                    setSideBorders(pairingCell);
+
+                                    tablesFor2.push({
+                                        x1: parseInt(cell.attr("x")),
+                                        y1: parseInt(cell.attr("y")),
+                                        x2: parseInt(pairingCell.attr("x")),
+                                        y2: parseInt(pairingCell.attr("y"))
+                                    });
+
+                                },
+                                function() {
+                                    console.log("Not connecting on users advice");
+                                });
+                        } else {
+                            console.log("Found a draggable top connecting to it...");
+                            cell.css("border-bottom-color", "#2184BE");
+                            cell.css("border-bottom-style", "solid");
+                            cell.css("border-bottom-width", "3px");
+                            setSideBorders(cell);
+
+                            var pairingCell = $(".grid-cells[x='" +
+                                parseInt(cell.attr("x")) +
+                                "'][y='" +
+                                (parseInt(cell.attr("y")) - 1) +
+                                "']");
+                            pairingCell.css("border-top-color", "#2184BE");
+                            pairingCell.css("border-top-style", "solid");
+                            pairingCell.css("border-top-width", "3px");
+                            setSideBorders(pairingCell);
+
+                            tablesFor2.push({
+                                x1: parseInt(cell.attr("x")),
+                                y1: parseInt(cell.attr("y")),
+                                x2: parseInt(pairingCell.attr("x")),
+                                y2: parseInt(pairingCell.attr("y"))
+                            });
+                        }
+
+                    }
+                }
+            } else {
+                console.log("Max amount of 2 person tables exceeded");
             }
-        });
-    }
 
-    //$('.cell').droppable();
-    enableCells();
+
+            if (cell) {
+
+            }
+
+
+
+
+
+            leftOption = true;
+            rightOption = true;
+            topOption = true;
+            bottomOption = true;
+
+            removeCellColors();
+            if (tablesFor2.length >= 4) {
+                colorFourSeatsTables();
+            } else {
+                colorTwoSeatsTables();
+            }
+
+            console.log(tablesFor2);
+        }
+
+        var enableCells = function () {
+            //$('.cell.cell-occupied').droppable('disable');
+            //$('.no-table').droppable('disable');
+            //$('.cell:not(.cell-occupied):not(.no-table)').droppable('enable');
+            $('.cell, .trash-bin').droppable({
+                tolerance: 'pointer',
+                scope: 'cells',
+                activeClass: 'cell-occupiable',
+                hoverClass: 'cell-hover',
+                accept: '.card',
+                helper: 'clone',
+                drop: function (evt, ui) {
+
+                    if ($(this).hasClass("trash-bin")) {
+                        ui.draggable.appendTo(".items-col");
+                        ui.draggable.removeClass("card-occupier").addClass("card-free");
+                        ui.draggable.css("background", "").css("height", "").css("width", "");
+                        ui.draggable.css("background", "").css("top", "").css("left", "");
+                        ui.draggable.children("span").eq(0).removeClass("text-occupied").css("display", "");
+                        ui.draggable.children("span").eq(1).hide();
+                        setTimeout(function() {
+                                $(".trash-bin").show().effect("bounce", {
+                                        times: 1
+                                    },
+                                    300);;
+                            },
+                            1);
+                        setTimeout(function() {
+                                $(".trash-bin").animate({
+                                    height: "5vw",
+                                    width: "5vw"
+                                });
+                            },
+                            333);
+                        setTimeout(function() {
+                                $(".trash-bin").fadeOut();
+                            },
+                            700);
+
+
+                    } else {
+                        if ($(this).find('.card').length >= 1 || $(this).hasClass('no-table')) {
+                            // Cancel drag operation (make it always revert)
+                            ui.draggable.draggable('option', 'revert', true);
+                            return;
+                        }
+
+                        var draggableClass = ui.draggable.attr("class");
+                        var droppableClass = $(this).attr("class");
+
+                        var cell = $(this);
+                        var card = $(ui.draggable);
+                        card.closest('.cell').removeClass('cell-occupied');
+                        card.appendTo(cell);
+                        card.addClass('card-occupier');
+                        card.removeClass('card-free');
+                        cell.addClass('cell-occupied');
+                        ui.draggable.children().text("");
+
+                        makeConnection(cell);
+                    }
+                }
+            });
+        }
+
+        //$('.cell').droppable();
+        enableCells();
+
+    });
 
 
     function getRandomColor() {
@@ -139,8 +861,6 @@
     }
 
     var color = "#fff";
-
-
 </script>
 @{
     var lastReservationId = 0;
@@ -160,15 +880,15 @@
     }
 
     <script>
-        $(".card-free[reservation-id='@item.ReservationId']").eq(0).removeClass('card-free').addClass('card-occupier').css("background", color).appendTo($(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0));
-        $(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied').children().children().addClass("text-occupied");
+$(".card-free[reservation-id='@item.ReservationId']").eq(0).removeClass('card-free').addClass('card-occupier').css("background", color).appendTo($(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0));
+$(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied').children().children().addClass("text-occupied");
     </script>
 
     lastReservationId = item.ReservationId;
 }
-<script>
-    $(".card-occupier").append("<span class='fa fa-times fa btn-delete' style='font-size: 5vw; cursor: pointer; display: none;'></span>");
-</script>
+@*<script>
+        $(".card-occupier").append("<span class='fa fa-times fa btn-delete' style='font-size: 5vw; cursor: pointer; display: none;'></span>");
+    </script>*@
 
 <script>
     var longpress = 500;
@@ -221,30 +941,85 @@
 
 
 <style>
+    .ajs-content {
+        font-size: 1.6em;
+    }
+
+    .line {
+        stroke: rgb(0,0,0);
+        stroke-width: 3;
+    }
+
+    .container-margin {
+        margin-top: 22px !important;
+    }
+
+    .row {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .btn-save:hover {
+        width: 4.5vw;
+        height: 4.5vw;
+        top: 30px;
+        right: 30px;
+    }
+
+    .btn-save {
+        cursor: pointer;
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        width: 5vw;
+        height: 5vw;
+        border: solid 1px white;
+        -webkit-box-shadow: 0 0 10px black;
+        box-shadow: 0 0 15px black;
+        border-radius: 60%;
+    }
+
+    .trash-bin {
+        display: none;
+        position: absolute;
+        top: 100px;
+        right: 25px;
+        width: 5vw;
+        height: 5vw;
+        border: solid 1px white;
+        -webkit-box-shadow: 0 0 10px black;
+        box-shadow: 0 0 15px black;
+        border-radius: 60%;
+    }
+
     body {
+        margin: 0;
+        padding: 0;
+        border: none;
         background: white;
         font-family: helvetica, sans-serif;
         font-size: x-small;
     }
 
     .grid {
-        margin: 2px;
+        margin: 5px;
         padding: 0.1em;
     }
 
     .col {
+        margin: -2px !important;
         background: white;
         display: inline-block;
     }
 
     .cell {
-        width: 6vw;
-        height: 6vw;
+        /*width: 6vw;
+        height: 6vw;*/
         background: transparent;
         border-style: solid;
         border-width: 1px;
         border-color: black;
-        margin: 5px;
+        margin: 2px;
     }
 
     .cell-hover {
@@ -252,6 +1027,7 @@
     }
 
     .cell-occupied {
+        background-color: white !important;
         border-style: dotted;
     }
 
@@ -277,9 +1053,9 @@
         z-index: 999;
     }
 
-        .card-free:nth-child(even) {
+    /*.card-free:nth-child(even) {
             margin-left: 20px !important;
-        }
+        }*/
 
     .card-occupier {
         display: table;
@@ -316,5 +1092,52 @@
 
     .items-col {
         margin-left: 20%;
+    }
+
+    .animate {
+        transition: all 0.1s;
+        -webkit-transition: all 0.1s;
+    }
+
+    .action-button {
+        position: relative;
+        padding: 10px 40px;
+        margin: 0px 10px 10px 0px;
+        float: left;
+        border-radius: 3px;
+        font-family: 'Lato', sans-serif;
+        font-size: 18px;
+        color: #FFF;
+        text-decoration: none;
+    }
+
+    .blue {
+        background-color: #3498db;
+        border-bottom: 5px solid #2980B9;
+        text-shadow: 0px -2px #2980B9;
+    }
+
+    .red {
+        background-color: #e74c3c;
+        border-bottom: 5px solid #c0392b;
+        text-shadow: 0px -2px #c0392b;
+    }
+
+    .green {
+        background-color: #2ecc71;
+        border-bottom: 5px solid #27ae60;
+        text-shadow: 0px -2px #27ae60;
+    }
+
+    .yellow {
+        background-color: #f1c40f;
+        border-bottom: 5px solid #f39c12;
+        text-shadow: 0px -2px #f39c12;
+    }
+
+    .action-button:active {
+        transform: translate(0px,5px);
+        -webkit-transform: translate(0px,5px);
+        border-bottom: 1px solid;
     }
 </style>

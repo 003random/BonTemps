@@ -40,7 +40,7 @@ namespace BonTemps.Controllers
 
             if (string.IsNullOrEmpty(customer.Email) && string.IsNullOrEmpty(customer.FirstName) &&
                 string.IsNullOrEmpty(customer.LastName) && customer.Gender == 0 &&
-                customer.PhoneNumber == 0) return false;
+                Convert.ToInt32(customer.PhoneNumber) == 0) return false;
 
             _db.Reservations.Add(reservation);
             _db.SaveChanges();

@@ -7,5 +7,6 @@ class WebApiConfig
     {
         configuration.Routes.MapHttpRoute("API Default", "api/{controller}/{id}",
             new { id = System.Web.Http.RouteParameter.Optional });
+        configuration.EnableCors();
     }
 }

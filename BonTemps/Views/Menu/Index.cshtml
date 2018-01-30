@@ -15,6 +15,7 @@
                             <tr>
                                 <th>@Html.DisplayNameFor(model => model.Name)</th>
                                 <th>@Html.DisplayNameFor(model => model.Description)</th>
+                                <th>Afbeeling</th>
                                 <th>Opties</th>
                             </tr>
                         </thead>
@@ -24,6 +25,7 @@
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                    <td style="text-align: center;"><img src="~/Content/Uploads/menu-images/@Html.DisplayFor(modelItem => item.Image)" onerror="this.src = 'https://vignette.wikia.nocookie.net/bokunoheroacademia/images/d/d5/NoPicAvailable.png/revision/latest?cb=20160326222204';" alt="menu image" width="50px" height="50px" /></td>
                                     <td>
                                         <span onclick="window.location = '@Url.Action("Edit", "Menu", new {id = item.Id})';" class="fa fa-pencil-square-o" style="margin-left: 10px; font-size:20px; cursor: pointer"></span>
                                         <span onclick="window.location = '@Url.Action("Details", "Menu", new {id = item.Id})';" class="fa fa-info-circle" style="margin-left: 10px; font-size:20px; cursor: pointer"></span>

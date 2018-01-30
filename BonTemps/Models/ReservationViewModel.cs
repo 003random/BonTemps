@@ -36,9 +36,11 @@ namespace BonTemps.Models
         [Required(ErrorMessage = "* required")]
         public string LastName { get; set; }
 
-        [Display(Name = "Telefoon nummer")]
-        [Required(ErrorMessage = "* required")]
-        public int PhoneNumber { get; set; }
+        [MaxLength(14)]
+        [MinLength(10)]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "must be numeric")]
+        [Display(Name = "Mobiel")]
+        public string PhoneNumber { get; set; }
 
         [Display(Name = "E-mail")]
         [Required(ErrorMessage = "* required")]
@@ -47,5 +49,7 @@ namespace BonTemps.Models
         [Display(Name = "Nieuwsbrief")]
         [Required(ErrorMessage = "* required")]
         public bool NewsLetter { get; set; }
+
+        List<int> Menus = new List<int>();
     }
 }

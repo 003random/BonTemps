@@ -20,6 +20,8 @@ namespace BonTemps.Models
 
         public DateTime DateCreated { get; set; }
 
+        public string Image { get; set; }
+
         public Menus()
         {
             this.DateCreated = DateTime.Now;
