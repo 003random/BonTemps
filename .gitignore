@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /BonTemps/Content/Uploads/allergy-images
 /BonTemps/Content/Uploads/menu-images
+/BonTemps/Views/Role_manage/Edit.cshtml

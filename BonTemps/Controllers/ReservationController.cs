@@ -224,7 +224,7 @@ namespace BonTemps.Controllers
             {
                 if(item.Customer != null)
                 {
-                    ws.Cells[$"A{rowStart}"].Value = item.Customer.FirstName ?? "";
+                    ws.Cells[$"A{rowStart}"].Value = item.Customer.FirstName;
                     ws.Cells[$"B{rowStart}"].Value = item.Customer.Prefix;
                     ws.Cells[$"C{rowStart}"].Value = item.Customer.LastName;
                     ws.Cells[$"D{rowStart}"].Value = item.Customer.Gender;
