@@ -782,6 +782,7 @@
     <Content Include="Views\Menu\Delete.cshtml" />
     <Content Include="Views\Table_layout\Edit.cshtml" />
     <Content Include="Views\Role_manage\Index.cshtml" />
+    <Content Include="Views\Role_manage\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Employee\" />
