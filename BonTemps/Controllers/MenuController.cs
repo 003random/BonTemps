@@ -49,7 +49,6 @@ namespace BonTemps.Controllers
         {
             if (picture == null)
             {
-                TempData["error"] = "No image uploaded";
                 return View(menus);
             }
 
@@ -91,6 +90,11 @@ namespace BonTemps.Controllers
             {
                 TempData["error"] = "No image uploaded";
                 menus.Image = UploadImage(picture);
+            }
+            else
+            {
+                var find = db.Menus.Find(menus.Id);
+                if (find != null) menus.Image = find.Image;
             }
 
             if (ModelState.IsValid)

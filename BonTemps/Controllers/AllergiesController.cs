@@ -68,6 +68,48 @@ namespace BonTemps.Controllers
             return View(allergies);
         }
 
+        // GET: Menus/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var allergy = db.Allergies.Find(id);
+            if (allergy == null)
+            {
+                return HttpNotFound();
+            }
+            return View(allergy);
+        }
+
+        // POST: Menus/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Allergies allergies, HttpPostedFileBase picture)
+        {
+            if (picture != null)
+            {
+                allergies.Image = UploadImage(picture);
+            }
+            else
+            {
+                var find = db.Allergies.Find(allergies.Id);
+                if (find != null) allergies.Image = find.Image;
+            }
+
+            if (ModelState.IsValid)
+            {
+                db.Entry(allergies).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["success"] = "Succesvol bewerkt";
+                return RedirectToAction("Index");
+            }
+            return View(allergies);
+        }
+
         // GET: Allergies/Delete/5
         public ActionResult Delete(int? id)
         {
