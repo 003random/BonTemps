@@ -50,7 +50,7 @@
                             {
                                 foreach (var role in (List<string>)Session["roles"])
                                 {<span>@role </span> }
-                        }
+                             }
                         else
                         { <span>Gebruiker</span>}
                         </span>
@@ -73,6 +73,8 @@
                     <!--<li><div class="left-bg"></div></li>-->
                     <img src="http://i.imgur.com/lLy2RMj.png" width="150px" class="animated fadeInLeft" height="150px" alt="logo" style="margin-left: 35px; margin-bottom:5px; margin-top: 10%;">
                     <hr>
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("Serveerster"))
+                    {
                     <li class="active ripple">
                         <a class="tree-toggle nav-header">
                             Reserveren
@@ -83,6 +85,9 @@
                             <li><a href="@Url.Action("Index", "Reservation")">Overzicht</a></li>
                         </ul>
                     </li>
+                    }
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("kok"))
+                    {
                     <li class="active ripple">
                         <a class="tree-toggle nav-header">
                             Menu's
@@ -93,6 +98,9 @@
                             <li><a href="@Url.Action("Index", "Menu")">Overzicht</a></li>
                         </ul>
                     </li>
+                    }
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("kok"))
+                    {
                     <li class="active ripple">
                         <a class="tree-toggle nav-header">
                             Allergieën
@@ -107,6 +115,9 @@
                             </li>
                         </ul>
                     </li>
+                    }
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("Serveerster"))
+                    { 
                     <li class="active ripple">
                         <a class="tree-toggle nav-header">
                             Tafel Overzicht
@@ -117,6 +128,9 @@
                             <li><a href="@Url.Action("Edit", "Table_layout")">Wijzigen</a></li>
                         </ul>
                     </li>
+                    }
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                    {
                     <li class="active ripple">
                         <a class="tree-toggle nav-header">
                             Klant overzicht
@@ -126,6 +140,9 @@
                             <li><a href="@Url.Action("Index", "Customers")">Bekijken</a></li>
                         </ul>
                     </li>
+                    }
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                    {
                     <li class="active ripple">
                         <a class="tree-toggle nav-header">
                             Account Overzicht
@@ -135,6 +152,7 @@
                             <li><a href="@Url.Action("Index", "Role_Manage")">Aanmaken</a></li>
                         </ul>
                     </li>
+                    }
                 </ul>
             </div>
         </div>
