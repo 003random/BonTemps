@@ -40,13 +40,21 @@ namespace BonTemps.Controllers
         // GET: Menus/Create
         public ActionResult Create()
         {
+            ViewBag.Allergies = db.Allergies.ToList();
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Menus menus, HttpPostedFileBase picture, Allergies allergies)
-        {
+        public ActionResult Create(Menus menus, int? Allergydropdown, HttpPostedFileBase picture)
+        { 
+
+            ViewBag.Allergies = db.Allergies.ToList();
+            if (Allergydropdown != null && Allergydropdown > 0 && db.Allergies.Any(c => c.Id == Allergydropdown))
+            {
+                menus.Allergy = db.Allergies.FirstOrDefault(c => c.Id == Allergydropdown);
+            }
+
             if (picture == null)
             {
                 TempData["error"] = "No image uploaded";
