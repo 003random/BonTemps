@@ -322,10 +322,6 @@
     <Compile Include="Migrations\201801291129427_Allergy model altered.Designer.cs">
       <DependentUpon>201801291129427_Allergy model altered.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201801301555296_dbcontext.cs" />
-    <Compile Include="Migrations\201801301555296_dbcontext.Designer.cs">
-      <DependentUpon>201801301555296_dbcontext.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Allergies.cs" />
@@ -827,9 +823,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801291129427_Allergy model altered.resx">
       <DependentUpon>201801291129427_Allergy model altered.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801301555296_dbcontext.resx">
-      <DependentUpon>201801301555296_dbcontext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
