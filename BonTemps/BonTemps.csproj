@@ -322,6 +322,7 @@
     <Content Include="asset\css\plugins\animate.min.css" />
     <Content Include="asset\css\plugins\bootstrap-material-datetimepicker.css" />
     <Content Include="asset\css\plugins\codemirror.css" />
+    <Content Include="asset\css\plugins\darktooltip.css" />
     <Content Include="asset\css\plugins\datatables.bootstrap.min.css" />
     <Content Include="asset\css\plugins\alertify-default.css" />
     <Content Include="asset\css\plugins\dropzone.css" />
@@ -584,6 +585,7 @@
     <Content Include="asset\js\plugins\ie9.js" />
     <Content Include="asset\js\plugins\imagesloaded.pkgd.min.js" />
     <Content Include="asset\js\plugins\ion.rangeSlider.min.js" />
+    <Content Include="asset\js\plugins\jquery.darktooltip.js" />
     <Content Include="asset\js\plugins\jquery.datatables.min.js" />
     <Content Include="asset\js\plugins\jquery.flot.min.js" />
     <Content Include="asset\js\plugins\jquery.knob.js" />
