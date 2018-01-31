@@ -14,6 +14,7 @@
                         <thead>
                         <tr>
                             <th>@Html.DisplayNameFor(model => model.Customer.FirstName) @Html.DisplayNameFor(model => model.Customer.Prefix) @Html.DisplayNameFor(model => model.Customer.LastName)</th>
+                            <th>@Html.DisplayNameFor(model => model.Customer.DateOfBirth)</th>
                             <th>@Html.DisplayNameFor(model => model.Date)</th>
                             <th>@Html.DisplayNameFor(model => model.Persons)</th>
                             <th>Opties</th>
@@ -24,6 +25,7 @@
                         {
                             <tr>
                                 <td>@Html.DisplayFor(modelItem => item.Customer.FirstName) @Html.DisplayFor(modelItem => item.Customer.Prefix) @Html.DisplayFor(modelItem => item.Customer.LastName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Customer.DateOfBirth)</td>                                
                                 <td>@Html.DisplayFor(modelItem => item.Date)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Persons)</td>
                                 <td>

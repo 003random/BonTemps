@@ -34,6 +34,7 @@ namespace BonTemps
                 "~/asset/js/plugins/alertify.min.js",
                 "~/asset/js/plugins/jquery.datatables.min.js",
                 "~/asset/js/plugins/datatables.bootstrap.min.js",
+                "~/asset/js/plugins/jquery.darktooltip.js",
                 "~/asset/js/main.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
@@ -55,6 +56,7 @@ namespace BonTemps
                 "~/asset/css/plugins/alertify.min.css",
                 "~/asset/css/plugins/alertify-default.css",
                 "~/asset/css/plugins/semantic.min.css",
+                "~/asset/css/plugins/darktooltip.css",
                 "~/asset/css/style.css"
             ));
         }

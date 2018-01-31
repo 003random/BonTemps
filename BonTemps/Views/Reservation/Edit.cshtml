@@ -61,7 +61,7 @@
                         </div>
 
                         <div class="form-group form-animate-text" style="margin-top: 40px !important;">
-                            @Html.TextBoxFor(m => m.Persons, new { @class = "form-text", required = "", type = "number" })
+                            @Html.TextBoxFor(m => m.Persons, new { @class = "form-text", required = "", type = "number", min = 1, max = 40, })
                             <span class="bar"></span>
                             @Html.LabelFor(m => m.Persons)
                             @Html.ValidationMessageFor(m => m.Persons, "", new { @class = "text-danger" })

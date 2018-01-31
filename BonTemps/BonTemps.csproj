@@ -290,6 +290,14 @@
     <Compile Include="Migrations\201801310943317_Initialize.Designer.cs">
       <DependentUpon>201801310943317_Initialize.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801311928443_DateOfBirth.cs" />
+    <Compile Include="Migrations\201801311928443_DateOfBirth.Designer.cs">
+      <DependentUpon>201801311928443_DateOfBirth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801311955569_DateOfBirthRes2.cs" />
+    <Compile Include="Migrations\201801311955569_DateOfBirthRes2.Designer.cs">
+      <DependentUpon>201801311955569_DateOfBirthRes2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Allergies.cs" />
@@ -322,6 +330,7 @@
     <Content Include="asset\css\plugins\animate.min.css" />
     <Content Include="asset\css\plugins\bootstrap-material-datetimepicker.css" />
     <Content Include="asset\css\plugins\codemirror.css" />
+    <Content Include="asset\css\plugins\darktooltip.css" />
     <Content Include="asset\css\plugins\datatables.bootstrap.min.css" />
     <Content Include="asset\css\plugins\alertify-default.css" />
     <Content Include="asset\css\plugins\dropzone.css" />
@@ -584,6 +593,7 @@
     <Content Include="asset\js\plugins\ie9.js" />
     <Content Include="asset\js\plugins\imagesloaded.pkgd.min.js" />
     <Content Include="asset\js\plugins\ion.rangeSlider.min.js" />
+    <Content Include="asset\js\plugins\jquery.darktooltip.js" />
     <Content Include="asset\js\plugins\jquery.datatables.min.js" />
     <Content Include="asset\js\plugins\jquery.flot.min.js" />
     <Content Include="asset\js\plugins\jquery.knob.js" />
@@ -790,6 +800,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201801310943317_Initialize.resx">
       <DependentUpon>201801310943317_Initialize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801311928443_DateOfBirth.resx">
+      <DependentUpon>201801311928443_DateOfBirth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801311955569_DateOfBirthRes2.resx">
+      <DependentUpon>201801311955569_DateOfBirthRes2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
