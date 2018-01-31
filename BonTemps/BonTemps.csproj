@@ -625,6 +625,14 @@
     <Content Include="asset\media\demo.mp4" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Uploads\allergy-images\Gluten.png" />
+    <Content Include="Content\Uploads\allergy-images\Koemelk.jpg" />
+    <Content Include="Content\Uploads\allergy-images\Lactose.png" />
+    <Content Include="Content\Uploads\allergy-images\Noten.png" />
+    <Content Include="Content\Uploads\allergy-images\Pinda.png" />
+    <Content Include="Content\Uploads\menu-images\Mozzerela.jpg" />
+    <Content Include="Content\Uploads\menu-images\Tonijn.jpg" />
+    <Content Include="Content\Uploads\menu-images\Varkensrip.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

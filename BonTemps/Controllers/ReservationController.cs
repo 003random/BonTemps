@@ -101,7 +101,7 @@ namespace BonTemps.Controllers
                 return HttpNotFound();
             }
 
-            if (id != null)
+            if (id != null && reservation.Customer != null)
             {
                 var reservationViewModel = new ReservationViewModel
                 {

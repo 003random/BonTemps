@@ -37,20 +37,42 @@ namespace BonTemps.Migrations
                 //seed customers table
                 for (var i = 0; i < 300; i++)
                 {
+                    int seed = new Random().Next(0, Int32.MaxValue);
                     context.Customers.AddOrUpdate(
-                        new Customers { Gender = GenderEnum.Man, FirstName = "Customer" + i, Prefix = "", LastName = "Seed" + i, PhoneNumber = "061223123" + i, Email = "Customer" + i + "@localhost", NewsLetter = true, DateCreated = DateTime.Now.AddDays(-new Random().Next(0, 190)) }
+                        new Customers { Gender = GenderEnum.Man, FirstName = "Customer" + i, Prefix = "", LastName = "Seed" + i, PhoneNumber = "061223123" + i, Email = "Customer" + i + "@localhost", NewsLetter = true, DateCreated = DateTime.Now.AddDays(-new Random(seed).Next(0, 190)) }
                     );
                 }
             }
+            if (!context.Allergies.Any())
+            {
+                context.Allergies.AddOrUpdate(
+                    new Allergies { Name = "Pinda", Image = "Pinda.png" },
+                    new Allergies { Name = "Noten", Image = "Noten.png" },
+                    new Allergies { Name = "Gluten", Image = "Gluten.png" },
+                    new Allergies { Name = "Lactose", Image = "Lactose.png" },
+                    new Allergies { Name = "Koemelk", Image = "Koemelk.jpg" }
+                );
+            }
+            if (!context.Menus.Any())
+            {
+                context.Menus.AddOrUpdate(
+                    new Menus { Name = "Vers Voorjaarsmenu", Description= "Voorgerecht: Spinaziesalade, Hoofdgerecht: Huisgerookte Zalm met wortels en peterselie saus ,Dessert: Verrassingsdessert", Image = "Mozzerela.jpg" },
+                    new Menus { Name = "Veggi Menu", Description = "Voorgerecht: Geitenkaas in bladerdeeg met vijgen en honing , Hoofdgerecht: Buffelmozarella met salieboter, gedroogde tomaten en brie , Dessert: Tiramisu", Image = "Tonijn.jpg" },
+                    new Menus { Name = "Meat Menu", Description = "Voorgerecht: Tomatensoep met verse basilicum  , Hoofdgerecht: Gegrilde varkensrib met tijm en kaassaus , Dessert: Sorbetijsselectie", Image = "Varkensrip.jpg" }
+                );
+            }
+            context.SaveChanges();
             if (!context.Reservations.Any())
             {
                 //seed reservations table
                 for(var i = 0; i < 300; i++)
                 {
+                    int seed = new Random().Next(0, Int32.MaxValue);
                     context.Reservations.AddOrUpdate(
-                        new Reservations { Date = DateTime.Now.AddDays(-new Random().Next(-10, 190)), Persons = new Random().Next(1,10), DateCreated = DateTime.Now.AddDays(-new Random().Next(0, 190)) }
-                        );
+                        new Reservations { Date = DateTime.Now.AddDays(-new Random(seed).Next(-10, 190)), Persons = new Random(seed).Next(1, 10), DateCreated = DateTime.Now.AddDays(-new Random(seed).Next(0, 190)), Customer = context.Customers.OrderBy(c => c.Id).Skip(new Random(seed).Next(0, 299)).First() }
+                    );
                 }
+                context.SaveChanges();
             }
             CreateRolesandUsers();
         }
