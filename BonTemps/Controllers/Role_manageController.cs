@@ -13,6 +13,7 @@ using OfficeOpenXml;
 
 namespace BonTemps.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class Role_manageController : Controller
     {
         private readonly ApplicationDbContext _db = new ApplicationDbContext();
