@@ -57,12 +57,11 @@ namespace BonTemps.Controllers
                 return HttpNotFound();
             }
             ViewBag.username = user.UserName;
-            var role = user.Roles.First().RoleId;
-            ViewBag.role = _db.Roles.FirstOrDefault(u => u.Id == role).Name;
+            var roleId = user.Roles.First().RoleId;
+            var role = _db.Roles.FirstOrDefault(u => u.Id == roleId).Name;
             ViewBag.roles = _db.Roles.ToList();
-            ViewBag.userid = user.Id;
             
-            return View();
+            return View(new RolesUsersModelView{ Role = role, UserId = user.Id, Username = user.UserName });
         }
 
 
@@ -76,23 +75,27 @@ namespace BonTemps.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(string userId, string roleId)
+        public async System.Threading.Tasks.Task<ActionResult> Edit(RolesUsersModelView rolesUsersModelView)
         {
-            if (!string.IsNullOrEmpty(userId) && roleId != null)
+            ViewBag.roles = _db.Roles.ToList();
+
+            if (!string.IsNullOrEmpty(rolesUsersModelView.UserId) && rolesUsersModelView.Role != null)
             {
                 var context = new ApplicationDbContext();
                 var userStore = new UserStore<ApplicationUser>(context);
                 var userManager = new UserManager<ApplicationUser>(userStore);
-                var user = _db.Users.FirstOrDefault(u => u.Id == userId);
+                var user = _db.Users.FirstOrDefault(u => u.Id == rolesUsersModelView.UserId);
 
-                userManager.RemoveFromRoles(userId, user.Roles.First().RoleId);
-                userManager.AddToRole(userId, roleId);
+                var roles = await userManager.GetRolesAsync(rolesUsersModelView.UserId);
+                await userManager.RemoveFromRolesAsync(rolesUsersModelView.UserId, roles.ToArray());
+
+                userManager.AddToRole(rolesUsersModelView.UserId, rolesUsersModelView.Role);
                 
                 TempData["success"] = "Succesvol bewerkt!";
                 return View();
             }
             TempData["error"] = "een of meer is/zijn incorrect";
-            return View();
+            return View(rolesUsersModelView);
         }
 
         public EmptyResult ExportToExcel()

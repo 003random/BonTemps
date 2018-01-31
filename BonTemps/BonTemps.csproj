@@ -340,6 +340,7 @@
     <Compile Include="Models\Reservations-Table_Layout.cs" />
     <Compile Include="Models\Reservations.cs" />
     <Compile Include="Models\ReservationViewModel.cs" />
+    <Compile Include="Models\RolesUsersModelView.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
     <Compile Include="Models\Table_layout-ReservationsModelView.cs" />
     <Compile Include="Models\Table_layout.cs" />
