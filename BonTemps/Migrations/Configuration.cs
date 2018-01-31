@@ -43,7 +43,7 @@ namespace BonTemps.Migrations
                     string firstname = firstNames[new Random(seed + i).Next(0, firstNames.Length - 1)];
                     string lastname = lastNames[new Random(seed - i).Next(0, lastNames.Length - 1)];
                     context.Customers.AddOrUpdate(
-                        new Customers { Gender = GenderEnum.Man, FirstName = firstname, Prefix = "", LastName = lastname, PhoneNumber = "06" + new Random(seed).Next(12345678, 99999999).ToString(), Email = firstname + "."+ lastname + "@gmail.com", NewsLetter = true, DateCreated = DateTime.Now.AddDays(-new Random(seed).Next(0, 190)) }
+                        new Customers { Gender = GenderEnum.Man, FirstName = firstname, Prefix = "", LastName = lastname, PhoneNumber = "06" + new Random(seed + i).Next(12345678, 99999999).ToString(), Email = firstname + "."+ lastname + "@gmail.com", NewsLetter = true, DateCreated = DateTime.Now.AddDays(-new Random(seed).Next(0, 190)) }
                     );
                 }
             }
