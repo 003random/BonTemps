@@ -43,6 +43,24 @@ namespace BonTemps.Migrations
                     );
                 }
             }
+            if (!context.Allergies.Any())
+            {
+                context.Allergies.AddOrUpdate(
+                    new Allergies { Name = "Pinda", Image = "Pinda.png" },
+                    new Allergies { Name = "Noten", Image = "Noten.png" },
+                    new Allergies { Name = "Gluten", Image = "Gluten.png" },
+                    new Allergies { Name = "Lactose", Image = "Lactose.png" },
+                    new Allergies { Name = "Koemelk", Image = "Koemelk.jpg" }
+                );
+            }
+            if (!context.Menus.Any())
+            {
+                context.Menus.AddOrUpdate(
+                    new Menus { Name = "Vers Voorjaarsmenu", Description= "Voorgerecht: Spinaziesalade, Hoofdgerecht: Huisgerookte Zalm met wortels en peterselie saus ,Dessert: Verrassingsdessert", Image = "Mozzerela.jpg" },
+                    new Menus { Name = "Veggi Menu", Description = "Voorgerecht: Geitenkaas in bladerdeeg met vijgen en honing , Hoofdgerecht: Buffelmozarella met salieboter, gedroogde tomaten en brie , Dessert: Tiramisu", Image = "Tonijn.jpg" },
+                    new Menus { Name = "Meat Menu", Description = "Voorgerecht: Tomatensoep met verse basilicum  , Hoofdgerecht: Gegrilde varkensrib met tijm en kaassaus , Dessert: Sorbetijsselectie", Image = "Varkensrip.jpg" }
+                );
+            }
             context.SaveChanges();
             if (!context.Reservations.Any())
             {
