@@ -40,6 +40,11 @@ namespace BonTemps.Models
         [Required(ErrorMessage = "* required")]
         public string PhoneNumber { get; set; }
 
+        [Display(Name = "Geboortedatum")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        [Required(ErrorMessage = "* required")]
+        public DateTime DateOfBirth { get; set; }
+
         [Display(Name = "E-mail")]
         [Required(ErrorMessage = "* required")]
         public string Email { get; set; }
