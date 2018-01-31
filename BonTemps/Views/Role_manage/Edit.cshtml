@@ -1,8 +1,42 @@
-﻿
+﻿@model IEnumerable<BonTemps.Models.RolesViewModel>
 @{
     ViewBag.Title = "Edit";
 }
 
-<h2>@ViewBag.username</h2>
-<h2>@ViewBag.role</h2>
+
+
+
+<div class="col-md-10">
+    <div class="col-md-12 panel">
+        <div class="col-md-12 panel-heading">
+            <h3>Account aanpassen</h3>
+        </div>
+        <div class="col-md-12 panel-body" style="padding-bottom:30px;">
+            <div class="col-md-12">
+                @using (Html.BeginForm("Edit", "Role_manage", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "cmxform", role = "form", enctype = "Multipart/form-data" }))
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.AntiForgeryToken()
+                    <div class="col-md-6">
+                        <h2>@ViewBag.username</h2>
+                           <br />
+
+
+                        <select id="role-ddl">
+                            <option value="0">Kies een role</option>
+                            @foreach (var a in ViewBag.roles)
+                            {
+                                <option value="@a.Id">@a.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-12">
+                        <input class="submit btn btn-danger" type="submit" value="Wijzig">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 

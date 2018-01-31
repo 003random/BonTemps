@@ -779,6 +779,8 @@
     <Content Include="Views\Role_manage\Index.cshtml" />
     <Content Include="Views\Allergies\Edit.cshtml" />
     <Content Include="Views\Role_manage\Edit.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\Shared\Internal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Employee\" />
