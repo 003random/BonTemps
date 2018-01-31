@@ -10,6 +10,7 @@ using BonTemps.Models;
 
 namespace BonTemps.Controllers
 {
+    [Authorize(Roles = "Admin,Serveerster")]
     public class OrderController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

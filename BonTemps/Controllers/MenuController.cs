@@ -11,6 +11,7 @@ using BonTemps.Models;
 
 namespace BonTemps.Controllers
 {
+    [Authorize(Roles = "kok,Admin")]
     public class MenuController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -40,37 +41,27 @@ namespace BonTemps.Controllers
         // GET: Menus/Create
         public ActionResult Create()
         {
-            ViewBag.Allergies = db.Allergies.ToList();
+            ViewBag.allergies = db.Allergies.ToList();
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Menus menus, int? Allergydropdown, HttpPostedFileBase picture)
-        { 
+        public ActionResult Create(allergyMenuViewModel allergyMenuViewModel)
+        {
+            var menu = new Menus { DateCreated = DateTime.Now, Description = allergyMenuViewModel.Description, Name = allergyMenuViewModel.Name};
+            ViewBag.allergies = db.Allergies.ToList();
 
-            ViewBag.Allergies = db.Allergies.ToList();
-            if (Allergydropdown != null && Allergydropdown > 0 && db.Allergies.Any(c => c.Id == Allergydropdown))
-            {
-                menus.Allergy = db.Allergies.FirstOrDefault(c => c.Id == Allergydropdown);
-            }
+            //if (allergyMenuViewModel.Image == null)
+            //{
+            //    Json("Geen afbeelding geupload");
+            //}
 
-            if (picture == null)
-            {
-                return View(menus);
-            }
+            //menu.Image = UploadImage(allergyMenuViewModel.Image);
 
-            menus.Image = UploadImage(picture);
-
-            if (!ModelState.IsValid)
-                return View(menus);
-
-            db.Menus.Add(menus);
+            db.Menus.Add(menu);
             db.SaveChanges();
-            TempData["success"] = "Succesvol opgeslagen";
-            return RedirectToAction("Create");
-
-        }
+            return Json("Succesvol opgeslagen");
+            }
 
         // GET: Menus/Edit/5
         public ActionResult Edit(int? id)
@@ -94,25 +85,23 @@ namespace BonTemps.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Menus menus, HttpPostedFileBase picture)
         {
+            if (!ModelState.IsValid)
+                return View(menus);
+
             if (picture != null)
             {
-                TempData["error"] = "No image uploaded";
                 menus.Image = UploadImage(picture);
             }
-            else
-            {
-                var find = db.Menus.Find(menus.Id);
-                if (find != null) menus.Image = find.Image;
-            }
 
-            if (ModelState.IsValid)
+            db.Entry(menus).State = EntityState.Modified;
+
+            if (picture == null)
             {
-                db.Entry(menus).State = EntityState.Modified;
-                db.SaveChanges();
-                TempData["success"] = "Succesvol bewerkt";
-                return RedirectToAction("Index");
+                db.Entry(menus).Property(x => x.Image).IsModified = false;
             }
-            return View(menus);
+            db.SaveChanges();
+            TempData["success"] = "Succesvol bewerkt";
+            return RedirectToAction("Index");
         }
 
         // GET: Menus/Delete/5

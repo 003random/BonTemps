@@ -22,10 +22,10 @@
                             {
                                 <tr>
                                     <td>@user.UserName</td>
-                                    @foreach (var role in user.RoleNames)
-                                    {
-                                    <td>@role</td>
-                                    }
+                                    
+                                    <td>@foreach (var role in user.RoleNames)
+                                        {@role}</td>
+                                    
                                     <td>
                                         <span onclick="window.location = '@Url.Action("Edit", "Role_manage", new {id = user.UserId})';" class="fa fa-pencil-square-o" style="margin-left: 10px; font-size:20px; cursor: pointer"></span>
                                         <span onclick="window.location = '@Url.Action("Delete", "Role_manage", new {id = user.UserId})';" class="fa fa-times" style="margin-left: 10px; font-size:20px; cursor: pointer"></span>
@@ -35,7 +35,7 @@
                         </tbody>
                     </table>
 
-                    @using (Html.BeginForm("ExportToExcel", "Reservation", FormMethod.Post))
+                    @using (Html.BeginForm("ExportToExcel", "Role_manage", FormMethod.Post))
                     {
                         <input type="submit" value="Exporteer naar Excel" class="button" />
                     }
