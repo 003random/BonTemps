@@ -11,6 +11,7 @@ using BonTemps.Models;
 
 namespace BonTemps.Controllers
 {
+    [Authorize(Roles = "Admin,Serveerster")]
     public class Table_layoutController : Controller
     {
         private readonly ApplicationDbContext _db = new ApplicationDbContext();

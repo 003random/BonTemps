@@ -10,6 +10,7 @@ using System.Threading;
 
 namespace BonTemps.Controllers
 {
+    [Authorize(Roles = "kok,Admin,Serveerster")]
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
