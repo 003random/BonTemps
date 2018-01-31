@@ -43,6 +43,7 @@ namespace BonTemps.Migrations
                     );
                 }
             }
+            context.SaveChanges();
             if (!context.Reservations.Any())
             {
                 //seed reservations table
@@ -50,9 +51,10 @@ namespace BonTemps.Migrations
                 {
                     int seed = new Random().Next(0, Int32.MaxValue);
                     context.Reservations.AddOrUpdate(
-                        new Reservations { Date = DateTime.Now.AddDays(-new Random(seed).Next(-10, 190)), Persons = new Random(seed).Next(1,10), DateCreated = DateTime.Now.AddDays(-new Random(seed).Next(0, 190)), Customer = context.Customers.OrderBy(c => c.Id).Skip(new Random(seed).Next(0, 299)).First() }
-                        );
+                        new Reservations { Date = DateTime.Now.AddDays(-new Random(seed).Next(-10, 190)), Persons = new Random(seed).Next(1, 10), DateCreated = DateTime.Now.AddDays(-new Random(seed).Next(0, 190)), Customer = context.Customers.OrderBy(c => c.Id).Skip(new Random(seed).Next(0, 299)).First() }
+                    );
                 }
+                context.SaveChanges();
             }
             CreateRolesandUsers();
         }
