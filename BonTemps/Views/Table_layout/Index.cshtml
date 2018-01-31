@@ -38,11 +38,11 @@
 
 <div style="display: none; height: 200px; width: 100vw; background-color: #f7f4f4;" class="toggle-div">
     <div class="fade-div" style="display: none;">
-        
+
     </div>
 </div>
 
-<div class="row content-part" style="box-shadow: 0 -5px 5px -5px #888888; horiz-align: center; position: relative;">
+<div class="row content-part" style="horiz-align: center; position: relative;">
 
     <div style="margin-top: 20px; margin-bottom: 20px; margin-left: 10%; margin-right: 10%;">
         @if (ViewBag.message != null)
@@ -53,23 +53,24 @@
             </div>
         }
     </div>
+</div>
 
-    @*<span id="btn-arrow" class="fa fa-arrow-down btn-toggle-div" aria-hidden="true" style="cursor: pointer; font-size: 4em; position: absolute; top: 10px; left: 25px;"></span>*@
-    
+@*<span id="btn-arrow" class="fa fa-arrow-down btn-toggle-div" aria-hidden="true" style="cursor: pointer; font-size: 4em; position: absolute; top: 10px; left: 25px;"></span>*@
+
 <div class="row">
 
     <div class="default items-col col-md-1" style="">
         <div class="default items-col">
-        @foreach (var reservation in ViewBag.Reservations)
-        {
-            for (var i = 0; i < Math.Ceiling((double)reservation.Persons / 2); i++)
+            @foreach (var reservation in ViewBag.Reservations)
             {
-                <div class='card card-free' reservation-id="@reservation.Id" style="z-index: 333;">
-                    <span class="" style="z-index: 333;">@reservation.Customer.FirstName[0]@reservation.Customer.LastName[0]</span>
-                </div>
+                for (var i = 0; i < Math.Ceiling((double)reservation.Persons / 2); i++)
+                {
+                    <div class='card card-free' reservation-id="@reservation.Id" style="z-index: 333;">
+                        <span class="" style="z-index: 333;">@reservation.Customer.FirstName[0]@reservation.Customer.LastName[0]</span>
+                    </div>
+                }
+                <hr />
             }
-            <hr />
-        }
         </div>
 
     </div>
@@ -105,6 +106,8 @@
         var conflict = false;
         var conflictCell;
         var skipMultiplePairsCheck = false;
+
+        var tempCell = null;
 
         function removeCellColors() {
             $(".grid-cells:not(.no-table)").css("background-color", "white");
@@ -287,6 +290,7 @@
                 !tablesFor2.filter(e => (e.x1 === parseInt(right.attr("x")) && e.y1 === parseInt(right.attr("y"))) ||
                     (e.x2 === parseInt(right.attr("x")) && e.y2 === parseInt(right.attr("y")))).length >
                 0) {
+                console.log("found a possible connection for right");
                 console.log("found a possible connection for right");
                 $(".option-right").css("color", "gray").css("opacity", "1");
             } else {
@@ -774,7 +778,7 @@
                 makeConnectionForFour(cell);
             }
 
-            
+
             leftOption = true;
             rightOption = true;
             topOption = true;
@@ -790,6 +794,29 @@
             console.log(tablesFor2);
         }
 
+        Array.prototype.removeIf = function(callback) {
+            var i = 0;
+            while (i < this.length) {
+                if (callback(this[i])) {
+                    this.splice(i, 1);
+                }
+                else {
+                    ++i;
+                }
+            }
+        };
+
+
+        Array.prototype.contains = function(obj) {
+            var i = this.length;
+            while (i--) {
+                if (this[i] === obj) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         var enableCells = function () {
             //$('.cell.cell-occupied').droppable('disable');
             //$('.no-table').droppable('disable');
@@ -802,7 +829,7 @@
                 accept: '.card',
                 helper: 'clone',
                 drop: function (evt, ui) {
-
+ 
                     if ($(this).hasClass("trash-bin")) {
                         ui.draggable.appendTo(".items-col");
                         ui.draggable.removeClass("card-occupier").addClass("card-free");
@@ -851,6 +878,41 @@
 
                         makeConnection(cell);
                     }
+
+                    //$(".grid-cells").each(function () {
+                    //    console.log()
+                    //    var found = false;
+                    //    for (var i = 0; i < tablesFor2.length; i++) {
+                    //        if ((tablesFor2[i].x1 === parseInt($(this).attr("x")) && tablesFor2[i].y1 === parseInt($(this).attr("y"))) || (tablesFor2[i].x2 === parseInt($(this).attr("x")) && tablesFor2[i].y2 === parseInt($(this).attr("y")))) {
+                    //            found = true;
+                    //            break;
+                    //        }
+                    //    }
+
+                    //    if (found) {
+                    //        console.log("cell found in array: ");
+                    //        console.log($(this));
+                    //    } else {
+                    //        console.log("----------inside else------------");
+                    //        var oldX = parseInt($(this).attr("x"));
+                    //        var oldY = parseInt($(this).attr("y"));
+
+                    //        tablesFor2.removeIf( function(item, idx) {
+                    //            return item.x1 === oldX && item.y1 === oldY;
+                    //        });
+                    
+                    //        tablesFor2.removeIf(function (item, idx) {
+                    //            return item.x2 === oldX && item.y2 === oldY;
+                    //        });
+
+                    //        console.log("removing " + parseInt($(this).attr("x")) + " - " + parseInt($(this).attr("y")));
+
+
+                    //        $(this).css("border-style", "solid");
+                    //        $(this).css("border-width", "1px");
+                    //        $(this).css("border-color", "black");
+                    //    }
+                    //    });
                 }
             });
         }
@@ -949,13 +1011,10 @@ $(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied')
     });
 </script>
 
-
 <style>
-
-
-     .ajs-content {
-         font-size: 1.6em;
-     }
+    .ajs-content {
+        font-size: 1.6em;
+    }
 
     .line {
         stroke: rgb(0,0,0);
@@ -1065,9 +1124,9 @@ $(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied')
         z-index: 999;
     }
 
-    .card-free:nth-child(even) {
-        margin-left: 20px !important;
-    }
+        .card-free:nth-child(even) {
+            margin-left: 20px !important;
+        }
 
     .card-occupier {
         display: table;
