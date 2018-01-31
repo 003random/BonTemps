@@ -13,6 +13,8 @@ namespace BonTemps.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false),
+                        DateCreated = c.DateTime(nullable: false),
+                        Image = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -21,13 +23,14 @@ namespace BonTemps.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Gender = c.String(nullable: false),
+                        Gender = c.Int(nullable: false),
                         FirstName = c.String(nullable: false),
-                        Prefix = c.String(nullable: false),
+                        Prefix = c.String(),
                         LastName = c.String(nullable: false),
-                        PhoneNumber = c.String(nullable: false),
+                        PhoneNumber = c.String(nullable: false, maxLength: 14),
                         Email = c.String(nullable: false),
                         NewsLetter = c.Boolean(nullable: false),
+                        DateCreated = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -50,6 +53,8 @@ namespace BonTemps.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false),
                         Description = c.String(),
+                        DateCreated = c.DateTime(nullable: false),
+                        Image = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -72,6 +77,7 @@ namespace BonTemps.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        DateCreated = c.DateTime(nullable: false),
                         Menu_Id = c.Int(),
                         Reservation_Id = c.Int(),
                     })
@@ -88,6 +94,7 @@ namespace BonTemps.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Date = c.DateTime(nullable: false),
                         Persons = c.Int(nullable: false),
+                        DateCreated = c.DateTime(nullable: false),
                         Customer_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -117,7 +124,8 @@ namespace BonTemps.Migrations
                         LayoutY = c.Int(nullable: false),
                         IsTable = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.TableLayoutId);
+                .PrimaryKey(t => t.TableLayoutId)
+                .Index(t => new { t.LayoutX, t.LayoutY }, unique: true, name: "Layouts");
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -208,6 +216,7 @@ namespace BonTemps.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.Table_layout", "Layouts");
             DropIndex("dbo.Reservations_Table_Layout", new[] { "Table_layout_TableLayoutId" });
             DropIndex("dbo.Reservations_Table_Layout", new[] { "Reservation_Id" });
             DropIndex("dbo.Reservations", new[] { "Customer_Id" });

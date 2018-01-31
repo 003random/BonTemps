@@ -7,13 +7,13 @@ namespace BonTemps.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Menuimage : IMigrationMetadata
+    public sealed partial class Initialize : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Menuimage));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initialize));
         
         string IMigrationMetadata.Id
         {
-            get { return "201801260837372_Menu image"; }
+            get { return "201801310943317_Initialize"; }
         }
         
         string IMigrationMetadata.Source
