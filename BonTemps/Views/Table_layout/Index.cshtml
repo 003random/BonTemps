@@ -65,7 +65,7 @@
             {
                 for (var i = 0; i < Math.Ceiling((double)reservation.Persons / 2); i++)
                 {
-                    <div class='card card-free' reservation-id="@reservation.Id" style="z-index: 333;">
+                    <div class='card card-free' reservation-id="@reservation.Id" style="z-index: 333;" data-tooltip="Voornaam: <span style='color: #2196F3;'>@reservation.Customer.FirstName</span> <br> Achternaam: @reservation.Customer.LastName <br> Telefoon-nummer: @reservation.Customer.PhoneNumber <br> Aantal personen: @reservation.Persons <br> Datum/Tijd: <span style='color: #2196F3;'>@reservation.Date</span>">
                         <span class="" style="z-index: 333;">@reservation.Customer.FirstName[0]@reservation.Customer.LastName[0]</span>
                     </div>
                 }
@@ -99,6 +99,11 @@
 <!--<script  src="js/index.js"></script>-->
 <script>
     $(document).ready(function () {
+        $(".card").darkTooltip({
+            animation: 'flipIn',
+            gravity: 'west',
+            theme: 'dark'
+            });
 
         var tablesFor2 = [];
         var tablesFor4 = [];
@@ -829,14 +834,14 @@
                 accept: '.card',
                 helper: 'clone',
                 drop: function (evt, ui) {
- 
+
                     if ($(this).hasClass("trash-bin")) {
                         ui.draggable.appendTo(".items-col");
                         ui.draggable.removeClass("card-occupier").addClass("card-free");
                         ui.draggable.css("background", "").css("height", "").css("width", "");
                         ui.draggable.css("background", "").css("top", "").css("left", "");
                         ui.draggable.children("span").eq(0).removeClass("text-occupied").css("display", "");
-                        ui.draggable.children("span").eq(1).hide();
+                        //ui.draggable.children("span").eq(1).hide();
                         setTimeout(function() {
                                 $(".trash-bin").show().effect("bounce", {
                                         times: 1
@@ -874,7 +879,7 @@
                         card.addClass('card-occupier');
                         card.removeClass('card-free');
                         cell.addClass('cell-occupied');
-                        ui.draggable.children().text("");
+                        //ui.draggable.children().text("");
 
                         makeConnection(cell);
                     }
@@ -900,7 +905,7 @@
                     //        tablesFor2.removeIf( function(item, idx) {
                     //            return item.x1 === oldX && item.y1 === oldY;
                     //        });
-                    
+
                     //        tablesFor2.removeIf(function (item, idx) {
                     //            return item.x2 === oldX && item.y2 === oldY;
                     //        });
@@ -914,7 +919,7 @@
                     //    }
                     //    });
 
-                    $(".grid-cells:not(:has(.card))").each(function () { 
+                    $(".grid-cells:not(:has(.card))").each(function () {
                             $(this).css("border-style", "solid");
                             $(this).css("border-width", "1px");
                             $(this).css("border-color", "black");
@@ -1018,9 +1023,13 @@ $(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied')
 </script>
 
 <style>
-    .ajs-content {
-        font-size: 1.6em;
+    .dark-tooltip {
+        z-index: 9999 !important;
     }
+
+     .ajs-content {
+         font-size: 1.6em;
+     }
 
     .line {
         stroke: rgb(0,0,0);
@@ -1130,9 +1139,9 @@ $(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied')
         z-index: 999;
     }
 
-        .card-free:nth-child(even) {
-            margin-left: 20px !important;
-        }
+    .card-free:nth-child(even) {
+        margin-left: 20px !important;
+    }
 
     .card-occupier {
         display: table;
@@ -1149,7 +1158,7 @@ $(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied')
         width: 100%;
         margin: 0 auto;
         text-align: center;
-        font-size: 3vw;
+        font-size: 1.5vw;
         max-width: 1px !important;
         word-wrap: break-word !important;
         white-space: pre-line;
