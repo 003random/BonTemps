@@ -11,6 +11,7 @@ using BonTemps.Models;
 
 namespace BonTemps.Controllers
 {
+    [Authorize(Roles = "kok,Admin")]
     public class MenuController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

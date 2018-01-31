@@ -12,6 +12,7 @@ using System.Globalization;
 
 namespace BonTemps.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CustomersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
