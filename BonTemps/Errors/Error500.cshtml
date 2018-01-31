@@ -1,0 +1,28 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>404 - Not Found</title>
+</head>
+<body>
+    <div class="error">
+        <div class="error-code m-b-10 m-t-20">404 <i class="fa fa-warning"></i></div>
+        <h3 class="font-bold">We couldn't find the page..</h3>
+        <div class="error-desc">
+            Sorry, er is iets fout gegaan.<br />
+            Probeer de pagina te refreshen of klik op de knop hieronder om terug te gaan naar de homepagina.
+            <div>
+                <div class=" login-detail-panel-button btn" href="">
+                    <a href="@Url.Action("Index", "Home")">Ga terug</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -15,6 +15,7 @@ namespace BonTemps.Models
         [Required]
         public string Name { get; set; }
 
+        [DataType(DataType.MultilineText)]
         [Display(Name = "Beschrijving")]
         public string Description { get; set; }
 

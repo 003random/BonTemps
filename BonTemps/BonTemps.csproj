@@ -477,15 +477,18 @@
     <Content Include="asset\img\controls.png" />
     <Content Include="asset\img\controls.svg" />
     <Content Include="asset\img\demo-video.png" />
+    <Content Include="asset\img\floppy.png" />
     <Content Include="asset\img\g3986.png" />
     <Content Include="asset\img\left-bg.png" />
     <Content Include="asset\img\left-bg2.png" />
+    <Content Include="asset\img\logoBonTemps.png" />
     <Content Include="asset\img\logomi.png" />
     <Content Include="asset\img\sprite-skin-flat.png" />
     <Content Include="asset\img\sprite-skin-modern.png" />
     <Content Include="asset\img\sprite-skin-nice.png" />
     <Content Include="asset\img\sprite-skin-simple.png" />
     <Content Include="asset\img\ss.png" />
+    <Content Include="asset\img\trash.jpg" />
     <Content Include="asset\js\plugins\alertify.min.js" />
     <Content Include="asset\js\bootstrap.min.js" />
     <Content Include="asset\js\jquery.min.js" />
@@ -759,6 +762,8 @@
     <Content Include="Views\Role_manage\Edit.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Shared\Internal.cshtml" />
+    <Content Include="Errors\Error404.cshtml" />
+    <Content Include="Errors\Error500.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Employee\" />
