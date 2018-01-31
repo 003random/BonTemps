@@ -759,6 +759,8 @@
     <Content Include="Views\Role_manage\Edit.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Shared\Internal.cshtml" />
+    <Content Include="Errors\Error404.cshtml" />
+    <Content Include="Errors\Error500.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Employee\" />
