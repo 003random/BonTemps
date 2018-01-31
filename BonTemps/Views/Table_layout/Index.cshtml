@@ -913,6 +913,12 @@
                     //        $(this).css("border-color", "black");
                     //    }
                     //    });
+
+                    $(".grid-cells:not(:has(.card))").each(function () { 
+                            $(this).css("border-style", "solid");
+                            $(this).css("border-width", "1px");
+                            $(this).css("border-color", "black");
+                    });
                 }
             });
         }
@@ -1033,14 +1039,14 @@ $(".cell[x='@item.LayoutX'][y='@item.LayoutY']").eq(0).addClass('cell-occupied')
     .btn-save:hover {
         width: 4.5vw;
         height: 4.5vw;
-        top: 30px;
+        top: 155px;
         right: 30px;
     }
 
     .btn-save {
         cursor: pointer;
         position: absolute;
-        top: 25px;
+        top: 160px;
         right: 25px;
         width: 5vw;
         height: 5vw;
