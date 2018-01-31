@@ -37,9 +37,13 @@ namespace BonTemps.Migrations
                 //seed customers table
                 for (var i = 0; i < 300; i++)
                 {
-                    int seed = new Random().Next(0, Int32.MaxValue);
+                    int seed = new Random().Next(0, Int32.MaxValue - 301);
+                    string[] firstNames = { "Zulema", "Veda", "Thomas", "Dara", "Verna", "Lisandra", "Theodore", "Kelli", "Dawne", "Ka", "Mikaela", "Melania", "Domonique", "Roselle", "Rosamond", "Hilario", "Nathan", "Rossie", "Gennie", "Devin", "Merlyn", "Marta", "Cristy", "Jeanett", "Perla", "Keitha", "Toby", "Adrianna", "Ehtel", "Sherrill", "Cyril", "Jennefer", "Valeria", "Sueann", "Racheal", "Leann", "Karey", "Felix", "Mikel", "Tawny", "Julieann", "Alvin", "Ashton", "Sherlyn", "Xochitl", "Margarette", "Jackqueline", "Filomena", "Maudie", "Beaulah" };
+                    string[] lastNames = { "Bush", "Barber", "Brady", "Harmon", "Dudley", "Ball", "Trevino", "Weaver", "Cooley", "Ford", "Cole", "Bartlett", "Burke", "Porter", "Acevedo", "Vaughn", "Flowers", "Evans", "Cobb", "Mccullough", "Aguirre", "Galvan", "Mcdaniel", "Watts", "Krause", "Mathis", "Harvey", "Waters", "Duke", "Russo", "Boone", "Schmitt", "Shah", "Stone", "Spears", "Ponce", "Ochoa", "Yoder", "Buck", "Shields", "Anderson", "Zhang", "Bernard", "Zamora", "Wu", "Ray", "Heath", "Harrison", "Rasmussen", "Bridges" };
+                    string firstname = firstNames[new Random(seed + i).Next(0, firstNames.Length - 1)];
+                    string lastname = lastNames[new Random(seed - i).Next(0, lastNames.Length - 1)];
                     context.Customers.AddOrUpdate(
-                        new Customers { Gender = GenderEnum.Man, FirstName = "Customer" + i, Prefix = "", LastName = "Seed" + i, PhoneNumber = "061223123" + i, Email = "Customer" + i + "@localhost", NewsLetter = true, DateCreated = DateTime.Now.AddDays(-new Random(seed).Next(0, 190)) }
+                        new Customers { Gender = GenderEnum.Man, FirstName = firstname, Prefix = "", LastName = lastname, PhoneNumber = "06" + new Random(seed).Next(12345678, 99999999).ToString(), Email = firstname + "."+ lastname + "@gmail.com", NewsLetter = true, DateCreated = DateTime.Now.AddDays(-new Random(seed).Next(0, 190)) }
                     );
                 }
             }
