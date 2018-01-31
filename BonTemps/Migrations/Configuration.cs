@@ -37,8 +37,9 @@ namespace BonTemps.Migrations
                 //seed customers table
                 for (var i = 0; i < 300; i++)
                 {
+                    int seed = new Random().Next(0, Int32.MaxValue);
                     context.Customers.AddOrUpdate(
-                        new Customers { Gender = GenderEnum.Man, FirstName = "Customer" + i, Prefix = "", LastName = "Seed" + i, PhoneNumber = "061223123" + i, Email = "Customer" + i + "@localhost", NewsLetter = true, DateCreated = DateTime.Now.AddDays(-new Random().Next(0, 190)) }
+                        new Customers { Gender = GenderEnum.Man, FirstName = "Customer" + i, Prefix = "", LastName = "Seed" + i, PhoneNumber = "061223123" + i, Email = "Customer" + i + "@localhost", NewsLetter = true, DateCreated = DateTime.Now.AddDays(-new Random(seed).Next(0, 190)) }
                     );
                 }
             }
@@ -47,8 +48,9 @@ namespace BonTemps.Migrations
                 //seed reservations table
                 for(var i = 0; i < 300; i++)
                 {
+                    int seed = new Random().Next(0, Int32.MaxValue);
                     context.Reservations.AddOrUpdate(
-                        new Reservations { Date = DateTime.Now.AddDays(-new Random().Next(-10, 190)), Persons = new Random().Next(1,10), DateCreated = DateTime.Now.AddDays(-new Random().Next(0, 190)) }
+                        new Reservations { Date = DateTime.Now.AddDays(-new Random(seed).Next(-10, 190)), Persons = new Random(seed).Next(1,10), DateCreated = DateTime.Now.AddDays(-new Random(seed).Next(0, 190)), Customer = context.Customers.OrderBy(c => c.Id).Skip(new Random(seed).Next(0, 299)).First() }
                         );
                 }
             }
