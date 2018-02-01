@@ -37,7 +37,7 @@ namespace BonTemps
                 "~/asset/js/plugins/jquery.darktooltip.js",
                 "~/asset/js/main.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+            bundles.Add(new ScriptBundle("~/bundles/datepicker").Include(
                 "~/asset/js/jquery.min.js"
                ));
 
