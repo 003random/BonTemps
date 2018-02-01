@@ -1,4 +1,4 @@
-﻿@model BonTemps.Models.Menus
+﻿@model BonTemps.Models.allergyMenuViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -7,11 +7,11 @@
 <div class="col-md-10">
     <div class="col-md-12 panel">
         <div class="col-md-12 panel-heading">
-            <h3>Menu bewerken</h3>
+            <h3>Menu aanmaken</h3>
         </div>
         <div class="col-md-12 panel-body" style="padding-bottom:30px;">
             <div class="col-md-12">
-                @using (Html.BeginForm("Edit", "Menu", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "cmxform", role = "form", enctype = "Multipart/form-data" }))
+                @using (Html.BeginForm("Create", "Menu", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "cmxform", role = "form", enctype = "Multipart/form-data" }))
                 {
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.AntiForgeryToken()
@@ -24,30 +24,152 @@
                         </div>
 
                         <div class="form-group form-animate-text" style="margin-top: 40px !important;">
-                            @Html.TextAreaFor(m => m.Description, 10, 55, new { @class = "form-text", required = "" })
+                            @Html.TextAreaFor(m => m.Description, 3, 55, new { @class = "form-text", required = "" })
                             <span class="bar"></span>
                             @Html.LabelFor(m => m.Description)
                             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                         </div>
 
-                        
+                        <select id="allergy-ddl">
+                            <option value="0">Kies een allergie</option>
+                            @foreach (var a in ViewBag.allergies)
+                            {
+                                <option value="@a.Id">@a.Name</option>
+                            }
+                        </select>
+
+                        <br />
+                        <br />
+                        <br />
+
+                        <table class="allergy-table table table-hover table-bordered"></table>
+
+                        @Html.HiddenFor(m => m.Allergies);
+
                         <div class="form-group form-animate-text" style="margin-top: 40px !important;">
-                            Huidige afbeelding<br>
-                            <img style="border: outset 1px; border-color: darkgray; padding: 4px; border-radius: 5px; margin-bottom: 5%;" src="~/Content/Uploads/menu-images/@Html.DisplayFor(m => m.Image)" onerror="this.src = 'https://vignette.wikia.nocookie.net/bokunoheroacademia/images/d/d5/NoPicAvailable.png/revision/latest?cb=20160326222204';" alt="menu image" width="100px" height="100px;" />
                             <input type="file" name="picture" id="picture" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn fileupload-v1-btn" />
                         </div>
                     </div>
 
+
                     <div class="col-md-12">
-                        <input class="submit btn btn-danger" type="submit" value="Opslaan">
-                        <button class="submit btn btn-primary" onclick="location.href='@Url.Action("Index", "Menu")';return false;">Annuleer</button>
+                        <input class="submit btn btn-danger" type="submit" value="Aanmaken">
                     </div>
                 }
+
             </div>
         </div>
     </div>
 </div>
+<style>
+    ul li {
+    }
+
+    .table-bordered {
+        border: 2px solid gray !important;
+    }
+
+    .fa-check:before {
+        /*font-family: 'FontAwesome';
+        content: '\f00d';*/
+        margin-right: 10px;
+        color: green;
+    }
+</style>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        Array.prototype.contains = function(obj) {
+            var i = this.length;
+            while (i--) {
+                if (this[i] == obj) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        var allergies = [];
+        $(document).ready(function() {
+            allergies = $("#Allergies").val().split(',');
+
+            for (var i = 0; i < allergies.length; ++i) {
+                $(".allergy-table").append("<tr><td class='" +
+                    allergies[i] +
+                    "'><span class='fa fa-check' aria-hidden='true'></span>" +
+                    $("option[value='" + allergies[i] + "']").text() +
+                    "</td></tr>");
+            }
+
+
+            $("#allergy-ddl").change(function() {
+                console.log("on change event");
+                if (parseInt($("#allergy-ddl").val()) !== 0 &&
+                    allergies.contains(parseInt($("#allergy-ddl").val())) === false) {
+                    console.log("inside if");
+                    allergies.push(parseInt($("#allergy-ddl").val()));
+                    $(".allergy-table").append("<tr><td class='" +
+                        parseInt($("#allergy-ddl").val()) +
+                        "'><span class='fa fa-check' aria-hidden='true'></span>" +
+                        $("#allergy-ddl :selected").text() +
+                        "</td></tr>");
+                }
+                $("#Allergies").val(allergies.join());
+            });
+        });
+
+        @*$(".submit").on("click",
+            function() {
+                var name = $("#Name").val();
+                var description = $("#Description").val();
+                var image = $("#picture").get(0).files;
+
+
+                console.log("name is " + name);
+                console.log("description is " + description);
+                console.log("image is ");
+                console.log(image[0]);
+
+                if (name && description) {
+                    console.log("inside if json post");
+                    var jsonObject = {
+                        "Name": name,
+                        "Description": description,
+                        "Allergies": allergies,
+                        "Image": image[0].name
+                    };
+
+                    $.ajax({
+                        url: "@Url.Action("Create")",
+                        type: "POST",
+                        data: JSON.stringify(jsonObject),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        error: function(response) {
+                            alert(response.responseText);
+                        },
+                        success: function(response) {
+                            alertify.success(response);
+                            var name = $("#Name").val("");
+                            var description = $("#Description").val("");
+                            var image = $("#picture").val("");
+                        }
+                    });
+                } else {
+                    console.log("else if json post");
+                }
+            });*@
+
+        $(".fa").on("click",
+            function() {
+                alert(0);
+                console.log(allergies);
+                $(this).remove();
+                allergies.remove(parseInt($(this).attr("allergy-id")));
+                console.log(allergies);
+            });
+    </script>
 }
+

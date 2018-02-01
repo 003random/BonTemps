@@ -48,7 +48,7 @@ namespace BonTemps.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] Allergies allergies, HttpPostedFileBase picture)
+        public ActionResult Create(Allergies allergies, HttpPostedFileBase picture)
         {
             if (picture == null)
             {

@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BonTemps.Models;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace BonTemps.Controllers
 {
@@ -19,7 +20,6 @@ namespace BonTemps.Controllers
         // GET: Menus
         public ActionResult Index()
         {
-            var menus = db.Allergies.Include(r => r.Name);
             return View(db.Menus.ToList());
         }
 
@@ -46,26 +46,49 @@ namespace BonTemps.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(allergyMenuViewModel allergyMenuViewModel)
+        public ActionResult Create(allergyMenuViewModel allergyMenuViewModel, HttpPostedFileBase picture)
         {
-            var menu = new Menus { DateCreated = DateTime.Now, Description = allergyMenuViewModel.Description, Name = allergyMenuViewModel.Name};
+            var menu = new Menus { DateCreated = DateTime.Now, Description = allergyMenuViewModel.Description, Name = allergyMenuViewModel.Name };
             ViewBag.allergies = db.Allergies.ToList();
 
-            //if (allergyMenuViewModel.Image == null)
-            //{
-            //    Json("Geen afbeelding geupload");
-            //}
+            if (picture == null)
+            {
+                TempData["warning"] = "Geen afbeelding geupload";
+                return View(allergyMenuViewModel);
+            }
 
-            //menu.Image = UploadImage(allergyMenuViewModel.Image);
+            menu.Image = UploadImage(picture);
 
             db.Menus.Add(menu);
             db.SaveChanges();
-            return Json("Succesvol opgeslagen");
+
+            if (allergyMenuViewModel.Allergies.StartsWith(","))
+            {
+                allergyMenuViewModel.Allergies = allergyMenuViewModel.Allergies.Substring(1);
             }
+
+            foreach (var allergy in allergyMenuViewModel.Allergies.Split(','))
+            {
+                var intAllergy = Convert.ToInt16(allergy);
+                var allergyObj = new Menus_Allergies
+                {
+                    Allergie = db.Allergies.FirstOrDefault(a => a.Id == intAllergy),
+                    Menu = menu
+                };
+
+                db.Menus_Allergies.Add(allergyObj);
+            }
+
+            db.SaveChanges();
+            TempData["success"] = "Sucesvol opgeslagen";
+            return View();
+        }
 
         // GET: Menus/Edit/5
         public ActionResult Edit(int? id)
         {
+            ViewBag.allergies = db.Allergies.ToList();
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -75,7 +98,18 @@ namespace BonTemps.Controllers
             {
                 return HttpNotFound();
             }
-            return View(menus);
+
+            var arr = db.Menus_Allergies.Where(m => m.Menu.Id == menus.Id).Select(m => m.Allergie).Select(m => m.Id);
+
+            var allergies = string.Join(",", arr);
+
+            var modelview = new allergyMenuViewModel
+            {
+                Description = menus.Description,
+                Name = menus.Name,
+                Allergies = allergies
+            };
+            return View(modelview);
         }
 
         // POST: Menus/Edit/5
@@ -83,25 +117,58 @@ namespace BonTemps.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Menus menus, HttpPostedFileBase picture)
+        public ActionResult Edit(allergyMenuViewModel allergyMenuViewModel, HttpPostedFileBase picture)
         {
+            ViewBag.allergies = db.Allergies.ToList();
+
+            if (string.IsNullOrEmpty(allergyMenuViewModel.Name) || string.IsNullOrEmpty(allergyMenuViewModel.Description))
+            {
+                TempData["error"] = "Ongeldige waardes";
+                return View(allergyMenuViewModel);
+            }
+
+            var menu = new Menus { DateCreated = DateTime.Now, Description = allergyMenuViewModel.Description, Name = allergyMenuViewModel.Name };
+            ViewBag.allergies = db.Allergies.ToList();
+
             if (!ModelState.IsValid)
-                return View(menus);
+                return View(allergyMenuViewModel);
 
             if (picture != null)
             {
-                menus.Image = UploadImage(picture);
+                menu.Image = UploadImage(picture);
             }
 
-            db.Entry(menus).State = EntityState.Modified;
+            db.Entry(menu).State = EntityState.Modified;
 
             if (picture == null)
             {
-                db.Entry(menus).Property(x => x.Image).IsModified = false;
+                db.Entry(menu).Property(x => x.Image).IsModified = false;
             }
+
             db.SaveChanges();
-            TempData["success"] = "Succesvol bewerkt";
-            return RedirectToAction("Index");
+
+            db.Menus_Allergies.RemoveRange(db.Menus_Allergies.Where(m => m.Menu.Id == menu.Id));
+
+            if (allergyMenuViewModel.Allergies.StartsWith(","))
+            {
+                allergyMenuViewModel.Allergies = allergyMenuViewModel.Allergies.Substring(1);
+            }
+
+            foreach (var allergy in allergyMenuViewModel.Allergies.Split(','))
+            {
+                var intAllergy = Convert.ToInt16(allergy);
+                var allergyObj = new Menus_Allergies
+                {
+                    Allergie = db.Allergies.FirstOrDefault(a => a.Id == intAllergy),
+                    Menu = menu
+                };
+
+                db.Menus_Allergies.Add(allergyObj);
+            }
+
+            db.SaveChanges();
+            TempData["success"] = "Sucesvol opgeslagen";
+            return View();
         }
 
         // GET: Menus/Delete/5

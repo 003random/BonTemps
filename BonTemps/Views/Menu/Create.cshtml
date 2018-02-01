@@ -1,4 +1,4 @@
-﻿@model BonTemps.Models.Menus
+﻿@model BonTemps.Models.allergyMenuViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -11,7 +11,8 @@
         </div>
         <div class="col-md-12 panel-body" style="padding-bottom:30px;">
             <div class="col-md-12">
-              
+                @using (Html.BeginForm("Create", "Menu", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "cmxform", role = "form", enctype = "Multipart/form-data" }))
+                {
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.AntiForgeryToken()
                     <div class="col-md-6">
@@ -23,7 +24,7 @@
                         </div>
 
                         <div class="form-group form-animate-text" style="margin-top: 40px !important;">
-                            @Html.TextAreaFor(m => m.Description,10,55, new { @class = "form-text", required = "" })
+                            @Html.TextAreaFor(m => m.Description, 3, 55, new { @class = "form-text", required = "" })
                             <span class="bar"></span>
                             @Html.LabelFor(m => m.Description)
                             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
@@ -43,15 +44,19 @@
 
                         <table class="allergy-table table table-hover table-bordered"></table>
 
+                        @Html.HiddenFor(m => m.Allergies);
+
                         <div class="form-group form-animate-text" style="margin-top: 40px !important;">
                             <input type="file" name="picture" id="picture" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn fileupload-v1-btn" />
                         </div>
                     </div>
 
+
                     <div class="col-md-12">
                         <input class="submit btn btn-danger" type="submit" value="Aanmaken">
                     </div>
-               
+                }
+
             </div>
         </div>
     </div>
@@ -86,7 +91,8 @@
         }
 
         var allergies = [];
-        $(document).ready(function() {
+        $(document).ready(function () {
+            allergies = $("#Allergies").val().split(',');
             $("#allergy-ddl").change(function() {
                 console.log("on change event");
                 if (parseInt($("#allergy-ddl").val()) !== 0 &&
@@ -99,26 +105,29 @@
                         $("#allergy-ddl :selected").text() +
                         "</td></tr>");
                 }
+                $("#Allergies").val(allergies.join());
             });
         });
 
-        $(".submit").on("click",
+        @*$(".submit").on("click",
             function() {
                 var name = $("#Name").val();
                 var description = $("#Description").val();
                 var image = $("#picture").get(0).files;
 
+
                 console.log("name is " + name);
                 console.log("description is " + description);
-                console.log("image is " + image);
-                
+                console.log("image is ");
+                console.log(image[0]);
+
                 if (name && description) {
                     console.log("inside if json post");
                     var jsonObject = {
                         "Name": name,
                         "Description": description,
                         "Allergies": allergies,
-                        "Image": image
+                        "Image": image[0].name
                     };
 
                     $.ajax({
@@ -140,7 +149,7 @@
                 } else {
                     console.log("else if json post");
                 }
-            });
+            });*@
 
         $(".fa").on("click",
             function() {
