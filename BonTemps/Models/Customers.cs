@@ -58,6 +58,7 @@ namespace BonTemps.Models
         public Customers()
         {
             this.DateCreated = DateTime.Now;
-        }
+            this.DateOfBirth = DateTime.Now.AddYears(-20);
+            }
     }
 }
