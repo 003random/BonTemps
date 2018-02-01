@@ -22,10 +22,14 @@ namespace BonTemps.Controllers
         private readonly ApplicationDbContext _db = new ApplicationDbContext();
 
         // GET: Reservations
-        public ActionResult Index()
+        public ActionResult Index(DateTime? begindate, DateTime? enddate)
         {
-            var reservations = _db.Reservations.Include(r => r.Customer);
-            return View(reservations.ToList());
+            if (begindate != default(DateTime) && enddate != default(DateTime))
+            {
+                var reservations = (_db.Reservations.Include(r => r.Customer).Where(r => r.Date > begindate && r.Date < enddate));
+                return View(reservations.ToList());
+            }
+            return View(_db.Reservations.ToList());
         }
 
         // GET: Reservations/Create
