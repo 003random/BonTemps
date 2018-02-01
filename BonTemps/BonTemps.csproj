@@ -275,6 +275,7 @@
     <Compile Include="Controllers\AllergiesController.cs" />
     <Compile Include="Controllers\API\MenuAPIController.cs" />
     <Compile Include="Controllers\API\ReservationAPIController.cs" />
+    <Compile Include="Controllers\ChefController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -779,6 +780,7 @@
     <Content Include="Views\Shared\Internal.cshtml" />
     <Content Include="Errors\Error404.cshtml" />
     <Content Include="Errors\Error500.cshtml" />
+    <Content Include="Views\Chef\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Employee\" />
