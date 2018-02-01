@@ -5,11 +5,14 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 using BonTemps.Models;
 using System.Web.UI.WebControls;
 using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using WebGrease.Css.Extensions;
 
 namespace BonTemps.Controllers
 {
@@ -39,6 +42,60 @@ namespace BonTemps.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ReservationViewModel reservationCustomer)
         {
+            const int seats = 40;
+            const int mondayStartHour = 0;
+            const int mondayStopHour = 0;
+
+            const int tuesdayStartHour = 10;
+            const int tuesdayStopHour = 24;
+
+            const int wednesdayStartHour = 10;
+            const int wednesdayStopHour = 25;
+
+            const int thursdayStartHour = 10;
+            const int thursdayStopHour = 26;
+
+            const int fridayStartHour = 10;
+            const int fridayStopHour = 27;
+
+            const int saturdayStartHour = 10;
+            const int saturdayStopHour = 29;
+
+            const int sundayStartHour = 10;
+            const int sundayStopHour = 24;
+
+
+            var first = DateTime.Now.AddHours(-2);
+            var last = DateTime.Now.AddHours(2);
+            var reservationsInScope = _db.Reservations.Where(r => r.DateCreated >= first && r.DateCreated <= last);
+
+            var count = 0;
+            foreach (var r in reservationsInScope)
+            {
+                count += r.Persons;
+            }
+
+            var freeSeats = seats - count;
+
+            if (freeSeats < reservationCustomer.Persons)
+            {
+                TempData["warning"] = " er zijn nog " + freeSeats + " stoelen vrij op " + reservationCustomer.Date;
+                return View(reservationCustomer);
+            }
+
+            if ((reservationCustomer.Date.DayOfWeek == DayOfWeek.Monday) ||
+                (reservationCustomer.Date.DayOfWeek == DayOfWeek.Tuesday && (reservationCustomer.Date.Hour < tuesdayStartHour || reservationCustomer.Date.Hour > tuesdayStopHour)) ||
+                 (reservationCustomer.Date.DayOfWeek == DayOfWeek.Wednesday && (reservationCustomer.Date.Hour < wednesdayStartHour || reservationCustomer.Date.Hour > wednesdayStopHour)) ||
+                  (reservationCustomer.Date.DayOfWeek == DayOfWeek.Thursday && (reservationCustomer.Date.Hour < thursdayStartHour || reservationCustomer.Date.Hour > thursdayStopHour)) ||
+                   (reservationCustomer.Date.DayOfWeek == DayOfWeek.Friday && (reservationCustomer.Date.Hour < fridayStartHour || reservationCustomer.Date.Hour > fridayStopHour)) ||
+                    (reservationCustomer.Date.DayOfWeek == DayOfWeek.Saturday && (reservationCustomer.Date.Hour < saturdayStartHour || reservationCustomer.Date.Hour > saturdayStopHour)) ||
+                     (reservationCustomer.Date.DayOfWeek == DayOfWeek.Sunday && (reservationCustomer.Date.Hour < sundayStartHour || reservationCustomer.Date.Hour > sundayStopHour)))
+            {
+                var culture = new CultureInfo("nl-NL");
+                TempData["warning"] = "Op " + culture.DateTimeFormat.GetDayName(reservationCustomer.Date.DayOfWeek) + " " + Convert.ToString(reservationCustomer.Date, CultureInfo.InvariantCulture).Split(' ')[1] + " is Bon Temps gesloten.";
+                return View(reservationCustomer);
+            }
+
             var customer = new Customers
             {
                 Email = reservationCustomer.Email,
@@ -142,7 +199,7 @@ namespace BonTemps.Controllers
                 reservation.Customer.Gender = reservationCustomer.Gender;
                 reservation.Customer.PhoneNumber = reservationCustomer.PhoneNumber;
                 reservation.Customer.NewsLetter = reservationCustomer.NewsLetter;
-                
+
                 reservation.Date = reservationCustomer.Date;
                 reservation.Persons = reservationCustomer.Persons;
 
@@ -215,7 +272,7 @@ namespace BonTemps.Controllers
             ws.Cells["E5"].Value = "Mobiel";
             ws.Cells["F5"].Value = "Nieuwsbrief";
             ws.Cells["G5"].Value = "E-mail";
-            
+
             ws.Cells["I5"].Value = "Datum";
             ws.Cells["J5"].Value = "Aantal Personen";
 
@@ -223,7 +280,7 @@ namespace BonTemps.Controllers
 
             foreach (var item in reservation)
             {
-                if(item.Customer != null)
+                if (item.Customer != null)
                 {
                     ws.Cells[$"A{rowStart}"].Value = item.Customer.FirstName;
                     ws.Cells[$"B{rowStart}"].Value = item.Customer.Prefix;

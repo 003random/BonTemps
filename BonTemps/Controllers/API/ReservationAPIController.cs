@@ -18,8 +18,27 @@ namespace BonTemps.Controllers
         }
 
         [HttpPost]
-        public bool MakeReservation(ReservationViewModel reservationCustomer)
+        public IHttpActionResult MakeReservation(ReservationViewModel reservationCustomer)
         {
+            const int seats = 40;
+
+            var first = DateTime.Now.AddHours(-2);
+            var last = DateTime.Now.AddHours(2);
+            var reservationsInScope = _db.Reservations.Where(r => r.DateCreated >= first && r.DateCreated <= last);
+
+            var count = 0;
+            foreach (var r in reservationsInScope)
+            {
+                count += r.Persons;
+            }
+
+            var freeSeats = seats - count;
+
+            if (freeSeats < reservationCustomer.Persons)
+            {
+                return Json("er zijn nog " + freeSeats + " stoelen vrij op " + reservationCustomer.Date);
+            }
+            
             var customer = new Customers
             {
                 Email = reservationCustomer.Email,
@@ -38,13 +57,12 @@ namespace BonTemps.Controllers
                 Customer = customer
             };
 
-            if (string.IsNullOrEmpty(customer.Email) && string.IsNullOrEmpty(customer.FirstName) &&
-                string.IsNullOrEmpty(customer.LastName) && customer.Gender == 0 &&
-                Convert.ToInt32(customer.PhoneNumber) == 0) return false;
+            if (string.IsNullOrEmpty(customer.Email) || string.IsNullOrEmpty(customer.FirstName) || string.IsNullOrEmpty(customer.LastName) || customer.Gender == 0 || Convert.ToInt32(customer.PhoneNumber) == 0)
+                return Json("Niet alles is ingevuld. Controlleer de waardes en probeer het opnieuw.");
 
             _db.Reservations.Add(reservation);
             _db.SaveChanges();
-            return true;
+            return Json("Reservering sucesvol geplaatst.");
         }
     }
 }
