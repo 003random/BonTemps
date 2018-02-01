@@ -36,6 +36,11 @@ namespace BonTemps.Models
         [Required(ErrorMessage = "* required")]
         public string LastName { get; set; }
 
+        [Display(Name = "Geboortedatum")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [Required(ErrorMessage = "* required")]
+        public DateTime DateOfBirth { get; set; }
+
         [MaxLength(14)]
         [MinLength(10)]
         [RegularExpression("^[0-9]*$", ErrorMessage = "must be numeric")]

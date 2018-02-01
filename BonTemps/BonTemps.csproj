@@ -294,6 +294,10 @@
     <Compile Include="Migrations\201801311928443_DateOfBirth.Designer.cs">
       <DependentUpon>201801311928443_DateOfBirth.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801311955569_DateOfBirthRes2.cs" />
+    <Compile Include="Migrations\201801311955569_DateOfBirthRes2.Designer.cs">
+      <DependentUpon>201801311955569_DateOfBirthRes2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Allergies.cs" />
@@ -634,6 +638,11 @@
     <Content Include="asset\media\demo.mp4" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Uploads\allergy-images\067c71bd-36c1-43d1-bd79-f369515de0bf.png" />
+    <Content Include="Content\Uploads\allergy-images\7d932b1a-efbd-408a-a437-837399735758.png" />
+    <Content Include="Content\Uploads\allergy-images\b36e6912-9fdb-4911-a031-9a1e03d37653.png" />
+    <Content Include="Content\Uploads\allergy-images\d37ddbd2-e18f-4fa2-9277-2f38a3c69640.jpg" />
+    <Content Include="Content\Uploads\allergy-images\d5306810-92a1-454f-9934-27b05c33192f.png" />
     <Content Include="Content\Uploads\allergy-images\Gluten.png" />
     <Content Include="Content\Uploads\allergy-images\Koemelk.jpg" />
     <Content Include="Content\Uploads\allergy-images\Lactose.png" />
@@ -794,6 +803,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801311928443_DateOfBirth.resx">
       <DependentUpon>201801311928443_DateOfBirth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801311955569_DateOfBirthRes2.resx">
+      <DependentUpon>201801311955569_DateOfBirthRes2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

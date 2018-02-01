@@ -102,6 +102,7 @@ namespace BonTemps.Controllers
                 FirstName = reservationCustomer.FirstName,
                 Prefix = reservationCustomer.Prefix,
                 LastName = reservationCustomer.LastName,
+                DateOfBirth = reservationCustomer.DateOfBirth,
                 Gender = reservationCustomer.Gender,
                 PhoneNumber = reservationCustomer.PhoneNumber,
                 NewsLetter = reservationCustomer.NewsLetter

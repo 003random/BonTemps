@@ -30,13 +30,17 @@
                             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                         </div>
 
+                        
                         <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            Huidige afbeelding<br>
+                            <img style="border: outset 1px; border-color: darkgray; padding: 4px; border-radius: 5px; margin-bottom: 5%;" src="~/Content/Uploads/menu-images/@Html.DisplayFor(m => m.Image)" onerror="this.src = 'https://vignette.wikia.nocookie.net/bokunoheroacademia/images/d/d5/NoPicAvailable.png/revision/latest?cb=20160326222204';" alt="menu image" width="100px" height="100px;" />
                             <input type="file" name="picture" id="picture" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn fileupload-v1-btn" />
                         </div>
                     </div>
 
                     <div class="col-md-12">
                         <input class="submit btn btn-danger" type="submit" value="Opslaan">
+                        <button class="submit btn btn-primary" onclick="location.href='@Url.Action("Index", "Menu")';return false;">Annuleer</button>
                     </div>
                 }
             </div>

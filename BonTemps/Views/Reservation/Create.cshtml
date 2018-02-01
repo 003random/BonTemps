@@ -38,6 +38,13 @@
                         </div>
 
                         <div class="form-group form-animate-text" style="margin-top: 40px !important;">
+                            @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-text birth-date", required = "" })
+                            <span class="bar"></span>
+                            @Html.LabelFor(m => m.DateOfBirth)
+                            @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group form-animate-text" style="margin-top: 40px !important;">
                             @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-text", required = "", type = "number" })
                             <span class="bar"></span>
                             @Html.LabelFor(m => m.PhoneNumber)
