@@ -4,7 +4,7 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2>Order verwijderen</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
@@ -34,6 +34,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Verwijder" class="btn btn-default" /> |
+            <button class="submit btn btn-primary" onclick="location.href='@Url.Action("Index", "Orders")';return false;">Annuleer</button>
             @Html.ActionLink("Back to List", "Index")
         </div>
     }

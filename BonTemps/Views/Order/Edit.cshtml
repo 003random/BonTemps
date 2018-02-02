@@ -48,14 +48,13 @@
                             }
                         </select>
                         <br />
-                        <br />
-                        <br />
                         <table class="menus-table table table-hover table-bordered"></table>
                         <input type="hidden" name="menus" id="menus" value="@ViewBag.menuArr" />
                     </div>
 
                     <div class="col-md-12">
                         <input class="submit btn btn-danger" type="submit" value="Aanmaken">
+                        <button class="submit btn btn-primary" onclick="location.href='@Url.Action("Index", "Order")';return false;">Annuleer</button>
                     </div>
                 }
 

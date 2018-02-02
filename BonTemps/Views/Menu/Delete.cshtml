@@ -29,6 +29,7 @@
                     @Html.AntiForgeryToken()
                     <div class="form-actions no-color">
                         <input type="submit" value="Verwijder" class="submit btn btn-danger" />
+                        <button class="submit btn btn-primary" onclick="location.href='@Url.Action("Index", "Menu")';return false;">Annuleer</button>
                     </div>
                 }
             </div>
