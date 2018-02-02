@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace BonTemps.Controllers
 {
@@ -19,6 +20,7 @@ namespace BonTemps.Controllers
         }
 
         [HttpPost]
+        [EnableCors("*","*","*")]
         public IHttpActionResult MakeReservation(ReservationViewModel reservationCustomer)
         {
             const int seats = 40;
@@ -91,8 +93,13 @@ namespace BonTemps.Controllers
                 Customer = customer
             };
 
-            if (string.IsNullOrEmpty(customer.Email) || string.IsNullOrEmpty(customer.FirstName) || string.IsNullOrEmpty(customer.LastName) || customer.Gender == 0 || Convert.ToInt32(customer.PhoneNumber) == 0)
+            if (string.IsNullOrEmpty(customer.Email) || string.IsNullOrEmpty(customer.FirstName) || string.IsNullOrEmpty(customer.LastName) || (customer.Gender != GenderEnum.Man &&  customer.Gender != GenderEnum.Vrouw) || Convert.ToUInt64(customer.PhoneNumber) == 0)
                 return Json("Niet alles is ingevuld. Controlleer de waardes en probeer het opnieuw.");
+
+            _db.Customers.Add(customer);
+            //_db.SaveChanges();
+
+            reservation.Customer = customer;
 
             _db.Reservations.Add(reservation);
             _db.SaveChanges();
