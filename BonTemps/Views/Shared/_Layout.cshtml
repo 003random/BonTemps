@@ -74,6 +74,20 @@
                     }
                     @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("kok"))
                     {
+                        <li class="active ripple">
+                            <a class="tree-toggle nav-header">
+                                Bestellingen vandaag
+                                <span class="fa-angle-right fa right-arrow text-right"></span>
+                            </a>
+                            <ul class="nav nav-list tree">
+                                <li>
+                                    <a href="@Url.Action("Index", "Chef")">Overzicht</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("kok"))
+                    {
                     <li class="active ripple">
                         <a class="tree-toggle nav-header">
                             Menu's

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace BonTemps.Controllers
 {
+    [Authorize(Roles = "kok,Admin")]
     public class ChefController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
