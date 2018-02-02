@@ -74,6 +74,20 @@
                     }
                     @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("kok"))
                     {
+                        <li class="active ripple">
+                            <a class="tree-toggle nav-header">
+                                Bestellingen vandaag
+                                <span class="fa-angle-right fa right-arrow text-right"></span>
+                            </a>
+                            <ul class="nav nav-list tree">
+                                <li>
+                                    <a href="@Url.Action("Index", "Chef")">Overzicht</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("kok"))
+                    {
                     <li class="active ripple">
                         <a class="tree-toggle nav-header">
                             Menu's
@@ -103,6 +117,19 @@
                     </li>
                     }
                     @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("Serveerster"))
+                    {
+                        <li class="active ripple">
+                            <a class="tree-toggle nav-header">
+                                Bestellingen
+                                <span class="fa-angle-right fa right-arrow text-right"></span>
+                            </a>
+                            <ul class="nav nav-list tree">
+                                <li><a href="@Url.Action("Index", "Orders")">Overzicht</a></li>
+                                <li><a href="@Url.Action("Edit", "Orders")">Wijzigen</a></li>
+                            </ul>
+                        </li>
+                    }
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("Serveerster"))
                     { 
                     <li class="active ripple">
                         <a class="tree-toggle nav-header">
@@ -110,7 +137,7 @@
                             <span class="fa-angle-right fa right-arrow text-right"></span>
                         </a>
                         <ul class="nav nav-list tree">
-                            <li><a href="@Url.Action("Index", "Table_layout")">Bekijken</a></li>
+                            <li><a href="@Url.Action("Index", "Table_layout")">Overzicht</a></li>
                             <li><a href="@Url.Action("Edit", "Table_layout")">Wijzigen</a></li>
                         </ul>
                     </li>
@@ -123,7 +150,7 @@
                             <span class="fa-angle-right fa right-arrow text-right"></span>
                         </a>
                         <ul class="nav nav-list tree">
-                            <li><a href="@Url.Action("Index", "Customers")">Bekijken</a></li>
+                            <li><a href="@Url.Action("Index", "Customers")">Overzicht</a></li>
                         </ul>
                     </li>
                     }
@@ -135,7 +162,7 @@
                             <span class="fa-angle-right fa right-arrow text-right"></span>
                         </a>
                         <ul class="nav nav-list tree">
-                            <li><a href="@Url.Action("Index", "Role_Manage")">Bekijken</a></li>
+                            <li><a href="@Url.Action("Index", "Role_Manage")">Overzicht</a></li>
                         </ul>
                     </li>
                     }
