@@ -262,3 +262,6 @@ __pycache__/
 /BonTemps/Content/Uploads/allergy-images
 /BonTemps/Content/Uploads/menu-images
 /BonTemps/Views/Role_manage/Edit.cshtml
+/BonTemps/Migrations/201801311623060_ReservationsMigration.cs
+/BonTemps/Migrations/201801311623060_ReservationsMigration.Designer.cs
+/BonTemps/Migrations/201801311623060_ReservationsMigration.resx
