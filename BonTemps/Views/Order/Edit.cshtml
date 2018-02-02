@@ -1,0 +1,154 @@
+﻿@{
+    ViewBag.Title = "Create";
+}
+
+<div class="col-md-10">
+    <div class="col-md-12 panel">
+        <div class="col-md-12 panel-heading">
+            <h3>Bestellingen bewerken</h3>
+        </div>
+        <div class="col-md-12 panel-body" style="padding-bottom:30px;">
+            <div class="col-md-12">
+                @using (Html.BeginForm("Edit", "Order", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "cmxform", role = "form" }))
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.AntiForgeryToken()
+                    <div class="col-md-6">
+                        @if (ViewBag.reservationId == null || ViewBag.reservationId == 0)
+                        {
+                            <input type="text" class="form-control form-text" id="search" placeholder="Zoek op reserveringen">
+                            <br />
+                            <select id="reservationId" name="reservationId">
+                                <option value="0">Kies een reservering</option>
+                                @foreach (var a in ViewBag.reservations)
+                                {
+                                    if (a.Id == ViewBag.reservationId)
+                                    {
+                                        <option value="@a.Id" selected>@a.Customer.FirstName @a.Customer.Prefix @a.Customer.LastName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@a.Id">@a.Customer.FirstName @a.Customer.Prefix @a.Customer.LastName</option>
+                                    }
+                                }
+                            </select>
+                            <br />
+                            <hr />
+                            <br />
+                        }
+                        else
+                        {
+                            <input type="hidden" name="reservationId" id="reservationId" value="@ViewBag.reservationId" />
+                        }
+                        <select id="menus-ddl">
+                            <option value="0">Kies een menu</option>
+                            @foreach (var a in ViewBag.menus)
+                            {
+                                <option value="@a.Id">@a.Name</option>
+                            }
+                        </select>
+                        <br />
+                        <br />
+                        <br />
+                        <table class="menus-table table table-hover table-bordered"></table>
+                        <input type="hidden" name="menus" id="menus" value="@ViewBag.menuArr" />
+                    </div>
+
+                    <div class="col-md-12">
+                        <input class="submit btn btn-danger" type="submit" value="Aanmaken">
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    ul li {
+    }
+
+    .table-bordered {
+        border: 2px solid gray !important;
+    }
+
+    .fa-check:before {
+        /*font-family: 'FontAwesome';
+        content: '\f00d';*/
+        margin-right: 10px;
+        color: green;
+    }
+</style>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        Array.prototype.contains = function (obj) {
+            var i = this.length;
+            while (i--) {
+                if (this[i] == obj) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        var menus = [];
+        $(document).ready(function () {
+
+
+            $("table").delegate('tr', 'click', function () {
+                $(this).remove();
+                var menus = $("tr").map(function () { return $(this).attr("menu-id"); }).get();
+
+                $(".menus-table").html("");
+                for (var i = 0; i < menus.length; ++i) {
+                    $(".menus-table").append("<tr menu-id='" + menus[i] +"'><td class='" +
+                        menus[i] +
+                        " td'><span class='fa fa-check' aria-hidden='true'></span>" +
+                        $("option[value='" + menus[i] + "']").text() +
+                        "</td></tr>");
+                }
+                console.log(menus);
+                $("#menus").val(menus.join());
+
+            });
+
+            menus = $("#menus").val().split(',');
+
+            for (var i = 0; i < menus.length; ++i) {
+                $(".menus-table").append("<tr menu-id='" + menus[i] +"'><td class='" +
+                    menus[i] +
+                    " td'><span class='fa fa-check' aria-hidden='true'></span>" +
+                    $("option[value='" + menus[i] + "']").text() +
+                    "</td></tr>");
+            }
+            $("#menus-ddl").change(function () {
+                console.log("on change event");
+                if (parseInt($("#menus-ddl").val()) !== 0) {
+                    console.log("inside if");
+                    menus.push(parseInt($("#menus-ddl").val()));
+                    $(".menus-table").append("<tr menu-id='" + parseInt($("#menus-ddl").val()) +"'><td class='" +
+                        parseInt($("#menus-ddl").val()) +
+                        " td'><span class='fa fa-check' aria-hidden='true'></span>" +
+                        $("#menus-ddl :selected").text() +
+                        "</td></tr>");
+                }
+                $("#menus").val(menus.join());
+            });
+
+
+            $("#search").keyup(
+                function () {
+                    console.log("searchbox keyup event triggered");
+                    $("#reservationId").children().each(function () {
+                        if ($(this).text().indexOf($("#search").val()) !== -1) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                });
+        });
+    </script>
+}
+

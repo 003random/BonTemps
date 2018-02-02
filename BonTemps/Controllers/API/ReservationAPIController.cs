@@ -1,6 +1,7 @@
 ﻿using BonTemps.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -22,6 +23,39 @@ namespace BonTemps.Controllers
         {
             const int seats = 40;
 
+            const int mondayStartHour = 0;
+            const int mondayStopHour = 0;
+
+            const int tuesdayStartHour = 10;
+            const int tuesdayStopHour = 24;
+
+            const int wednesdayStartHour = 10;
+            const int wednesdayStopHour = 25;
+
+            const int thursdayStartHour = 10;
+            const int thursdayStopHour = 26;
+
+            const int fridayStartHour = 10;
+            const int fridayStopHour = 27;
+
+            const int saturdayStartHour = 10;
+            const int saturdayStopHour = 29;
+
+            const int sundayStartHour = 10;
+            const int sundayStopHour = 24;
+            
+            if ((reservationCustomer.Date.DayOfWeek == DayOfWeek.Monday) ||
+                (reservationCustomer.Date.DayOfWeek == DayOfWeek.Tuesday && (reservationCustomer.Date.Hour < tuesdayStartHour || reservationCustomer.Date.Hour > tuesdayStopHour)) ||
+                (reservationCustomer.Date.DayOfWeek == DayOfWeek.Wednesday && (reservationCustomer.Date.Hour < wednesdayStartHour || reservationCustomer.Date.Hour > wednesdayStopHour)) ||
+                (reservationCustomer.Date.DayOfWeek == DayOfWeek.Thursday && (reservationCustomer.Date.Hour < thursdayStartHour || reservationCustomer.Date.Hour > thursdayStopHour)) ||
+                (reservationCustomer.Date.DayOfWeek == DayOfWeek.Friday && (reservationCustomer.Date.Hour < fridayStartHour || reservationCustomer.Date.Hour > fridayStopHour)) ||
+                (reservationCustomer.Date.DayOfWeek == DayOfWeek.Saturday && (reservationCustomer.Date.Hour < saturdayStartHour || reservationCustomer.Date.Hour > saturdayStopHour)) ||
+                (reservationCustomer.Date.DayOfWeek == DayOfWeek.Sunday && (reservationCustomer.Date.Hour < sundayStartHour || reservationCustomer.Date.Hour > sundayStopHour)))
+            {
+                var culture = new CultureInfo("nl-NL");
+                return Json("Op " + culture.DateTimeFormat.GetDayName(reservationCustomer.Date.DayOfWeek) + " " + Convert.ToString(reservationCustomer.Date, CultureInfo.InvariantCulture).Split(' ')[1] + " is Bon Temps gesloten.");
+            }
+            
             var first = DateTime.Now.AddHours(-2);
             var last = DateTime.Now.AddHours(2);
             var reservationsInScope = _db.Reservations.Where(r => r.DateCreated >= first && r.DateCreated <= last);

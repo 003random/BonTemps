@@ -99,7 +99,7 @@
                     allergies.contains(parseInt($("#allergy-ddl").val())) === false) {
                     console.log("inside if");
                     allergies.push(parseInt($("#allergy-ddl").val()));
-                    $(".allergy-table").append("<tr><td class='" +
+                    $(".allergy-table").append("<tr allergy-id='" + parseInt($("#allergy-ddl").val()) +"'><td class='" +
                         parseInt($("#allergy-ddl").val()) +
                         "'><span class='fa fa-check' aria-hidden='true'></span>" +
                         $("#allergy-ddl :selected").text() +
@@ -109,56 +109,24 @@
             });
         });
 
-        @*$(".submit").on("click",
-            function() {
-                var name = $("#Name").val();
-                var description = $("#Description").val();
-                var image = $("#picture").get(0).files;
+        $("table").delegate('tr', 'click', function () {
+            $(this).remove();
+            var allergies = $("tr").map(function () { return $(this).attr("allergy-id"); }).get();
+            console.log("----------");
+            console.log(allergies);
+            $(".allergy-table").html("");
+            for (var i = 0; i < allergies.length; ++i) {
+                $(".allergy-table").append("<tr allergy-id='" + allergies[i] +"'><td class='" +
+                    allergies[i] +
+                    " td'><span class='fa fa-check' aria-hidden='true'></span>" +
+                    $("option[value='" + allergies[i] + "']").text() +
+                    "</td></tr>");
+            }
+            console.log(allergies);
+            $("#Allergies").val(allergies.join());
+        });
 
 
-                console.log("name is " + name);
-                console.log("description is " + description);
-                console.log("image is ");
-                console.log(image[0]);
-
-                if (name && description) {
-                    console.log("inside if json post");
-                    var jsonObject = {
-                        "Name": name,
-                        "Description": description,
-                        "Allergies": allergies,
-                        "Image": image[0].name
-                    };
-
-                    $.ajax({
-                        url: "@Url.Action("Create")",
-                        type: "POST",
-                        data: JSON.stringify(jsonObject),
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        error: function(response) {
-                            alert(response.responseText);
-                        },
-                        success: function(response) {
-                            alertify.success(response);
-                            var name = $("#Name").val("");
-                            var description = $("#Description").val("");
-                            var image = $("#picture").val("");
-                        }
-                    });
-                } else {
-                    console.log("else if json post");
-                }
-            });*@
-
-        $(".fa").on("click",
-            function() {
-                alert(0);
-                console.log(allergies);
-                $(this).remove();
-                allergies.remove(parseInt($(this).attr("allergy-id")));
-                console.log(allergies);
-            });
     </script>
 }
 

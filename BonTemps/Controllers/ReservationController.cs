@@ -124,7 +124,7 @@ namespace BonTemps.Controllers
                 _db.Reservations.Add(reservation);
                 _db.SaveChanges();
                 TempData["success"] = "Reservering succesvol aangemaakt";
-                return RedirectToAction("Index");
+                return RedirectToAction("Create", "Order", new { reservationId = reservation.Id });
             }
 
             return View(reservationCustomer);

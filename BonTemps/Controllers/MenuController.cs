@@ -145,8 +145,6 @@ namespace BonTemps.Controllers
                 db.Entry(menu).Property(x => x.Image).IsModified = false;
             }
 
-            db.SaveChanges();
-
             db.Menus_Allergies.RemoveRange(db.Menus_Allergies.Where(m => m.Menu.Id == menu.Id));
 
             if (allergyMenuViewModel.Allergies.StartsWith(","))

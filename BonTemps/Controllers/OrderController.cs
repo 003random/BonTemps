@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -13,125 +14,145 @@ namespace BonTemps.Controllers
     [Authorize(Roles = "Admin,Serveerster")]
     public class OrderController : Controller
     {
+
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Orders
+        // GET: Menus
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.Menu).Include(o => o.Reservation);
-            return View(orders.ToList());
+            return View(db.Menus.ToList());
         }
 
-        // GET: Orders/Details/5
-        public ActionResult Details(int? id)
+        // GET: Menus/Create
+        public ActionResult Create(int? reservationId)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Orders orders = db.Orders.Find(id);
-            if (orders == null)
-            {
-                return HttpNotFound();
-            }
-            return View(orders);
-        }
-
-        // GET: Orders/Create
-        public ActionResult Create()
-        {
-            ViewBag.Id = new SelectList(db.Menus, "Id", "Name");
-            ViewBag.Id = new SelectList(db.Reservations, "Id", "Id");
+            var minusTwoHours = DateTime.Now.AddHours(-2);
+            ViewBag.reservations = db.Reservations.Include(r => r.Customer).Where(r => r.Date > minusTwoHours).ToList();
+            ViewBag.reservationId = reservationId;
+            ViewBag.menus = db.Menus.ToList();
             return View();
         }
 
-        // POST: Orders/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id")] Orders orders)
+        public ActionResult Create(string menus, int? reservationId)
         {
-            if (ModelState.IsValid)
+            ViewBag.menus = db.Menus.ToList();
+            var minusTwoHours = DateTime.Now.AddHours(-2);
+            ViewBag.reservations = db.Reservations.Include(r => r.Customer).Where(r => r.Date > minusTwoHours).ToList();
+
+            if (reservationId == null || reservationId == 0)
             {
-                db.Orders.Add(orders);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.reservationId = reservationId;
+                TempData["error"] = "ReserveringId is leeg";
+                return View();
+            }
+            ViewBag.menus = db.Menus.ToList();
+            
+            if (menus.StartsWith(","))
+            {
+                menus = menus.Substring(1);
             }
 
-            ViewBag.Id = new SelectList(db.Menus, "Id", "Name", orders.Id);
-            ViewBag.Id = new SelectList(db.Reservations, "Id", "Id", orders.Id);
-            return View(orders);
+            foreach (var menu in menus.Split(','))
+            {
+                var intMenu = Convert.ToInt16(menu);
+                var orderObj = new Orders
+                {
+                    Menu = db.Menus.FirstOrDefault(a => a.Id == intMenu),
+                    Reservation = db.Reservations.FirstOrDefault(a => a.Id == reservationId)
+                };
+
+                db.Orders.Add(orderObj);
+            }
+
+            db.SaveChanges();
+            TempData["success"] = "Sucesvol aangemaakt";
+            return View();
         }
 
-        // GET: Orders/Edit/5
+        // GET: Menus/Create
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Orders orders = db.Orders.Find(id);
-            if (orders == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.Id = new SelectList(db.Menus, "Id", "Name", orders.Id);
-            ViewBag.Id = new SelectList(db.Reservations, "Id", "Id", orders.Id);
-            return View(orders);
+            ViewBag.reservationId = id;
+            var arr = db.Orders.Where(m => m.Reservation.Id == id).Select(m => m.Menu).Select(m => m.Id);
+            ViewBag.menuArr = string.Join(",", arr);
+
+            var minusTwoHours = DateTime.Now.AddHours(-2);
+            ViewBag.reservations = db.Reservations.Include(r => r.Customer).Where(r => r.Date > minusTwoHours).ToList();
+            ViewBag.menus = db.Menus.ToList();
+            return View();
         }
 
-        // POST: Orders/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id")] Orders orders)
+        public ActionResult Edit(string menus, int? reservationId)
         {
-            if (ModelState.IsValid)
+            ViewBag.reservationId = reservationId;
+            ViewBag.menus = db.Menus.ToList();
+            var minusTwoHours = DateTime.Now.AddHours(-2);
+            ViewBag.reservations = db.Reservations.Include(r => r.Customer).Where(r => r.Date > minusTwoHours).ToList();
+
+            if (reservationId == null || reservationId == 0)
             {
-                db.Entry(orders).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.reservationId = reservationId;
+                TempData["error"] = "ReserveringId is leeg";
+                return View();
             }
-            ViewBag.Id = new SelectList(db.Menus, "Id", "Name", orders.Id);
-            ViewBag.Id = new SelectList(db.Reservations, "Id", "Id", orders.Id);
-            return View(orders);
+            ViewBag.menus = db.Menus.ToList();
+
+            if (menus.StartsWith(","))
+            {
+                menus = menus.Substring(1);
+            }
+
+            db.Orders.RemoveRange(db.Orders.Where(m => m.Reservation.Id == reservationId));
+
+            foreach (var menu in menus.Split(','))
+            {
+                var intMenu = Convert.ToInt16(menu);
+                var orderObj = new Orders
+                {
+                    Menu = db.Menus.FirstOrDefault(a => a.Id == intMenu),
+                    Reservation = db.Reservations.FirstOrDefault(a => a.Id == reservationId)
+                };
+
+                db.Orders.Add(orderObj);
+            }
+
+            db.SaveChanges();
+            TempData["success"] = "Sucesvol opgeslagen";
+
+            var arr = db.Orders.Where(m => m.Reservation.Id == reservationId).Select(m => m.Menu).Select(m => m.Id);
+            ViewBag.menuArr = string.Join(",", arr);
+
+            return View();
         }
 
-        // GET: Orders/Delete/5
+
+        // GET: Menus/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Orders orders = db.Orders.Find(id);
-            if (orders == null)
+            Menus menus = db.Menus.Find(id);
+            if (menus == null)
             {
                 return HttpNotFound();
             }
-            return View(orders);
+            return View(menus);
         }
 
-        // POST: Orders/Delete/5
+        // POST: Menus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Orders orders = db.Orders.Find(id);
-            db.Orders.Remove(orders);
+            Menus menus = db.Menus.Find(id);
+            db.Menus.Remove(menus);
             db.SaveChanges();
+            TempData["success"] = "Succesvol verwijderd";
             return RedirectToAction("Index");
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
-    }
 }
