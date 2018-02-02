@@ -20,7 +20,7 @@ namespace BonTemps.Controllers
         // GET: Menus
         public ActionResult Index()
         {
-            return View(db.Menus.ToList());
+            return View(db.Orders.Include(o => o.Reservation).Include(o => o.Reservation.Customer).Include(o => o.Menu).ToList());
         }
 
         // GET: Menus/Create
