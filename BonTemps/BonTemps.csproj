@@ -781,6 +781,9 @@
     <Content Include="Errors\Error404.cshtml" />
     <Content Include="Errors\Error500.cshtml" />
     <Content Include="Views\Chef\Index.cshtml" />
+    <Content Include="Views\Order\Create.cshtml" />
+    <Content Include="Views\Order\Edit.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Employee\" />
